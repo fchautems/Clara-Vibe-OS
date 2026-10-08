@@ -23,6 +23,7 @@ Mise à jour : 2026-10-08
 - Critères d’acceptation mains libres et procédure de mise à jour manuelle via Git/GitHub/Fork.
 
 ## Contrôles
+- 2026-10-08 : audit Git jusqu’au commit `bea1074` : une seule branche `main`, cinq commits successifs, aucun écrasement observé dans leurs diffs ; la spec fonctionnelle est inchangée depuis `493c66a`. La spec technique V1 et le rapport de revue sont livrés hors dépôt, mais ne sont pas encore versionnés dans Git. Les contributions des deux conversations se succèdent sans perte constatée.
 - 2026-10-08 : versions actuelles des deux documents relues ; cohérence, transitions, interruption, concurrence, journalisation, undo et critères d’acceptation examinés. Sources primaires vérifiées pour SQLite, Ollama, Vosk, Faster-Whisper et Windows. Aucun test Clara ni benchmark Windows exécuté dans cette revue.
 - 2026-10-08 : document technique rendu en 17 pages et contrôlé visuellement ; exemple JSON analysé avec succès. Ces contrôles concernent le document, pas le fonctionnement de Clara.
 - Documentation primaire consultée pour les capacités annoncées de Vosk, Faster-Whisper, Piper, Ollama, UI Automation et SQLite.
