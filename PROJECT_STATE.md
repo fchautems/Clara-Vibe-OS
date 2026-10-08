@@ -8,6 +8,7 @@ Mise à jour : 2026-10-08
 - Exigences non fonctionnelles et critères d’acceptation ajoutés.
 
 ## Changements
+- Spécification fonctionnelle V1.1 ajoutée au dépôt sous `docs/Clara_Specifications_fonctionnelles_V1.1.md` (commit `493c66a`).
 - Activation configurable (« Bonjour Clara » / « Salut Clara » comme valeurs initiales), session temporaire et commande de fin configurable.
 - Démarrage automatique en arrière-plan ; mécanisme exact à décider en conception technique.
 - Retour sonore « ding » après prise en compte d’un énoncé ; erreur = message vocal bref + notification visuelle.
@@ -17,6 +18,7 @@ Mise à jour : 2026-10-08
 - Critères d’acceptation mains libres et procédure de mise à jour manuelle via Git/GitHub/Fork.
 
 ## Contrôles
+- Présence et lecture du fichier Markdown vérifiées sur la branche `main` après commit.
 - DOCX rendu en 12 pages et vérifié visuellement.
 - Mise en page corrigée sur l’exemple multi-étapes ; aucun chevauchement ou texte coupé observé.
 
