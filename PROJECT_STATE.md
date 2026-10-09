@@ -1,41 +1,41 @@
 # Clara Vibe OS — état du projet
 
-Mise à jour : 2026-10-08
+Mise à jour : 2026-10-09
 
 ## État vérifié
-- 2026-10-08 : revue critique des specs fonctionnelle V1.1 et technique V1 terminée ; rapport `Clara_Vibe_OS_Revue_critique_specs_V1.md` livré. Neuf points à préciser, dont quatre contrats du noyau. L’architecture est conservable ; les recommandations ne sont pas encore intégrées aux specs.
-- 2026-10-08 : spécification technique V1 rédigée et livrée dans `Clara_Vibe_OS_Specification_technique_V1.docx` (17 pages, 25 sections). Statut : proposition à relire, sans implémentation ni performance mesurée.
-- Le document technique n’est pas encore ajouté au dépôt ; la référence fonctionnelle V1.1 reste inchangée.
-- Spécification fonctionnelle consolidée en V1.1.
-- Périmètre V1 centré sur l’Explorateur Windows, avec architecture fonctionnelle extensible vers Firefox, ChatGPT, Notepad++ et Fork.
-- Exigences non fonctionnelles et critères d’acceptation ajoutés.
+- Spécification fonctionnelle V1.1 : `docs/Clara_Specifications_fonctionnelles_V1.1.md`, inchangée depuis le commit `493c66a`.
+- Spécification technique V1.1 : `docs/Clara_Vibe_OS_Specification_technique_V1.1.md`. Les neuf constats de la revue sont intégrés et suivis en section 24.3 ; les validations restantes sont explicites.
+- Contrats du premier incrément : `docs/contracts_v1.1.schema.json` (JSON Schema draft 2020-12, 20 définitions, 16 intentions). Ils décrivent la conception ; aucun producteur ni adaptateur Clara n'est encore implémenté.
+- Technique V1 archivée sous `docs/Clara_Vibe_OS_Specification_technique_V1.md` ; rapport de revue conservé sans modification sous `docs/Clara_Vibe_OS_Revue_critique_specs_V1.md`.
+- Version Word V1.1 livrée (26 pages, 26 sections), avec historique de la V1 conservé.
+- Périmètre V1 : Explorateur Windows, Python et traitement local ; architecture extensible vers Firefox, ChatGPT, Notepad++ et Fork. Les critères fonctionnels finaux restent ceux de la V1.1.
 
 ## Changements
-- 2026-10-08 : architecture Python locale, processus et contrats, sessions, pipeline vocal, contexte, cache validé, Explorateur, recherche, confirmations, stop, historique/undo et reprise détaillés dans la proposition technique.
-- Matrice de couverture de toutes les sections V1.1 et liste des composants à valider ajoutées au document technique.
-- Spécification fonctionnelle V1.1 ajoutée au dépôt sous `docs/Clara_Specifications_fonctionnelles_V1.1.md` (commit `493c66a`).
-- Activation configurable (« Bonjour Clara » / « Salut Clara » comme valeurs initiales), session temporaire et commande de fin configurable.
-- Démarrage automatique en arrière-plan ; mécanisme exact à décider en conception technique.
-- Retour sonore « ding » après prise en compte d’un énoncé ; erreur = message vocal bref + notification visuelle.
-- Cible de réactivité 1–2 s, limite haute 5 s pour commande simple.
-- Robustesse : erreur sans plantage, reprise propre après crash/redémarrage, aucune reprise automatique des commandes inachevées.
-- Consommation faible en veille, fonctionnement V1 local sans API externe.
-- Critères d’acceptation mains libres et procédure de mise à jour manuelle via Git/GitHub/Fork.
+- Admission des actions ordonnée avec stop ; une étape en file n'est pas engagée. Après stop, aucune étape suivante n'est admise ; une étape déjà admise peut finir.
+- Demande incompatible : suspension avant question, dialogue unique et réponses liées à leur demande et génération.
+- Journal : COMMIT acquitté avant modification, identifiants et clés de déduplication persistants ; après crash, résultat incertain sans rejeu automatique.
+- Contrats fermés, variantes de réponse, arguments par intention, résultats observés, transitions et limites initiales documentés.
+- Inactivité distincte des tâches longues ; convention d'undo proposée et cible reformulée ; réessai après correction uniquement sur demande explicite.
+- Mode local Ollama imposé avant activation ; chemin UAC déclaré et validé par capacité.
+- Protocole initial proposé de 140 cas, scénarios d'interruption et de reprise, mesures de délai complet et traçabilité des neuf constats. Les valeurs initiales ne constituent pas des performances mesurées.
 
 ## Contrôles
-- 2026-10-08 : audit Git jusqu’au commit `bea1074` : une seule branche `main`, cinq commits successifs, aucun écrasement observé dans leurs diffs ; la spec fonctionnelle est inchangée depuis `493c66a`. La spec technique V1 et le rapport de revue sont livrés hors dépôt, mais ne sont pas encore versionnés dans Git. Les contributions des deux conversations se succèdent sans perte constatée.
-- 2026-10-08 : versions actuelles des deux documents relues ; cohérence, transitions, interruption, concurrence, journalisation, undo et critères d’acceptation examinés. Sources primaires vérifiées pour SQLite, Ollama, Vosk, Faster-Whisper et Windows. Aucun test Clara ni benchmark Windows exécuté dans cette revue.
-- 2026-10-08 : document technique rendu en 17 pages et contrôlé visuellement ; exemple JSON analysé avec succès. Ces contrôles concernent le document, pas le fonctionnement de Clara.
-- Documentation primaire consultée pour les capacités annoncées de Vosk, Faster-Whisper, Piper, Ollama, UI Automation et SQLite.
-- Présence et lecture du fichier Markdown vérifiées sur la branche `main` après commit.
-- DOCX rendu en 12 pages et vérifié visuellement.
-- Mise en page corrigée sur l’exemple multi-étapes ; aucun chevauchement ou texte coupé observé.
+- 2026-10-09 : Word V1.1 rendu et contrôlé visuellement sur ses 26 pages.
+- JSON Schema validé, références internes résolues, exemple de plan validé ; cas de rejet vérifiés pour métadonnées du modèle, champs inconnus, génération absente et résultats STARTED/SUCCEEDED sans donnée exigée.
+- DDL du journal exécuté sur SQLite en mémoire, clés étrangères activées. Ce contrôle ne prouve pas la durabilité ni l'atomicité d'un effet Windows.
+- Sources primaires SQLite WAL, threading UI Automation et mode local Ollama vérifiées pour la révision.
+- 2026-10-08 : revue critique terminée ; neuf constats dont quatre contrats du noyau. Technique V1 rendue et vérifiée en 17 pages ; fonctionnelle V1.1 vérifiée en 12 pages.
+- 2026-10-08 : audit de l'historique jusqu'à `bea1074`, aucun écrasement observé ; contributions des deux conversations successives sans perte constatée. Avant cette révision, `main` était à `27b2728` et la technique/revue restaient hors dépôt.
+- Aucun essai Clara, benchmark vocal ni test d'intégration Windows exécuté. Les contrôles ci-dessus portent sur les documents et leurs contrats.
 
-## Blocages
-- Contrats à compléter avant implémentation du noyau : admission des actions face à stop, nouvelle demande pendant une séquence, commit acquitté avant modification et déduplication, schémas typés et transitions. Le mode local d’Ollama doit être imposé avant activation du modèle.
-- Inactivité avec tâches longues, portée d’undo, réessai après correction, critères mesurables et chemin UAC restent à préciser. Les propositions du rapport ne sont pas des exigences nouvelles validées.
-- Proposition technique à relire avant implémentation ; moteurs, modèles, compatibilité GPU, écho audio, onglets Explorateur et ressources restent à valider.
-- Arbitrage fonctionnel nécessaire sur la latence : 2–3 secondes de silence ne permettent pas 1–2 secondes depuis le dernier mot. Aucune définition de délai n’a été modifiée implicitement.
+## Points ouverts
+- Latence : arbitrer les 2–3 secondes de silence face à la cible 1–2 secondes depuis le dernier mot ; aucune exigence fonctionnelle n'est modifiée implicitement.
+- Valider la convention d'undo en usage ; fixer seuil de réussite utile et budgets CPU/RAM/GPU après premières mesures.
+- Choisir et vérifier moteurs/modèles, phrases hors vocabulaire, compatibilité GPU, écho audio et interruption pendant la voix.
+- Vérifier observation des onglets Explorateur, recherche globale, opérations modificatrices et inverses, puis UAC avant d'annoncer ces capacités disponibles.
+- Contrats formalisés à vérifier dans l'implémentation, notamment courses stop/admission, acquittement perdu, réponses périmées et reprise après effet sans résultat.
 
 ## Prochaine action
-- Préparer une technique V1.1 à partir de la revue, arbitrer les choix produit (latence, périmètre d’undo et critères d’acceptation), puis versionner les documents. Valider ensuite l’Explorateur, l’audio et l’inférence locale par prototypes Windows avant le premier parcours vertical.
+- Préparer puis exécuter sur le PC Windows un premier prototype vertical : activation, commande vocale, contexte Explorateur, filtrage/ouverture observée, stop et retour en veille.
+- Mesurer transcription, compréhension, délai complet, ressources et fonctionnement local ; utiliser ces résultats pour trancher les choix ouverts avant les modifications de fichiers et leurs inverses.
+
