@@ -125,6 +125,8 @@ def main():
                     audio.say(message + " " + choices)
             elif event["kind"] in {"error", "fatal"} and audio:
                 audio.say(message)
+            elif event["kind"] == "help" and audio and event["session_id"] == engine.session_id:
+                audio.say(message)
             result = event.get("result", {}).get("observed_result")
             if result and result.get("result_set"):
                 for i, ref in enumerate(result["targets"], 1):
@@ -134,7 +136,7 @@ def main():
                 view.appendPlainText(names)
                 if audio:
                     audio.say(message + " " + names)
-            if event["kind"] in {"transcript", "result", "control_timing", "stop", "error", "fatal", "question", "session"}:
+            if event["kind"] in {"transcript", "result", "control_timing", "stop", "error", "fatal", "question", "session", "help"}:
                 telemetry.write(json.dumps({"wall_time": time.time(), **event}, ensure_ascii=False) + "\n")
                 telemetry.flush()
         if time.monotonic() - last_resources >= 5:

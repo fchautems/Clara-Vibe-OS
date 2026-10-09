@@ -67,9 +67,8 @@ class StaticCatalogue(unittest.TestCase):
             model.assert_called_once()
 
     def test_partial_match_does_not_silently_execute_first_action(self):
-        for phrase in ["affiche les documents PDF puis supprime rapport",
-                       "affiche le fichier notes puis ouvre rapport"]:
-            self.assertIsNone(deterministic(phrase))
+        self.assertEqual(deterministic("affiche les documents PDF puis supprime rapport")["kind"], "UNAVAILABLE")
+        self.assertIsNone(deterministic("affiche le fichier notes puis ouvre rapport"))
 
     def test_unrelated_words_and_file_names_are_not_rewritten(self):
         for phrase in ["ouvre notes s'il te plait.txt", "ouvre rapport PDF.txt", "ouvre Firefox"]:

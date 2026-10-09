@@ -8,7 +8,8 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 from .contracts import ClaraError, action_result, observed, revalidate, uid, utc, validate
-from .planner import normal
+from .planner import normal, has_negation
+from .support import help_requested, help_message
 from .resolver import Choices, Resolver
 from .storage import Journal
 
@@ -134,11 +135,19 @@ class Engine:
         if n in [normal(p) for p in self.config["sleep_phrases"]]:
             self.sleep()
             return
+        is_help = not has_negation(text) and help_requested(n)
+        help_text = help_message(self.config) if is_help else None
         with self.gate.lock:
             if not self.session:
                 self.emit("ignored", "En veille : prononce la phrase d'activation.")
                 return
             self.last_interaction = time.monotonic()
+            if is_help:
+                if dialogue_id is not None and dialogue_id != self.dialogue_token():
+                    self.emit("error", "Réponse périmée ; demande l'aide à nouveau.")
+                    return
+                self.emit("help", help_text, text=text, session_id=self.session_id)
+                return
             if self.dialogue:
                 if dialogue_id != self.dialogue["id"]:
                     self.emit("error", "Réponse périmée ; réponds à la question actuelle.")
@@ -250,7 +259,8 @@ class Engine:
                 except Exception as exc:
                     err = exc if isinstance(exc, ClaraError) else ClaraError("INTERNAL_ERROR", "Erreur du composant ; aucune étape suivante.", "EXECUTION")
                     details = traceback.format_exc()
-                    journal.event("request_error", {"request_id": ticket.request_id, "code": err.code, "message": str(err), "traceback": details})
+                    journal.event("request_error", {"request_id": ticket.request_id, "text": ticket.text,
+                                  "intent_id": getattr(err, "intent_id", None), "code": err.code, "message": str(err), "traceback": details})
                     self.emit("error", str(err), request_id=ticket.request_id, code=err.code, traceback=details)
                     with self.gate.lock:
                         self.gate.cancel(ticket)

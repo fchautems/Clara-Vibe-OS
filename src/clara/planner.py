@@ -6,8 +6,9 @@ import unicodedata
 import urllib.request
 from pathlib import Path, PureWindowsPath
 
-from .contracts import AVAILABLE, SCHEMA, ClaraError, validate_plan
+from .contracts import AVAILABLE, SCHEMA, ClaraError, validate, validate_plan
 from .catalogue import canonicalize
+from .support import known_unavailable, unavailable_message
 
 
 def normal(text: str) -> str:
@@ -33,6 +34,9 @@ def deterministic(text: str, latest: str | None = None) -> dict | None:
     if has_negation(text):
         return {"kind": "UNKNOWN", "reason_code": "OUT_OF_SCOPE"}
     n = canonicalize(n)
+    unavailable = known_unavailable(n)
+    if unavailable:
+        return {"kind": "UNAVAILABLE", "intent_id": unavailable}
     def selector(query):
         return {"path" if Path(query).is_absolute() or PureWindowsPath(query).is_absolute() else "query": query}
     if n in {"remonte", "remonte au dossier parent", "dossier parent", "retour au dossier parent"}:
@@ -82,7 +86,10 @@ class Planner:
             # A model cannot invent an executable continuation or authority.
             raise ClaraError("INCOMPLETE", proposal["question"], "INTENT")
         if proposal.get("kind") == "UNAVAILABLE":
-            raise ClaraError("CAPABILITY_UNAVAILABLE", "Cette fonction est indisponible dans le prototype.", "INTENT")
+            validate("ModelProposal", proposal)
+            error = ClaraError("CAPABILITY_UNAVAILABLE", unavailable_message(proposal["intent_id"]), "INTENT")
+            error.intent_id = proposal["intent_id"]
+            raise error
         steps = validate_plan(proposal)
         # Absolute paths must come from the explicit utterance, not a hallucination.
         def check_paths(value):

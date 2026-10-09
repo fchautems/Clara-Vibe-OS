@@ -12,8 +12,9 @@ Mise à jour : 2026-10-09
 - Le prototype ne réalise pas toute la V1 : modifications de fichiers, undo, tâches longues, recherche globale, apprentissage sémantique, autres applications, UAC et démarrage automatique restent hors de cette tranche.
 
 ## Changements
+- 2026-10-09 : aide vocale/visuelle locale et catalogue de six capacités connues indisponibles (lancement d'applications déclarées, copie, déplacement/couper-coller, renommage, suppression, undo). Reconnaissance avant Ollama, distinction des fichiers explicitement nommés, rejet intégral des séquences reconnues contenant une opération indisponible. Aide sans résolution Windows, utilisable pendant une séquence ou clarification sans les modifier ; phrase de fin conforme à la configuration. Demandes indisponibles enregistrées avec texte et intention.
 - 2026-10-09 : lancement unique supervisé en Python standard et ZIP automatique `diagnostic-clara.zip` : installation/préparation/application journalisées, export périodique toutes les 30 s et final, versions de l'environnement installé, empreintes sources, configuration, fichiers modèles, historique SQLite en lecture seule et dernières traces. Sondes natives isolées et bornées (imports, microphone sans enregistrement, SAPI, Explorateur sans activation). Exceptions d'exécution/audio/STT conservées avec traceback ; aucun envoi automatique.
-- 2026-10-09 : ajout autorisé d'un catalogue statique français préchargé (56 gabarits, 184 variantes avant politesse), fichier JSON versionné et paramètres extraits par demande. Reconnaissance avant Ollama, sans apprentissage ni cache de cibles ; résolution et contrôles existants conservés. Le lancement d'applications indisponibles reste à traiter séparément.
+- 2026-10-09 : ajout autorisé d'un catalogue statique français préchargé (56 gabarits, 184 variantes avant politesse), fichier JSON versionné et paramètres extraits par demande. Reconnaissance avant Ollama, sans apprentissage ni cache de cibles ; résolution et contrôles existants conservés. Le lancement d'applications reste non exécuté ; son indisponibilité est maintenant reconnue par le catalogue de capacités.
 - Processus audio Vosk léger, processus STT Faster-Whisper CPU INT8 et processus de voix française SAPI ; coordinateur et travailleur Windows distincts de la boucle PySide6.
 - Commandes déterministes et modèle Ollama local candidat `qwen2.5:3b` ; propositions validées contre le schéma et leurs dépendances. Ollama absent produit un mode dégradé explicite avec commandes simples disponibles.
 - Instance Ollama dédiée sur boucle locale, cloud désactivé avant lancement ; pas de modification des paramètres du serveur partagé.
@@ -24,6 +25,7 @@ Mise à jour : 2026-10-09
 - Les neuf constats de la revue sont intégrés dans la conception technique V1.1 et suivis en section 24.3 ; leur validation native reste distincte des tests simulés.
 
 ## Contrôles
+- 2026-10-09 : 74 tests locaux réussis, dont 13 tests de l'aide et des capacités indisponibles : aucun appel Ollama/Windows pour l'aide, fichiers Firefox distincts du lancement, négations, séquences refusées, journalisation des besoins, aide en veille/pendant traitement/clarification, réponses périmées et phrase de fin configurée. Syntaxe compilée, diff vérifié. Retours vocaux SAPI réels non testés ici.
 - 2026-10-09 : 61 tests locaux réussis, dont export de diagnostic avec dépendances absentes, configuration invalide, journaux bornés, base corrompue, lecture seule sans modification/reprise, timeout de sonde, conservation du ZIP précédent, échec d'installation simulé et erreur Windows originale conservée. Contrôle bootstrap Python `-S` sans paquets tiers sur Linux. Compilation syntaxique réussie ; sondes natives et script CMD non exécutés sur Windows ici.
 - 2026-10-09 : suite locale de 49 tests réussie, dont 9 nouveaux tests du catalogue : toutes les variantes préchargées, politesse/infinitifs, paramètres indépendants, résultats contextuels actualisés, négations, séquences non reconnues et repli Ollama simulé. Aucun appel au modèle réel ou essai vocal Windows pour cette extension.
 - 2026-10-09 : audit de livraison sur `main` à `78df9515` : les 30 fichiers suivis sont présents sur GitHub ; 29 ont le même SHA de blob que les fichiers locaux, la fonctionnelle diffère uniquement par un saut de ligne final local. Aucun code ni document manquant. Répertoire de travail propre avant cet audit.
@@ -49,7 +51,7 @@ Mise à jour : 2026-10-09
 - Convention d'undo, opérations modificatrices/inverses, recherche globale et UAC restent des validations futures ; aucune exigence fonctionnelle finale n'est réduite.
 
 ## Prochaine action
-- Diagnostic automatique et catalogue prêts pour essais ultérieurs ; prochaine extension possible : distinction des intentions connues mais indisponibles. Aucun besoin de manipulation Windows aujourd'hui.
+- Diagnostic automatique, catalogue, intentions indisponibles et aide prêts pour les essais Windows ultérieurs. Aucun besoin de manipulation Windows aujourd'hui.
 - Mettre le dépôt à jour sur le PC Windows et lancer `start-clara.cmd` : préparation puis dossier d'essai ouvert automatiquement.
 - Exécuter le parcours vocal README et les contre-exemples du protocole ; garder les résultats inconnus/échecs et mesures de délai complet.
 - Corriger les problèmes observés, puis trancher moteurs, réglages de parole et budgets avant d'ajouter les modifications de fichiers.

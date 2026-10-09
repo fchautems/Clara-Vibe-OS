@@ -28,6 +28,12 @@ Le ZIP peut contenir tes transcriptions, noms de fichiers et chemins ; il reste 
 6. « Montre-moi les PDF, puis ouvre le plus récent » ; essayer « Stop » pendant la préparation.
 7. « Bonne nuit Clara » → retour en veille. Sans interaction, la session expire aussi.
 
+Pendant une session, **« aide »**, **« qu'est-ce que tu sais faire ? »** ou **« quelles sont tes commandes ? »** donne une aide affichée et parlée si la voix française est disponible. Cette aide ne nécessite ni Ollama ni fenêtre Explorateur active. Elle garde la séquence ou le choix vocal en cours ; elle ne remplace pas « stop ». La phrase de fin indiquée suit tes réglages.
+
+Les demandes connues mais indisponibles reçoivent une réponse spécifique, sans action : « ouvre Firefox » pour le lancement d'application ; « copie ce fichier », « déplace ce fichier », « renomme », « supprime » et « annule la dernière action ». Une séquence reconnue contenant une opération indisponible après « puis » est refusée en entier. Ces demandes sont conservées dans le diagnostic pour identifier les besoins futurs. Ce catalogue est limité aux formulations et applications déclarées, pas à toutes les demandes possibles.
+
+Pour ouvrir un fichier portant le nom d'une application, préciser **« ouvre le fichier Firefox »** ou **« ouvre Firefox.pdf »** ; « ouvre le dossier Firefox » reste une navigation. Le catalogue et l'aide sont versionnés dans `src/clara/resources/capabilities_fr.json`.
+
 L'ouverture d'un fichier peut mettre son application au premier plan. Pour continuer sans souris, « Retour à l'Explorateur » réactive une fenêtre unique ou demande laquelle si plusieurs sont ouvertes. Le panneau présente les fichiers filtrés ; il ne modifie pas la vue native de l'Explorateur.
 
 Les phrases de réveil/fin, le délai de silence, le microphone, les alias de dossiers et les extensions ouvrables sont dans `%LOCALAPPDATA%\ClaraVibeOS\config.json`. Changer ces réglages puis relancer, sans modifier le code. La configuration invalide n'est pas écrasée ; une phrase dont un mot manque au modèle léger est refusée explicitement.
