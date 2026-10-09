@@ -12,6 +12,7 @@ Mise à jour : 2026-10-09
 - Le prototype ne réalise pas toute la V1 : modifications de fichiers, undo, tâches longues, recherche globale, apprentissage sémantique, autres applications, UAC et démarrage automatique restent hors de cette tranche.
 
 ## Changements
+- 2026-10-09 : ajout autorisé d'un catalogue statique français préchargé (56 gabarits, 184 variantes avant politesse), fichier JSON versionné et paramètres extraits par demande. Reconnaissance avant Ollama, sans apprentissage ni cache de cibles ; résolution et contrôles existants conservés. Le lancement d'applications indisponibles reste à traiter séparément.
 - Processus audio Vosk léger, processus STT Faster-Whisper CPU INT8 et processus de voix française SAPI ; coordinateur et travailleur Windows distincts de la boucle PySide6.
 - Commandes déterministes et modèle Ollama local candidat `qwen2.5:3b` ; propositions validées contre le schéma et leurs dépendances. Ollama absent produit un mode dégradé explicite avec commandes simples disponibles.
 - Instance Ollama dédiée sur boucle locale, cloud désactivé avant lancement ; pas de modification des paramètres du serveur partagé.
@@ -22,6 +23,7 @@ Mise à jour : 2026-10-09
 - Les neuf constats de la revue sont intégrés dans la conception technique V1.1 et suivis en section 24.3 ; leur validation native reste distincte des tests simulés.
 
 ## Contrôles
+- 2026-10-09 : suite locale de 49 tests réussie, dont 9 nouveaux tests du catalogue : toutes les variantes préchargées, politesse/infinitifs, paramètres indépendants, résultats contextuels actualisés, négations, séquences non reconnues et repli Ollama simulé. Aucun appel au modèle réel ou essai vocal Windows pour cette extension.
 - 2026-10-09 : audit de livraison sur `main` à `78df9515` : les 30 fichiers suivis sont présents sur GitHub ; 29 ont le même SHA de blob que les fichiers locaux, la fonctionnelle diffère uniquement par un saut de ligne final local. Aucun code ni document manquant. Répertoire de travail propre avant cet audit.
 - Résultats CI revérifiés via GitHub : jobs Linux et Windows terminés avec succès, installation du noyau et tests inclus. Compilation syntaxique locale de `src` et `scripts` réussie. La relance locale des tests n'a pas abouti dans le runtime courant, où `jsonschema` n'est pas installé ; les résultats confirmés sont ceux de la CI, sans nouvel essai interactif Windows.
 - 2026-10-09 : 40 tests automatisés réussis sur Linux. Contrats et relations, négations, chemin inventé, résultats observés, contexte/cible modifiés, séquences, choix périmés, stop pendant préparation/commit/modèle et après admission, remplacement/refus, expiration, veille, déduplication/reprise ; segmentation audio simulée, pauses, tampon maximal et capture pendant synthèse.
@@ -45,6 +47,7 @@ Mise à jour : 2026-10-09
 - Convention d'undo, opérations modificatrices/inverses, recherche globale et UAC restent des validations futures ; aucune exigence fonctionnelle finale n'est réduite.
 
 ## Prochaine action
+- Préparer le diagnostic automatique et la distinction des intentions connues mais indisponibles ; le catalogue statique est prêt pour les essais ultérieurs, sans manipulation Windows aujourd'hui.
 - Mettre le dépôt à jour sur le PC Windows et lancer `start-clara.cmd` : préparation puis dossier d'essai ouvert automatiquement.
 - Exécuter le parcours vocal README et les contre-exemples du protocole ; garder les résultats inconnus/échecs et mesures de délai complet.
 - Corriger les problèmes observés, puis trancher moteurs, réglages de parole et budgets avant d'ajouter les modifications de fichiers.

@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "infinitives": {"ouvrir": "ouvre", "afficher": "affiche", "montrer": "montre", "lister": "liste", "chercher": "cherche", "trouver": "trouve", "rechercher": "recherche", "remonter": "remonte", "revenir": "reviens", "retourner": "retourne", "aller": "va", "entrer": "entre"},
+  "prefixes": ["est-ce que tu peux", "est ce que tu peux", "pourrais-tu", "pourrais tu", "peux-tu", "peux tu", "tu peux", "je voudrais", "j'aimerais", "s'il te plait"],
+  "suffixes": ["s'il te plait", "s'il vous plait"],
+  "extensions": {"pdf": "pdf", "txt": "txt", "texte": "txt", "textes": "txt", "png": "png", "jpg": "jpg", "csv": "csv", "docx": "docx", "word": "docx"},
+  "entries": [
+    {
+      "command": "remonte au dossier parent",
+      "phrases": ["remonte d'un dossier", "remonte d'un niveau", "remonte au niveau au-dessus", "va au dossier parent", "reviens au dossier parent", "retourne au dossier parent", "ouvre le dossier parent", "va dans le dossier parent"]
+    },
+    {
+      "command": "retour a l'explorateur",
+      "phrases": ["retourne dans l'explorateur", "retourne a l'explorateur", "reviens a l'explorateur", "retour dans l'explorateur", "affiche l'explorateur", "montre-moi l'explorateur"]
+    },
+    {
+      "command": "liste les fenetres explorateur",
+      "phrases": ["montre-moi les fenetres explorateur", "affiche les fenetres de l'explorateur", "quelles sont les fenetres explorateur", "liste les fenetres de l'explorateur"]
+    },
+    {
+      "command": "ouvre le plus recent",
+      "phrases": ["ouvre le dernier", "ouvre le dernier fichier", "ouvre le fichier le plus recent", "ouvre le plus recent de la liste", "ouvre le plus recent de ces fichiers"]
+    },
+    {
+      "command": "montre les {extension}",
+      "phrases": ["montre-moi les {extension}", "montre moi les {extension}", "montre les fichiers {extension}", "affiche les documents {extension}", "montre-moi les documents {extension}", "liste les documents {extension}", "quels sont les fichiers {extension}", "montre tous les fichiers {extension}", "montre les {extension} du dossier courant", "affiche les fichiers {extension} dans ce dossier", "liste les {extension} ici"]
+    },
+    {
+      "command": "montre les {extension}, puis ouvre le plus recent",
+      "phrases": ["montre-moi les {extension} puis ouvre le plus recent", "montre moi les {extension} puis ouvre le plus recent", "affiche les fichiers {extension} puis ouvre le plus recent", "liste les {extension} et ouvre le dernier", "montre-moi les documents {extension}, puis ouvre le dernier"]
+    },
+    {
+      "command": "ouvre le dossier {query}",
+      "phrases": ["va dans le dossier {query}", "va au dossier {query}", "rends-toi dans le dossier {query}", "rends toi dans le dossier {query}", "entre dans le dossier {query}", "affiche le dossier {query}"]
+    },
+    {
+      "command": "cherche le fichier {query}",
+      "phrases": ["cherche le fichier {query} dans ce dossier", "trouve le fichier {query} dans ce dossier", "recherche le fichier {query}", "recherche {query}", "cherche un fichier nomme {query}", "trouve le fichier appele {query}"]
+    },
+    {
+      "command": "ouvre le fichier {query}",
+      "phrases": ["affiche le fichier {query}", "ouvre le document {query}", "affiche le document {query}", "ouvre le fichier nomme {query}", "ouvre le document appele {query}"]
+    }
+  ]
+}

@@ -7,6 +7,7 @@ import urllib.request
 from pathlib import Path, PureWindowsPath
 
 from .contracts import AVAILABLE, SCHEMA, ClaraError, validate_plan
+from .catalogue import canonicalize
 
 
 def normal(text: str) -> str:
@@ -31,6 +32,7 @@ def deterministic(text: str, latest: str | None = None) -> dict | None:
     n = normal(text)
     if has_negation(text):
         return {"kind": "UNKNOWN", "reason_code": "OUT_OF_SCOPE"}
+    n = canonicalize(n)
     def selector(query):
         return {"path" if Path(query).is_absolute() or PureWindowsPath(query).is_absolute() else "query": query}
     if n in {"remonte", "remonte au dossier parent", "dossier parent", "retour au dossier parent"}:

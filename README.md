@@ -24,6 +24,21 @@ L'ouverture d'un fichier peut mettre son application au premier plan. Pour conti
 
 Les phrases de réveil/fin, le délai de silence, le microphone, les alias de dossiers et les extensions ouvrables sont dans `%LOCALAPPDATA%\ClaraVibeOS\config.json`. Changer ces réglages puis relancer, sans modifier le code. La configuration invalide n'est pas écrasée ; une phrase dont un mot manque au modèle léger est refusée explicitement.
 
+## Catalogue statique de formulations
+
+Un catalogue préchargé reconnaît 56 gabarits (184 variantes avec les extensions), en plus des règles initiales. Il accepte les accents, « Clara », les demandes comme « peux-tu », « j'aimerais » et « s'il te plaît ». Exemples utilisables sans Ollama :
+
+| Formulation | Commande comprise |
+|---|---|
+| « Peux-tu afficher les documents PDF ? » | Filtrer les PDF du dossier courant |
+| « Remonte d'un niveau » | Aller au dossier parent |
+| « Affiche le fichier rapport 2025 » | Ouvrir le fichier correspondant, ou demander lequel |
+| « Entre dans le dossier documents » | Naviguer vers ce dossier ou cet alias |
+| « Ouvre le dernier fichier » | Ouvrir le plus récemment modifié parmi les résultats précédents |
+| « Liste les PDF et ouvre le dernier » | Filtrer puis ouvrir le plus récemment modifié |
+
+La liste est versionnée dans `src/clara/resources/formulations_fr.json` et chargée une fois par processus. Elle contient des formulations et paramètres, jamais les chemins observés, résultats ou fenêtres d'une ancienne commande. Les cibles sont toujours résolues et vérifiées à nouveau ; les ambiguïtés et négations gardent les contrôles existants. Les demandes non reconnues suivent le chemin Ollama habituel s'il est disponible. Ce catalogue n'apprend pas automatiquement et ne reconnaît pas toutes les paraphrases ; il n'ajoute pas le lancement d'applications comme Firefox. Redémarrer Clara après modification du catalogue.
+
 ## Limites de ce prototype
 
 - Les fichiers personnels ne sont pas nécessaires pour les essais : fixtures indépendantes et deux PDF valides sont créés automatiquement. Aucune copie, suppression, modification, opération longue ni undo n'est disponible.
