@@ -22,6 +22,8 @@ Mise à jour : 2026-10-09
 - Les neuf constats de la revue sont intégrés dans la conception technique V1.1 et suivis en section 24.3 ; leur validation native reste distincte des tests simulés.
 
 ## Contrôles
+- 2026-10-09 : audit de livraison sur `main` à `78df9515` : les 30 fichiers suivis sont présents sur GitHub ; 29 ont le même SHA de blob que les fichiers locaux, la fonctionnelle diffère uniquement par un saut de ligne final local. Aucun code ni document manquant. Répertoire de travail propre avant cet audit.
+- Résultats CI revérifiés via GitHub : jobs Linux et Windows terminés avec succès, installation du noyau et tests inclus. Compilation syntaxique locale de `src` et `scripts` réussie. La relance locale des tests n'a pas abouti dans le runtime courant, où `jsonschema` n'est pas installé ; les résultats confirmés sont ceux de la CI, sans nouvel essai interactif Windows.
 - 2026-10-09 : 40 tests automatisés réussis sur Linux. Contrats et relations, négations, chemin inventé, résultats observés, contexte/cible modifiés, séquences, choix périmés, stop pendant préparation/commit/modèle et après admission, remplacement/refus, expiration, veille, déduplication/reprise ; segmentation audio simulée, pauses, tampon maximal et capture pendant synthèse.
 - Syntaxe compilée et entrée CLI vérifiée. Schéma embarqué identique au document versionné. Deux PDF de fixtures relus : une page et texte attendu chacun.
 - Paquets directs disponibles pour Windows x64/Python 3.11 ; dépendances résolues depuis Linux et verrouillées. Wheel Python pur de srt construit ; marqueurs Windows et installation native encore à vérifier sur Windows.
