@@ -3,39 +3,45 @@
 Mise à jour : 2026-10-09
 
 ## État vérifié
-- Spécification fonctionnelle V1.1 : `docs/Clara_Specifications_fonctionnelles_V1.1.md`, inchangée depuis le commit `493c66a`.
-- Spécification technique V1.1 : `docs/Clara_Vibe_OS_Specification_technique_V1.1.md`. Les neuf constats de la revue sont intégrés et suivis en section 24.3 ; les validations restantes sont explicites.
-- Contrats du premier incrément : `docs/contracts_v1.1.schema.json` (JSON Schema draft 2020-12, 20 définitions, 16 intentions). Ils décrivent la conception ; aucun producteur ni adaptateur Clara n'est encore implémenté.
-- Technique V1 archivée sous `docs/Clara_Vibe_OS_Specification_technique_V1.md` ; rapport de revue conservé sans modification sous `docs/Clara_Vibe_OS_Revue_critique_specs_V1.md`.
-- Version Word V1.1 livrée (26 pages, 26 sections), avec historique de la V1 conservé.
-- Périmètre V1 : Explorateur Windows, Python et traitement local ; architecture extensible vers Firefox, ChatGPT, Notepad++ et Fork. Les critères fonctionnels finaux restent ceux de la V1.1.
+- Prototype 0.1 implémenté sous `src/clara` : premier parcours vocal local pour l'Explorateur Windows. Code prêt pour essai sur le PC cible ; fonctionnement vocal/COM/UIA et performances réelles encore non validés.
+- Périmètre autorisé : activation, session enchaînée, contexte, navigation/parent, recherche locale par nom, filtre, sélection du plus récent, ouverture, choix vocal, stop et retour en veille. Panneau et diagnostic local inclus.
+- Lancement : `start-clara.cmd` ; guide `README.md`, périmètre/contrôles `docs/PROTOTYPE_01.md`, essai réel de fixtures `scripts/windows_smoke.py`.
+- Dépendances fixées dans `requirements-windows.lock` ; Python 3.11 Windows x64 recommandé. Modèles téléchargés pendant préparation, jamais pendant une commande.
+- Référence fonctionnelle V1.1 inchangée : `docs/Clara_Specifications_fonctionnelles_V1.1.md`, depuis `493c66a`.
+- Technique V1.1 et JSON Schema : `docs/Clara_Vibe_OS_Specification_technique_V1.1.md`, `docs/contracts_v1.1.schema.json`. V1 archivée et revue conservée sans modification ; versionnement documentaire effectué dans `d8558a2`.
+- Le prototype ne réalise pas toute la V1 : modifications de fichiers, undo, tâches longues, recherche globale, apprentissage sémantique, autres applications, UAC et démarrage automatique restent hors de cette tranche.
 
 ## Changements
-- Admission des actions ordonnée avec stop ; une étape en file n'est pas engagée. Après stop, aucune étape suivante n'est admise ; une étape déjà admise peut finir.
-- Demande incompatible : suspension avant question, dialogue unique et réponses liées à leur demande et génération.
-- Journal : COMMIT acquitté avant modification, identifiants et clés de déduplication persistants ; après crash, résultat incertain sans rejeu automatique.
-- Contrats fermés, variantes de réponse, arguments par intention, résultats observés, transitions et limites initiales documentés.
-- Inactivité distincte des tâches longues ; convention d'undo proposée et cible reformulée ; réessai après correction uniquement sur demande explicite.
-- Mode local Ollama imposé avant activation ; chemin UAC déclaré et validé par capacité.
-- Protocole initial proposé de 140 cas, scénarios d'interruption et de reprise, mesures de délai complet et traçabilité des neuf constats. Les valeurs initiales ne constituent pas des performances mesurées.
+- Processus audio Vosk léger, processus STT Faster-Whisper CPU INT8 et processus de voix française SAPI ; coordinateur et travailleur Windows distincts de la boucle PySide6.
+- Commandes déterministes et modèle Ollama local candidat `qwen2.5:3b` ; propositions validées contre le schéma et leurs dépendances. Ollama absent produit un mode dégradé explicite avec commandes simples disponibles.
+- Instance Ollama dédiée sur boucle locale, cloud désactivé avant lancement ; pas de modification des paramètres du serveur partagé.
+- Résolution de fichiers réobservés, choix numéroté si ambiguïté, égalités de dates et ensembles périmés traités explicitement. Retour vocal à l'Explorateur après ouverture.
+- Stop/admission ordonnés sous verrou court ; revalidation après commit et avant appel natif ; réponse incompatible suspendue avant question. Résultats tardifs enregistrés, aucune poursuite après stop.
+- Journal SQLite WAL/FULL, clés de déduplication, résultats inconnus au redémarrage sans rejeu. Mesures locales de parole, acquisition, STT, début/résultat d'action, stop, RAM et CPU.
+- Configurable sans changement de code ; petit panneau sans prise de focus nominale ; fixtures indépendantes des fichiers personnels. Voix SAPI choisie pour le prototype à la place du candidat Piper.
+- Les neuf constats de la revue sont intégrés dans la conception technique V1.1 et suivis en section 24.3 ; leur validation native reste distincte des tests simulés.
 
 ## Contrôles
-- 2026-10-09 : Word V1.1 rendu et contrôlé visuellement sur ses 26 pages.
-- JSON Schema validé, références internes résolues, exemple de plan validé ; cas de rejet vérifiés pour métadonnées du modèle, champs inconnus, génération absente et résultats STARTED/SUCCEEDED sans donnée exigée.
-- DDL du journal exécuté sur SQLite en mémoire, clés étrangères activées. Ce contrôle ne prouve pas la durabilité ni l'atomicité d'un effet Windows.
-- Sources primaires SQLite WAL, threading UI Automation et mode local Ollama vérifiées pour la révision.
-- 2026-10-08 : revue critique terminée ; neuf constats dont quatre contrats du noyau. Technique V1 rendue et vérifiée en 17 pages ; fonctionnelle V1.1 vérifiée en 12 pages.
-- 2026-10-08 : audit de l'historique jusqu'à `bea1074`, aucun écrasement observé ; contributions des deux conversations successives sans perte constatée. Avant cette révision, `main` était à `27b2728` et la technique/revue restaient hors dépôt.
-- Aucun essai Clara, benchmark vocal ni test d'intégration Windows exécuté. Les contrôles ci-dessus portent sur les documents et leurs contrats.
+- 2026-10-09 : 40 tests automatisés réussis sur Linux. Contrats et relations, négations, chemin inventé, résultats observés, contexte/cible modifiés, séquences, choix périmés, stop pendant préparation/commit/modèle et après admission, remplacement/refus, expiration, veille, déduplication/reprise ; segmentation audio simulée, pauses, tampon maximal et capture pendant synthèse.
+- Syntaxe compilée et entrée CLI vérifiée. Schéma embarqué identique au document versionné. Deux PDF de fixtures relus : une page et texte attendu chacun.
+- Paquets directs disponibles pour Windows x64/Python 3.11 ; dépendances résolues depuis Linux et verrouillées. Wheel Python pur de srt construit ; marqueurs Windows et installation native encore à vérifier sur Windows.
+- Modèle Vosk français réel chargé sur Linux ; mots salut/clara/bonjour/bonne/nuit/stop présents dans le vocabulaire. Aucun score de reconnaissance de la voix de Fréd mesuré.
+- Workflow de tests du noyau prévu pour Linux et Windows ; son état d'exécution distant doit être vérifié séparément après commit.
+- Documentation V1.1 rendue et inspectée en 26 pages ; schéma JSON et DDL du journal validés auparavant. Sources primaires des interfaces consultées.
+- 2026-10-08 : audit Git historique jusqu'à `bea1074`, aucun écrasement constaté entre conversations. La révision documentaire a ensuite conservé la fonctionnelle et les documents historiques.
+- Aucun essai microphone, voix SAPI, modèle d'intention réel ou Explorateur Windows exécuté ici. Aucun benchmark Clara ni preuve réseau/écho/compatibilité GPU.
 
-## Points ouverts
-- Latence : arbitrer les 2–3 secondes de silence face à la cible 1–2 secondes depuis le dernier mot ; aucune exigence fonctionnelle n'est modifiée implicitement.
-- Valider la convention d'undo en usage ; fixer seuil de réussite utile et budgets CPU/RAM/GPU après premières mesures.
-- Choisir et vérifier moteurs/modèles, phrases hors vocabulaire, compatibilité GPU, écho audio et interruption pendant la voix.
-- Vérifier observation des onglets Explorateur, recherche globale, opérations modificatrices et inverses, puis UAC avant d'annoncer ces capacités disponibles.
-- Contrats formalisés à vérifier dans l'implémentation, notamment courses stop/admission, acquittement perdu, réponses périmées et reprise après effet sans résultat.
+## Blocages et points ouverts
+- Cet environnement est Linux et n'a pas accès à la session Windows de Fréd. Essais interactifs, microphone, SAPI, COM/UIA et benchmarks doivent être exécutés sur son PC.
+- Prototype à utiliser d'abord avec casque et une fenêtre Explorateur à un onglet ; onglets multiples refusés, suppression d'écho sur haut-parleurs non implémentée.
+- SAPI française et modèles locaux doivent être disponibles pour accepter le parcours vocal complet. Les modes dégradés ne constituent pas cette acceptation.
+- Le travailleur Windows est un thread, sans supervision/remplacement de processus pour un appel COM bloqué. Enveloppes IPC complètes et tous les contrats de la V1 restent à intégrer.
+- L'ouverture observe une fenêtre au titre correspondant ; elle ne prouve pas le chargement intégral du document. UNKNOWN bloque la suite si l'observation manque.
+- Latence : arbitrer le silence initial 2 s face à la cible 1–2 s depuis le dernier mot, après mesure. GPU, noms propres, bruit, pauses, ressources et qualité restent à mesurer.
+- Les journaux du prototype n'ont pas de purge automatique. Le corpus complet de 140 cas et les seuils utiles restent un protocole d'acceptation ultérieur.
+- Convention d'undo, opérations modificatrices/inverses, recherche globale et UAC restent des validations futures ; aucune exigence fonctionnelle finale n'est réduite.
 
 ## Prochaine action
-- Préparer puis exécuter sur le PC Windows un premier prototype vertical : activation, commande vocale, contexte Explorateur, filtrage/ouverture observée, stop et retour en veille.
-- Mesurer transcription, compréhension, délai complet, ressources et fonctionnement local ; utiliser ces résultats pour trancher les choix ouverts avant les modifications de fichiers et leurs inverses.
-
+- Mettre le dépôt à jour sur le PC Windows et lancer `start-clara.cmd` : préparation puis dossier d'essai ouvert automatiquement.
+- Exécuter le parcours vocal README et les contre-exemples du protocole ; garder les résultats inconnus/échecs et mesures de délai complet.
+- Corriger les problèmes observés, puis trancher moteurs, réglages de parole et budgets avant d'ajouter les modifications de fichiers.

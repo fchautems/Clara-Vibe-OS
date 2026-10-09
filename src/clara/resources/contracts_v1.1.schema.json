@@ -1,0 +1,5061 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:clara-vibe-os:contracts:1.1",
+  "title": "Clara Vibe OS — Contrats de conception V1.1",
+  "$comment": "Schéma de conception ; contrôles sémantiques et observation Windows décrits dans la spec technique. Aucune implémentation Clara.",
+  "$ref": "#/$defs/Envelope",
+  "$defs": {
+    "TargetSelector": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "scope": {
+              "enum": [
+                "current_folder"
+              ]
+            }
+          },
+          "required": [
+            "scope"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 16384
+            }
+          },
+          "required": [
+            "path"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 16384
+            }
+          },
+          "required": [
+            "query"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "source_step": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          "required": [
+            "source_step"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "result_set_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          "required": [
+            "result_set_id"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "target_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          "required": [
+            "target_id"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "TargetRef": {
+      "type": "object",
+      "properties": {
+        "target_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "kind": {
+          "enum": [
+            "file",
+            "directory",
+            "window"
+          ]
+        },
+        "path": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 16384
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "window_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "tab_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "identity_token": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 16384
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "target_id",
+        "kind",
+        "path",
+        "window_id",
+        "tab_id",
+        "identity_token",
+        "observed_at"
+      ],
+      "additionalProperties": false
+    },
+    "ResultSet": {
+      "type": "object",
+      "properties": {
+        "result_set_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "targets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/TargetRef"
+          }
+        },
+        "filters": {
+          "type": "object",
+          "properties": {
+            "extension": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 16384
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "query": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 16384
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "extension",
+            "query"
+          ],
+          "additionalProperties": false
+        },
+        "order": {
+          "enum": [
+            "name_asc",
+            "modified_desc",
+            "unspecified"
+          ]
+        },
+        "scope": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 16384
+        },
+        "complete": {
+          "type": "boolean"
+        },
+        "inaccessible_roots": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 16384
+          }
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "result_set_id",
+        "targets",
+        "filters",
+        "order",
+        "scope",
+        "complete",
+        "inaccessible_roots",
+        "observed_at"
+      ],
+      "additionalProperties": false
+    },
+    "ContextSnapshot": {
+      "type": "object",
+      "properties": {
+        "context_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "application": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "capabilities": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "uniqueItems": true
+        },
+        "window": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TargetRef"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "current_directory": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TargetRef"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "selected_targets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/TargetRef"
+          }
+        },
+        "result_sets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ResultSet"
+          }
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "context_id",
+        "application",
+        "capabilities",
+        "window",
+        "current_directory",
+        "selected_targets",
+        "result_sets",
+        "observed_at"
+      ],
+      "additionalProperties": false
+    },
+    "TranscriptUpdate": {
+      "type": "object",
+      "properties": {
+        "utterance_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "is_final": {
+          "type": "boolean"
+        },
+        "text": {
+          "type": "string",
+          "maxLength": 16384
+        },
+        "stream_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "start_sample": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "end_sample": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "last_speech_sample": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "utterance_id",
+        "revision",
+        "is_final",
+        "text",
+        "stream_id",
+        "start_sample",
+        "end_sample",
+        "last_speech_sample"
+      ],
+      "additionalProperties": false
+    },
+    "IntentArguments": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "intent_id": {
+              "const": "session.start"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {},
+              "required": [],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "intent_id",
+            "arguments"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "intent_id": {
+              "const": "session.end"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {},
+              "required": [],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "intent_id",
+            "arguments"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "intent_id": {
+              "const": "control.stop"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {},
+              "required": [],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "intent_id",
+            "arguments"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "intent_id": {
+              "const": "window.list"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {},
+              "required": [],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "intent_id",
+            "arguments"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "intent_id": {
+              "const": "explorer.parent"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {},
+              "required": [],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "intent_id",
+            "arguments"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "intent_id": {
+              "const": "explorer.navigate"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {
+                "target": {
+                  "$ref": "#/$defs/TargetSelector"
+                }
+              },
+              "required": [
+                "target"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "intent_id",
+            "arguments"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "intent_id": {
+              "const": "window.activate"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {
+                "target": {
+                  "$ref": "#/$defs/TargetSelector"
+                }
+              },
+              "required": [
+                "target"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "intent_id",
+            "arguments"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "intent_id": {
+              "const": "files.open"
+            },
+            "arguments": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "target": {
+                      "$ref": "#/$defs/TargetSelector"
+                    }
+                  },
+                  "required": [
+                    "target"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "source_step": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    }
+                  },
+                  "required": [
+                    "source_step"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            }
+          },
+          "required": [
+            "intent_id",
+            "arguments"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "intent_id": {
+              "const": "files.filter"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {
+                "scope": {
+                  "enum": [
+                    "current_folder"
+                  ]
+                },
+                "extension": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9]+$"
+                }
+              },
+              "required": [
+                "scope",
+                "extension"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "intent_id",
+            "arguments"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "intent_id": {
+              "const": "files.select_recent"
+            },
+            "arguments": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "source_step": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    "date_field": {
+                      "enum": [
+                        "modified"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "source_step",
+                    "date_field"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "result_set_id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    "date_field": {
+                      "enum": [
+                        "modified"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "result_set_id",
+                    "date_field"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            }
+          },
+          "required": [
+            "intent_id",
+            "arguments"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "intent_id": {
+              "const": "files.search"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {
+                "query": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 16384
+                },
+                "scope": {
+                  "oneOf": [
+                    {
+                      "enum": [
+                        "current_folder",
+                        "configured_roots"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "path": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 16384
+                        }
+                      },
+                      "required": [
+                        "path"
+                      ],
+                      "additionalProperties": false
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "query",
+                "scope"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "intent_id",
+            "arguments"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "intent_id": {
+              "const": "diagnostic.report_error"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {
+                "request_id": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "request_id"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "intent_id",
+            "arguments"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "intent_id": {
+              "const": "history.undo"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {
+                "action_id": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "action_id"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "intent_id",
+            "arguments"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "intent_id": {
+              "const": "history.retry"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {
+                "request_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                "correction": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 16384
+                }
+              },
+              "required": [
+                "request_id",
+                "correction"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "intent_id",
+            "arguments"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "intent_id": {
+              "const": "operation.status"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {
+                "operation_id": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "operation_type": {
+                  "anyOf": [
+                    {
+                      "enum": [
+                        "copy",
+                        "move",
+                        "search",
+                        "other"
+                      ]
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "operation_id",
+                "operation_type"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "intent_id",
+            "arguments"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "intent_id": {
+              "const": "operation.cancel"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {
+                "operation_id": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "operation_type": {
+                  "anyOf": [
+                    {
+                      "enum": [
+                        "copy",
+                        "move",
+                        "search",
+                        "other"
+                      ]
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "operation_id",
+                "operation_type"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "intent_id",
+            "arguments"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "Step": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "step_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "intent_id": {
+              "const": "session.start"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {},
+              "required": [],
+              "additionalProperties": false
+            },
+            "depends_on": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "uniqueItems": true,
+              "maxItems": 12
+            }
+          },
+          "required": [
+            "step_id",
+            "intent_id",
+            "arguments",
+            "depends_on"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "step_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "intent_id": {
+              "const": "session.end"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {},
+              "required": [],
+              "additionalProperties": false
+            },
+            "depends_on": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "uniqueItems": true,
+              "maxItems": 12
+            }
+          },
+          "required": [
+            "step_id",
+            "intent_id",
+            "arguments",
+            "depends_on"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "step_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "intent_id": {
+              "const": "control.stop"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {},
+              "required": [],
+              "additionalProperties": false
+            },
+            "depends_on": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "uniqueItems": true,
+              "maxItems": 12
+            }
+          },
+          "required": [
+            "step_id",
+            "intent_id",
+            "arguments",
+            "depends_on"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "step_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "intent_id": {
+              "const": "window.list"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {},
+              "required": [],
+              "additionalProperties": false
+            },
+            "depends_on": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "uniqueItems": true,
+              "maxItems": 12
+            }
+          },
+          "required": [
+            "step_id",
+            "intent_id",
+            "arguments",
+            "depends_on"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "step_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "intent_id": {
+              "const": "explorer.parent"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {},
+              "required": [],
+              "additionalProperties": false
+            },
+            "depends_on": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "uniqueItems": true,
+              "maxItems": 12
+            }
+          },
+          "required": [
+            "step_id",
+            "intent_id",
+            "arguments",
+            "depends_on"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "step_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "intent_id": {
+              "const": "explorer.navigate"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {
+                "target": {
+                  "$ref": "#/$defs/TargetSelector"
+                }
+              },
+              "required": [
+                "target"
+              ],
+              "additionalProperties": false
+            },
+            "depends_on": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "uniqueItems": true,
+              "maxItems": 12
+            }
+          },
+          "required": [
+            "step_id",
+            "intent_id",
+            "arguments",
+            "depends_on"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "step_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "intent_id": {
+              "const": "window.activate"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {
+                "target": {
+                  "$ref": "#/$defs/TargetSelector"
+                }
+              },
+              "required": [
+                "target"
+              ],
+              "additionalProperties": false
+            },
+            "depends_on": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "uniqueItems": true,
+              "maxItems": 12
+            }
+          },
+          "required": [
+            "step_id",
+            "intent_id",
+            "arguments",
+            "depends_on"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "step_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "intent_id": {
+              "const": "files.open"
+            },
+            "arguments": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "target": {
+                      "$ref": "#/$defs/TargetSelector"
+                    }
+                  },
+                  "required": [
+                    "target"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "source_step": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    }
+                  },
+                  "required": [
+                    "source_step"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            },
+            "depends_on": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "uniqueItems": true,
+              "maxItems": 12
+            }
+          },
+          "required": [
+            "step_id",
+            "intent_id",
+            "arguments",
+            "depends_on"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "step_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "intent_id": {
+              "const": "files.filter"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {
+                "scope": {
+                  "enum": [
+                    "current_folder"
+                  ]
+                },
+                "extension": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9]+$"
+                }
+              },
+              "required": [
+                "scope",
+                "extension"
+              ],
+              "additionalProperties": false
+            },
+            "depends_on": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "uniqueItems": true,
+              "maxItems": 12
+            }
+          },
+          "required": [
+            "step_id",
+            "intent_id",
+            "arguments",
+            "depends_on"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "step_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "intent_id": {
+              "const": "files.select_recent"
+            },
+            "arguments": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "source_step": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    "date_field": {
+                      "enum": [
+                        "modified"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "source_step",
+                    "date_field"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "result_set_id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    "date_field": {
+                      "enum": [
+                        "modified"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "result_set_id",
+                    "date_field"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            },
+            "depends_on": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "uniqueItems": true,
+              "maxItems": 12
+            }
+          },
+          "required": [
+            "step_id",
+            "intent_id",
+            "arguments",
+            "depends_on"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "step_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "intent_id": {
+              "const": "files.search"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {
+                "query": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 16384
+                },
+                "scope": {
+                  "oneOf": [
+                    {
+                      "enum": [
+                        "current_folder",
+                        "configured_roots"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "path": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 16384
+                        }
+                      },
+                      "required": [
+                        "path"
+                      ],
+                      "additionalProperties": false
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "query",
+                "scope"
+              ],
+              "additionalProperties": false
+            },
+            "depends_on": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "uniqueItems": true,
+              "maxItems": 12
+            }
+          },
+          "required": [
+            "step_id",
+            "intent_id",
+            "arguments",
+            "depends_on"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "step_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "intent_id": {
+              "const": "diagnostic.report_error"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {
+                "request_id": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "request_id"
+              ],
+              "additionalProperties": false
+            },
+            "depends_on": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "uniqueItems": true,
+              "maxItems": 12
+            }
+          },
+          "required": [
+            "step_id",
+            "intent_id",
+            "arguments",
+            "depends_on"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "step_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "intent_id": {
+              "const": "history.undo"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {
+                "action_id": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "action_id"
+              ],
+              "additionalProperties": false
+            },
+            "depends_on": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "uniqueItems": true,
+              "maxItems": 12
+            }
+          },
+          "required": [
+            "step_id",
+            "intent_id",
+            "arguments",
+            "depends_on"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "step_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "intent_id": {
+              "const": "history.retry"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {
+                "request_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                "correction": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 16384
+                }
+              },
+              "required": [
+                "request_id",
+                "correction"
+              ],
+              "additionalProperties": false
+            },
+            "depends_on": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "uniqueItems": true,
+              "maxItems": 12
+            }
+          },
+          "required": [
+            "step_id",
+            "intent_id",
+            "arguments",
+            "depends_on"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "step_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "intent_id": {
+              "const": "operation.status"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {
+                "operation_id": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "operation_type": {
+                  "anyOf": [
+                    {
+                      "enum": [
+                        "copy",
+                        "move",
+                        "search",
+                        "other"
+                      ]
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "operation_id",
+                "operation_type"
+              ],
+              "additionalProperties": false
+            },
+            "depends_on": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "uniqueItems": true,
+              "maxItems": 12
+            }
+          },
+          "required": [
+            "step_id",
+            "intent_id",
+            "arguments",
+            "depends_on"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "step_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "intent_id": {
+              "const": "operation.cancel"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {
+                "operation_id": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "operation_type": {
+                  "anyOf": [
+                    {
+                      "enum": [
+                        "copy",
+                        "move",
+                        "search",
+                        "other"
+                      ]
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "operation_id",
+                "operation_type"
+              ],
+              "additionalProperties": false
+            },
+            "depends_on": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "uniqueItems": true,
+              "maxItems": 12
+            }
+          },
+          "required": [
+            "step_id",
+            "intent_id",
+            "arguments",
+            "depends_on"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "ModelProposal": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "PLAN"
+            },
+            "steps": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Step"
+              },
+              "minItems": 1,
+              "maxItems": 12
+            }
+          },
+          "required": [
+            "kind",
+            "steps"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "CLARIFICATION"
+            },
+            "question": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 16384
+            },
+            "selectors": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/TargetSelector"
+              },
+              "maxItems": 12
+            }
+          },
+          "required": [
+            "kind",
+            "question",
+            "selectors"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "UNAVAILABLE"
+            },
+            "intent_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          "required": [
+            "kind",
+            "intent_id"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "UNKNOWN"
+            },
+            "reason_code": {
+              "enum": [
+                "UNRECOGNIZED",
+                "INCOMPLETE",
+                "OUT_OF_SCOPE"
+              ]
+            }
+          },
+          "required": [
+            "kind",
+            "reason_code"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "InterpretationResult": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "PLAN"
+            },
+            "request_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "generation": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "catalog_version": {
+              "const": "1.1"
+            },
+            "steps": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Step"
+              },
+              "minItems": 1,
+              "maxItems": 12
+            }
+          },
+          "required": [
+            "kind",
+            "request_id",
+            "generation",
+            "catalog_version",
+            "steps"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "CLARIFICATION"
+            },
+            "request_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "generation": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "catalog_version": {
+              "const": "1.1"
+            },
+            "question": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 16384
+            },
+            "selectors": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/TargetSelector"
+              },
+              "maxItems": 12
+            }
+          },
+          "required": [
+            "kind",
+            "request_id",
+            "generation",
+            "catalog_version",
+            "question",
+            "selectors"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "UNAVAILABLE"
+            },
+            "request_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "generation": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "catalog_version": {
+              "const": "1.1"
+            },
+            "intent_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          "required": [
+            "kind",
+            "request_id",
+            "generation",
+            "catalog_version",
+            "intent_id"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "UNKNOWN"
+            },
+            "request_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "generation": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "catalog_version": {
+              "const": "1.1"
+            },
+            "reason_code": {
+              "enum": [
+                "UNRECOGNIZED",
+                "INCOMPLETE",
+                "OUT_OF_SCOPE"
+              ]
+            }
+          },
+          "required": [
+            "kind",
+            "request_id",
+            "generation",
+            "catalog_version",
+            "reason_code"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "Error": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "layer": {
+          "enum": [
+            "AUDIO",
+            "STT",
+            "INTENT",
+            "RESOLUTION",
+            "EXECUTION",
+            "STORAGE"
+          ]
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 16384
+        },
+        "retryable": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "code",
+        "layer",
+        "message",
+        "retryable"
+      ],
+      "additionalProperties": false
+    },
+    "ObservedResult": {
+      "type": "object",
+      "properties": {
+        "targets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/TargetRef"
+          }
+        },
+        "result_set": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ResultSet"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 16384
+        }
+      },
+      "required": [
+        "targets",
+        "result_set",
+        "summary"
+      ],
+      "additionalProperties": false
+    },
+    "ActionRequest": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "action_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "request_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "step_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "sequence_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "generation": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "intent_id": {
+              "const": "session.start"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {},
+              "required": [],
+              "additionalProperties": false
+            },
+            "targets": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/TargetRef"
+              }
+            },
+            "context_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "authorization_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "journal_commit_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "attempt_no": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          "required": [
+            "action_id",
+            "request_id",
+            "step_id",
+            "sequence_id",
+            "generation",
+            "intent_id",
+            "arguments",
+            "targets",
+            "context_id",
+            "authorization_id",
+            "journal_commit_id",
+            "attempt_no"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "action_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "request_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "step_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "sequence_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "generation": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "intent_id": {
+              "const": "session.end"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {},
+              "required": [],
+              "additionalProperties": false
+            },
+            "targets": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/TargetRef"
+              }
+            },
+            "context_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "authorization_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "journal_commit_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "attempt_no": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          "required": [
+            "action_id",
+            "request_id",
+            "step_id",
+            "sequence_id",
+            "generation",
+            "intent_id",
+            "arguments",
+            "targets",
+            "context_id",
+            "authorization_id",
+            "journal_commit_id",
+            "attempt_no"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "action_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "request_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "step_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "sequence_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "generation": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "intent_id": {
+              "const": "control.stop"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {},
+              "required": [],
+              "additionalProperties": false
+            },
+            "targets": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/TargetRef"
+              }
+            },
+            "context_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "authorization_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "journal_commit_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "attempt_no": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          "required": [
+            "action_id",
+            "request_id",
+            "step_id",
+            "sequence_id",
+            "generation",
+            "intent_id",
+            "arguments",
+            "targets",
+            "context_id",
+            "authorization_id",
+            "journal_commit_id",
+            "attempt_no"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "action_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "request_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "step_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "sequence_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "generation": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "intent_id": {
+              "const": "window.list"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {},
+              "required": [],
+              "additionalProperties": false
+            },
+            "targets": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/TargetRef"
+              }
+            },
+            "context_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "authorization_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "journal_commit_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "attempt_no": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          "required": [
+            "action_id",
+            "request_id",
+            "step_id",
+            "sequence_id",
+            "generation",
+            "intent_id",
+            "arguments",
+            "targets",
+            "context_id",
+            "authorization_id",
+            "journal_commit_id",
+            "attempt_no"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "action_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "request_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "step_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "sequence_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "generation": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "intent_id": {
+              "const": "explorer.parent"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {},
+              "required": [],
+              "additionalProperties": false
+            },
+            "targets": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/TargetRef"
+              }
+            },
+            "context_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "authorization_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "journal_commit_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "attempt_no": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          "required": [
+            "action_id",
+            "request_id",
+            "step_id",
+            "sequence_id",
+            "generation",
+            "intent_id",
+            "arguments",
+            "targets",
+            "context_id",
+            "authorization_id",
+            "journal_commit_id",
+            "attempt_no"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "action_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "request_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "step_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "sequence_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "generation": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "intent_id": {
+              "const": "explorer.navigate"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {
+                "target": {
+                  "$ref": "#/$defs/TargetSelector"
+                }
+              },
+              "required": [
+                "target"
+              ],
+              "additionalProperties": false
+            },
+            "targets": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/TargetRef"
+              }
+            },
+            "context_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "authorization_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "journal_commit_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "attempt_no": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          "required": [
+            "action_id",
+            "request_id",
+            "step_id",
+            "sequence_id",
+            "generation",
+            "intent_id",
+            "arguments",
+            "targets",
+            "context_id",
+            "authorization_id",
+            "journal_commit_id",
+            "attempt_no"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "action_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "request_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "step_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "sequence_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "generation": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "intent_id": {
+              "const": "window.activate"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {
+                "target": {
+                  "$ref": "#/$defs/TargetSelector"
+                }
+              },
+              "required": [
+                "target"
+              ],
+              "additionalProperties": false
+            },
+            "targets": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/TargetRef"
+              }
+            },
+            "context_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "authorization_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "journal_commit_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "attempt_no": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          "required": [
+            "action_id",
+            "request_id",
+            "step_id",
+            "sequence_id",
+            "generation",
+            "intent_id",
+            "arguments",
+            "targets",
+            "context_id",
+            "authorization_id",
+            "journal_commit_id",
+            "attempt_no"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "action_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "request_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "step_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "sequence_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "generation": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "intent_id": {
+              "const": "files.open"
+            },
+            "arguments": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "target": {
+                      "$ref": "#/$defs/TargetSelector"
+                    }
+                  },
+                  "required": [
+                    "target"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "source_step": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    }
+                  },
+                  "required": [
+                    "source_step"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            },
+            "targets": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/TargetRef"
+              }
+            },
+            "context_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "authorization_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "journal_commit_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "attempt_no": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          "required": [
+            "action_id",
+            "request_id",
+            "step_id",
+            "sequence_id",
+            "generation",
+            "intent_id",
+            "arguments",
+            "targets",
+            "context_id",
+            "authorization_id",
+            "journal_commit_id",
+            "attempt_no"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "action_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "request_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "step_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "sequence_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "generation": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "intent_id": {
+              "const": "files.filter"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {
+                "scope": {
+                  "enum": [
+                    "current_folder"
+                  ]
+                },
+                "extension": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9]+$"
+                }
+              },
+              "required": [
+                "scope",
+                "extension"
+              ],
+              "additionalProperties": false
+            },
+            "targets": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/TargetRef"
+              }
+            },
+            "context_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "authorization_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "journal_commit_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "attempt_no": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          "required": [
+            "action_id",
+            "request_id",
+            "step_id",
+            "sequence_id",
+            "generation",
+            "intent_id",
+            "arguments",
+            "targets",
+            "context_id",
+            "authorization_id",
+            "journal_commit_id",
+            "attempt_no"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "action_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "request_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "step_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "sequence_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "generation": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "intent_id": {
+              "const": "files.select_recent"
+            },
+            "arguments": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "source_step": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    "date_field": {
+                      "enum": [
+                        "modified"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "source_step",
+                    "date_field"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "result_set_id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    "date_field": {
+                      "enum": [
+                        "modified"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "result_set_id",
+                    "date_field"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            },
+            "targets": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/TargetRef"
+              }
+            },
+            "context_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "authorization_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "journal_commit_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "attempt_no": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          "required": [
+            "action_id",
+            "request_id",
+            "step_id",
+            "sequence_id",
+            "generation",
+            "intent_id",
+            "arguments",
+            "targets",
+            "context_id",
+            "authorization_id",
+            "journal_commit_id",
+            "attempt_no"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "action_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "request_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "step_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "sequence_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "generation": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "intent_id": {
+              "const": "files.search"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {
+                "query": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 16384
+                },
+                "scope": {
+                  "oneOf": [
+                    {
+                      "enum": [
+                        "current_folder",
+                        "configured_roots"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "path": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 16384
+                        }
+                      },
+                      "required": [
+                        "path"
+                      ],
+                      "additionalProperties": false
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "query",
+                "scope"
+              ],
+              "additionalProperties": false
+            },
+            "targets": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/TargetRef"
+              }
+            },
+            "context_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "authorization_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "journal_commit_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "attempt_no": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          "required": [
+            "action_id",
+            "request_id",
+            "step_id",
+            "sequence_id",
+            "generation",
+            "intent_id",
+            "arguments",
+            "targets",
+            "context_id",
+            "authorization_id",
+            "journal_commit_id",
+            "attempt_no"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "action_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "request_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "step_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "sequence_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "generation": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "intent_id": {
+              "const": "diagnostic.report_error"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {
+                "request_id": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "request_id"
+              ],
+              "additionalProperties": false
+            },
+            "targets": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/TargetRef"
+              }
+            },
+            "context_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "authorization_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "journal_commit_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "attempt_no": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          "required": [
+            "action_id",
+            "request_id",
+            "step_id",
+            "sequence_id",
+            "generation",
+            "intent_id",
+            "arguments",
+            "targets",
+            "context_id",
+            "authorization_id",
+            "journal_commit_id",
+            "attempt_no"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "action_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "request_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "step_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "sequence_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "generation": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "intent_id": {
+              "const": "history.undo"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {
+                "action_id": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "action_id"
+              ],
+              "additionalProperties": false
+            },
+            "targets": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/TargetRef"
+              }
+            },
+            "context_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "authorization_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "journal_commit_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "attempt_no": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          "required": [
+            "action_id",
+            "request_id",
+            "step_id",
+            "sequence_id",
+            "generation",
+            "intent_id",
+            "arguments",
+            "targets",
+            "context_id",
+            "authorization_id",
+            "journal_commit_id",
+            "attempt_no"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "action_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "request_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "step_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "sequence_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "generation": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "intent_id": {
+              "const": "history.retry"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {
+                "request_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                "correction": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 16384
+                }
+              },
+              "required": [
+                "request_id",
+                "correction"
+              ],
+              "additionalProperties": false
+            },
+            "targets": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/TargetRef"
+              }
+            },
+            "context_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "authorization_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "journal_commit_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "attempt_no": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          "required": [
+            "action_id",
+            "request_id",
+            "step_id",
+            "sequence_id",
+            "generation",
+            "intent_id",
+            "arguments",
+            "targets",
+            "context_id",
+            "authorization_id",
+            "journal_commit_id",
+            "attempt_no"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "action_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "request_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "step_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "sequence_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "generation": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "intent_id": {
+              "const": "operation.status"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {
+                "operation_id": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "operation_type": {
+                  "anyOf": [
+                    {
+                      "enum": [
+                        "copy",
+                        "move",
+                        "search",
+                        "other"
+                      ]
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "operation_id",
+                "operation_type"
+              ],
+              "additionalProperties": false
+            },
+            "targets": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/TargetRef"
+              }
+            },
+            "context_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "authorization_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "journal_commit_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "attempt_no": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          "required": [
+            "action_id",
+            "request_id",
+            "step_id",
+            "sequence_id",
+            "generation",
+            "intent_id",
+            "arguments",
+            "targets",
+            "context_id",
+            "authorization_id",
+            "journal_commit_id",
+            "attempt_no"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "action_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "request_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "step_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "sequence_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "generation": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "intent_id": {
+              "const": "operation.cancel"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {
+                "operation_id": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "operation_type": {
+                  "anyOf": [
+                    {
+                      "enum": [
+                        "copy",
+                        "move",
+                        "search",
+                        "other"
+                      ]
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "operation_id",
+                "operation_type"
+              ],
+              "additionalProperties": false
+            },
+            "targets": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/TargetRef"
+              }
+            },
+            "context_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "authorization_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "journal_commit_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "attempt_no": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          "required": [
+            "action_id",
+            "request_id",
+            "step_id",
+            "sequence_id",
+            "generation",
+            "intent_id",
+            "arguments",
+            "targets",
+            "context_id",
+            "authorization_id",
+            "journal_commit_id",
+            "attempt_no"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "ActionResult": {
+      "type": "object",
+      "properties": {
+        "action_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "status": {
+          "enum": [
+            "SUCCEEDED",
+            "STARTED",
+            "PARTIAL",
+            "FAILED",
+            "CANCELLED",
+            "UNKNOWN"
+          ]
+        },
+        "observed_result": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ObservedResult"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Error"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "operation_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "undo_record_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "action_id",
+        "status",
+        "observed_result",
+        "error",
+        "operation_id",
+        "undo_record_id",
+        "observed_at"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "STARTED"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "operation_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "SUCCEEDED"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "observed_result": {
+                "$ref": "#/$defs/ObservedResult"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "OperationUpdate": {
+      "type": "object",
+      "properties": {
+        "operation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "action_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "state": {
+          "enum": [
+            "RUNNING",
+            "SUCCEEDED",
+            "PARTIAL",
+            "FAILED",
+            "CANCELLED",
+            "UNKNOWN"
+          ]
+        },
+        "progress": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "cancellable": {
+          "type": "boolean"
+        },
+        "cancel_state": {
+          "anyOf": [
+            {
+              "enum": [
+                "REQUESTED",
+                "CONFIRMED",
+                "IMPOSSIBLE",
+                "UNKNOWN"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Error"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "operation_id",
+        "action_id",
+        "revision",
+        "state",
+        "progress",
+        "cancellable",
+        "cancel_state",
+        "error"
+      ],
+      "additionalProperties": false
+    },
+    "Candidate": {
+      "type": "object",
+      "properties": {
+        "candidate_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 16384
+        },
+        "target": {
+          "$ref": "#/$defs/TargetRef"
+        }
+      },
+      "required": [
+        "candidate_id",
+        "label",
+        "target"
+      ],
+      "additionalProperties": false
+    },
+    "DialogueWait": {
+      "type": "object",
+      "properties": {
+        "dialogue_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "request_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "generation": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "reason": {
+          "enum": [
+            "CLARIFICATION",
+            "CONFIRMATION",
+            "REPLACEMENT",
+            "DIAGNOSTIC"
+          ]
+        },
+        "question": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 16384
+        },
+        "candidates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Candidate"
+          }
+        },
+        "plan_fingerprint": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 16384
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "timeout_ms": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "dialogue_id",
+        "request_id",
+        "generation",
+        "reason",
+        "question",
+        "candidates",
+        "plan_fingerprint",
+        "timeout_ms"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "reason": {
+                "const": "CONFIRMATION"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "plan_fingerprint": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 16384
+              }
+            }
+          }
+        }
+      ]
+    },
+    "DialogueReply": {
+      "type": "object",
+      "properties": {
+        "dialogue_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "utterance_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "decision": {
+          "enum": [
+            "YES",
+            "NO",
+            "CHOICE",
+            "REPHRASE"
+          ]
+        },
+        "candidate_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "text": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 16384
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "dialogue_id",
+        "utterance_id",
+        "decision",
+        "candidate_id",
+        "text"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "decision": {
+                "const": "CHOICE"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "candidate_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "decision": {
+                "const": "REPHRASE"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "text": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 16384
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "decision": {
+                "enum": [
+                  "YES",
+                  "NO"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "candidate_id": {
+                "type": "null"
+              },
+              "text": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "StopControl": {
+      "type": "object",
+      "properties": {
+        "sequence_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "reason": {
+          "enum": [
+            "USER_STOP",
+            "SESSION_END",
+            "REPLACED"
+          ]
+        }
+      },
+      "required": [
+        "sequence_id",
+        "reason"
+      ],
+      "additionalProperties": false
+    },
+    "JournalAck": {
+      "type": "object",
+      "properties": {
+        "action_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "commit_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "committed_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "action_id",
+        "commit_id",
+        "committed_at"
+      ],
+      "additionalProperties": false
+    },
+    "Envelope": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "schema_version": {
+              "const": "1.1"
+            },
+            "message_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "session_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "request_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "sequence_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "generation": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "timestamp": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "type": {
+              "const": "TRANSCRIPT_UPDATE"
+            },
+            "payload": {
+              "$ref": "#/$defs/TranscriptUpdate"
+            }
+          },
+          "required": [
+            "schema_version",
+            "message_id",
+            "session_id",
+            "request_id",
+            "sequence_id",
+            "generation",
+            "timestamp",
+            "type",
+            "payload"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "schema_version": {
+              "const": "1.1"
+            },
+            "message_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "session_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "request_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "sequence_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "generation": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "timestamp": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "type": {
+              "const": "INTERPRETATION_RESULT"
+            },
+            "payload": {
+              "$ref": "#/$defs/InterpretationResult"
+            }
+          },
+          "required": [
+            "schema_version",
+            "message_id",
+            "session_id",
+            "request_id",
+            "sequence_id",
+            "generation",
+            "timestamp",
+            "type",
+            "payload"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "schema_version": {
+              "const": "1.1"
+            },
+            "message_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "session_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "request_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "sequence_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "generation": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "timestamp": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "type": {
+              "const": "CONTEXT_SNAPSHOT"
+            },
+            "payload": {
+              "$ref": "#/$defs/ContextSnapshot"
+            }
+          },
+          "required": [
+            "schema_version",
+            "message_id",
+            "session_id",
+            "request_id",
+            "sequence_id",
+            "generation",
+            "timestamp",
+            "type",
+            "payload"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "schema_version": {
+              "const": "1.1"
+            },
+            "message_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "session_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "request_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "sequence_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "generation": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "timestamp": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "type": {
+              "const": "ACTION_REQUEST"
+            },
+            "payload": {
+              "$ref": "#/$defs/ActionRequest"
+            }
+          },
+          "required": [
+            "schema_version",
+            "message_id",
+            "session_id",
+            "request_id",
+            "sequence_id",
+            "generation",
+            "timestamp",
+            "type",
+            "payload"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "schema_version": {
+              "const": "1.1"
+            },
+            "message_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "session_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "request_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "sequence_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "generation": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "timestamp": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "type": {
+              "const": "ACTION_RESULT"
+            },
+            "payload": {
+              "$ref": "#/$defs/ActionResult"
+            }
+          },
+          "required": [
+            "schema_version",
+            "message_id",
+            "session_id",
+            "request_id",
+            "sequence_id",
+            "generation",
+            "timestamp",
+            "type",
+            "payload"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "schema_version": {
+              "const": "1.1"
+            },
+            "message_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "session_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "request_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "sequence_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "generation": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "timestamp": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "type": {
+              "const": "OPERATION_UPDATE"
+            },
+            "payload": {
+              "$ref": "#/$defs/OperationUpdate"
+            }
+          },
+          "required": [
+            "schema_version",
+            "message_id",
+            "session_id",
+            "request_id",
+            "sequence_id",
+            "generation",
+            "timestamp",
+            "type",
+            "payload"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "schema_version": {
+              "const": "1.1"
+            },
+            "message_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "session_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "request_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "sequence_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "generation": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "timestamp": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "type": {
+              "const": "DIALOGUE_WAIT"
+            },
+            "payload": {
+              "$ref": "#/$defs/DialogueWait"
+            }
+          },
+          "required": [
+            "schema_version",
+            "message_id",
+            "session_id",
+            "request_id",
+            "sequence_id",
+            "generation",
+            "timestamp",
+            "type",
+            "payload"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "schema_version": {
+              "const": "1.1"
+            },
+            "message_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "session_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "request_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "sequence_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "generation": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "timestamp": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "type": {
+              "const": "DIALOGUE_REPLY"
+            },
+            "payload": {
+              "$ref": "#/$defs/DialogueReply"
+            }
+          },
+          "required": [
+            "schema_version",
+            "message_id",
+            "session_id",
+            "request_id",
+            "sequence_id",
+            "generation",
+            "timestamp",
+            "type",
+            "payload"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "schema_version": {
+              "const": "1.1"
+            },
+            "message_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "session_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "request_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "sequence_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "generation": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "timestamp": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "type": {
+              "const": "CONTROL_STOP"
+            },
+            "payload": {
+              "$ref": "#/$defs/StopControl"
+            }
+          },
+          "required": [
+            "schema_version",
+            "message_id",
+            "session_id",
+            "request_id",
+            "sequence_id",
+            "generation",
+            "timestamp",
+            "type",
+            "payload"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "schema_version": {
+              "const": "1.1"
+            },
+            "message_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "session_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "request_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "sequence_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "generation": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "timestamp": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "type": {
+              "const": "JOURNAL_ACK"
+            },
+            "payload": {
+              "$ref": "#/$defs/JournalAck"
+            }
+          },
+          "required": [
+            "schema_version",
+            "message_id",
+            "session_id",
+            "request_id",
+            "sequence_id",
+            "generation",
+            "timestamp",
+            "type",
+            "payload"
+          ],
+          "additionalProperties": false
+        }
+      ],
+      "allOf": [
+        {
+          "if": {
+            "anyOf": [
+              {
+                "properties": {
+                  "request_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "sequence_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  }
+                }
+              }
+            ]
+          },
+          "then": {
+            "properties": {
+              "generation": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}
