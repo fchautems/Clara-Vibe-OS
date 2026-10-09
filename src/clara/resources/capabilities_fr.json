@@ -1,7 +1,11 @@
 {
   "version": 1,
   "help_phrases": ["aide", "aide-moi", "aide moi", "qu'est-ce que tu sais faire", "qu'est ce que tu sais faire", "que sais-tu faire", "que sais tu faire", "qu'est-ce que tu peux faire", "qu'est ce que tu peux faire", "quelles sont tes commandes", "liste tes commandes", "montre-moi tes commandes", "donne-moi de l'aide", "donne moi de l'aide"],
-  "help_message": "Je peux naviguer dans l'Explorateur, chercher des fichiers dans le dossier courant et ouvrir des documents. Tu peux dire : ouvre le dossier documents ; remonte d'un niveau ; cherche le fichier rapport ; montre-moi les PDF ; puis ouvre le plus récent. Pour revenir, dis retour à l'Explorateur. S'il y a plusieurs résultats, réponds par leur numéro. Dis stop pour interrompre une séquence. Je ne peux pas encore lancer d'autres applications, copier, déplacer, renommer, supprimer ou annuler une action. Dis bonne nuit Clara pour terminer, si tu as conservé cette phrase dans tes réglages.",
+  "help_message": "Je peux naviguer dans l'Explorateur, chercher des fichiers dans le dossier courant et ouvrir des documents. Tu peux dire : ouvre le dossier documents ; remonte d'un niveau ; cherche le fichier rapport ; montre-moi les PDF ; puis ouvre le plus récent. Dis où suis-je pour connaître le dossier actif, ou répète pour réentendre la réponse ou les choix. Pour revenir, dis retour à l'Explorateur. S'il y a plusieurs résultats, réponds par leur numéro. Dis stop pour interrompre une séquence. Je ne peux pas encore lancer d'autres applications, copier, déplacer, renommer, supprimer ou annuler une action. Dis bonne nuit Clara pour terminer, si tu as conservé cette phrase dans tes réglages.",
+  "comfort_phrases": {
+    "repeat": ["repete", "repete ta reponse", "redis ta reponse", "je n'ai pas entendu", "repete les choix"],
+    "location": ["ou suis-je", "ou suis je", "dans quel dossier suis-je", "dans quel dossier suis je", "quel est le dossier actif", "quel est le dossier courant"]
+  },
   "unavailable": [
     {
       "intent_id": "application.launch",

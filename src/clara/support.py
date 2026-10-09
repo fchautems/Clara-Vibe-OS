@@ -16,6 +16,14 @@ def help_requested(normalized):
     return canonicalize(normalized) in support_catalogue()["help_phrases"]
 
 
+def comfort_requested(normalized):
+    text = canonicalize(normalized)
+    for kind, phrases in support_catalogue()["comfort_phrases"].items():
+        if text in phrases:
+            return kind
+    return None
+
+
 def help_message(config=None):
     text = support_catalogue()["help_message"]
     if config:

@@ -112,6 +112,9 @@ def main():
                 except queue.Empty:
                     break
             message = event["message"]
+            if event["kind"] == "info" and (event["session_id"] != engine.session_id
+                    or event["epoch"] != engine.info_epoch or event["dialogue_id"] != engine.dialogue_token()):
+                continue
             if message:
                 view.appendPlainText(message)
             if event["kind"] == "session":
@@ -127,6 +130,12 @@ def main():
                 audio.say(message)
             elif event["kind"] == "help" and audio and event["session_id"] == engine.session_id:
                 audio.say(message)
+            elif event["kind"] == "info":
+                choices = "; ".join(f"{c['number']} : {c['name']}" for c in event.get("candidates", []))
+                if choices:
+                    view.appendPlainText(choices)
+                if audio:
+                    audio.say(message + " " + choices)
             result = event.get("result", {}).get("observed_result")
             if result and result.get("result_set"):
                 for i, ref in enumerate(result["targets"], 1):
@@ -136,7 +145,7 @@ def main():
                 view.appendPlainText(names)
                 if audio:
                     audio.say(message + " " + names)
-            if event["kind"] in {"transcript", "result", "control_timing", "stop", "error", "fatal", "question", "session", "help"}:
+            if event["kind"] in {"transcript", "result", "control_timing", "stop", "error", "fatal", "question", "session", "help", "info"}:
                 telemetry.write(json.dumps({"wall_time": time.time(), **event}, ensure_ascii=False) + "\n")
                 telemetry.flush()
         if time.monotonic() - last_resources >= 5:

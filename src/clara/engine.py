@@ -9,7 +9,7 @@ from pathlib import Path
 
 from .contracts import ClaraError, action_result, observed, revalidate, uid, utc, validate
 from .planner import normal, has_negation
-from .support import help_requested, help_message
+from .support import help_requested, help_message, comfort_requested
 from .resolver import Choices, Resolver
 from .storage import Journal
 
@@ -32,6 +32,14 @@ class Ticket:
     started_at: float = field(default_factory=time.monotonic)
     last_speech_at: float | None = None
     attempts: dict = field(default_factory=dict)
+
+
+@dataclass
+class LocationRequest:
+    text: str
+    session_id: str
+    epoch: int
+    dialogue_id: str | None
 
 
 class Gate:
@@ -67,6 +75,8 @@ class Engine:
         self.session = False
         self.suspended = False
         self.session_id = None
+        self.info_epoch = 0
+        self.last_response = None
         self.current = None
         self.dialogue = None
         self.last_interaction = time.monotonic()
@@ -81,6 +91,10 @@ class Engine:
 
     def emit(self, kind, message="", **extra):
         event = {"kind": kind, "message": message, **extra}
+        with self.gate.lock:
+            belongs = not extra.get("request_id") or (self.current and extra["request_id"] == self.current.request_id)
+            if self.session and belongs and message and kind in {"help", "info", "question", "result", "error", "stop"}:
+                self.last_response = {"message": message, "candidates": extra.get("candidates", [])}
         try:
             self.events.put_nowait(event)
         except queue.Full:
@@ -97,12 +111,14 @@ class Engine:
                 return
             self.session = True
             self.session_id = uid()
+            self.last_response = None
             self.last_interaction = time.monotonic()
         self.emit("session", "Session active.")
 
     def stop(self):
         recognized = time.monotonic()
         with self.gate.lock:
+            self.info_epoch += 1
             if self.current:
                 self.gate.cancel(self.current)
             self.current = None
@@ -116,6 +132,7 @@ class Engine:
         with self.gate.lock:
             self.session = False
             self.session_id = None
+            self.last_response = None
             self.latest = None
             self.sets.clear()
         self.emit("session", reason)
@@ -137,11 +154,30 @@ class Engine:
             return
         is_help = not has_negation(text) and help_requested(n)
         help_text = help_message(self.config) if is_help else None
+        comfort = comfort_requested(n) if not has_negation(text) else None
         with self.gate.lock:
             if not self.session:
                 self.emit("ignored", "En veille : prononce la phrase d'activation.")
                 return
             self.last_interaction = time.monotonic()
+            if comfort:
+                if dialogue_id is not None and dialogue_id != self.dialogue_token():
+                    self.emit("error", "Réponse périmée ; reformule ta demande.")
+                    return
+                if comfort == "repeat":
+                    response = self.dialogue.get("response") if self.dialogue else self.last_response
+                    response = response or {"message": "Je n'ai pas encore de réponse à répéter dans cette session."}
+                    self.emit("info", **response, session_id=self.session_id, epoch=self.info_epoch,
+                              dialogue_id=self.dialogue_token(), text=text)
+                elif self.current and not self.dialogue:
+                    self.emit("info", "Une demande est en cours. Redemande où tu es quand elle sera terminée.",
+                              session_id=self.session_id, epoch=self.info_epoch, dialogue_id=None, text=text)
+                else:
+                    try:
+                        self.jobs.put_nowait(LocationRequest(text, self.session_id, self.info_epoch, self.dialogue_token()))
+                    except queue.Full:
+                        self.emit("error", "File de travail saturée ; redemande où tu es.")
+                return
             if is_help:
                 if dialogue_id is not None and dialogue_id != self.dialogue_token():
                     self.emit("error", "Réponse périmée ; demande l'aide à nouveau.")
@@ -179,9 +215,10 @@ class Engine:
     def _question(self, data, message):
         data.update(id=uid(), expires=time.monotonic() + self.config["clarification_timeout_seconds"])
         self.dialogue = data
-        self.emit("question", message, dialogue_id=data["id"],
-                  candidates=[{"number": i + 1, "name": Path(r["path"]).name if r["path"] else r["window_id"]}
-                              for i, r in enumerate(data.get("targets", []))])
+        data["response"] = {"message": message, "candidates": [
+            {"number": i + 1, "name": Path(r["path"]).name if r["path"] else r["window_id"]}
+            for i, r in enumerate(data.get("targets", []))]}
+        self.emit("question", **data["response"], dialogue_id=data["id"])
 
     def _reply(self, text):
         d = self.dialogue
@@ -248,6 +285,9 @@ class Engine:
                 except queue.Empty:
                     continue
                 try:
+                    if isinstance(ticket, LocationRequest):
+                        self._location(ticket, adapter, journal)
+                        continue
                     self._run(ticket, adapter, journal)
                 except Choices as choices:
                     with self.gate.lock:
@@ -257,6 +297,10 @@ class Engine:
                             if not ticket.paused:
                                 self._question(ticket.wait, choices.question)
                 except Exception as exc:
+                    if isinstance(ticket, LocationRequest):
+                        # A failure outside the read itself (e.g. journal) is fatal,
+                        # and must not be handled as a cancelled action ticket.
+                        raise
                     err = exc if isinstance(exc, ClaraError) else ClaraError("INTERNAL_ERROR", "Erreur du composant ; aucune étape suivante.", "EXECUTION")
                     details = traceback.format_exc()
                     journal.event("request_error", {"request_id": ticket.request_id, "text": ticket.text,
@@ -376,6 +420,30 @@ class Engine:
             if self.current is t and not t.paused:
                 self.current = None
         self.emit("done", "Demande terminée.", request_id=t.request_id)
+
+    def _location(self, request, adapter, journal):
+        def valid():
+            return (self.session_id == request.session_id and self.info_epoch == request.epoch
+                    and self.dialogue_token() == request.dialogue_id and self.session)
+        with self.gate.lock:
+            if not valid():
+                return
+        details = None
+        try:
+            context = adapter.context()
+            validate("ContextSnapshot", context)
+            directory = context["current_directory"]
+            if not directory:
+                raise ClaraError("CONTEXT_UNAVAILABLE", "Aucun dossier Explorateur actif.")
+            message = "Dossier actif : " + directory["path"] + "."
+        except Exception as exc:
+            details = traceback.format_exc()
+            message = str(exc) if isinstance(exc, ClaraError) else "Impossible de lire le dossier actif pour le moment."
+        journal.event("location", {"text": request.text, "message": message, "traceback": details})
+        with self.gate.lock:
+            if valid():
+                self.emit("info", message, text=request.text, session_id=request.session_id,
+                          epoch=request.epoch, dialogue_id=request.dialogue_id)
 
     def _prepare(self, t, step, adapter, resolver):
         intent, args = step["intent_id"], step["arguments"]
