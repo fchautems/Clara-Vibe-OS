@@ -37,6 +37,7 @@ Un fichier ouvert est confirmé seulement lorsque sa fenêtre associée au titre
 - Résolution des dépendances Windows préparée et versions verrouillées ; `srt` est distribué en source et son wheel Python pur a été construit avec succès. Les marqueurs propres à Windows restent à vérifier lors de l'installation réelle.
 - Modèle Vosk français réel chargé sur Linux : salut, clara, bonjour, bonne, nuit et stop sont présents dans son vocabulaire. Cela ne mesure pas la reconnaissance de la voix de l'utilisateur.
 - Les deux PDF de fixtures ont été relus par un lecteur PDF Python : une page et texte attendus pour chacun. Schéma embarqué identique à celui des specs.
+- Après commit `3c15d7c`, CI réussie sur Linux et Windows avec Python 3.11 : installation du noyau et suite automatisée, https://github.com/fchautems/Clara-Vibe-OS/actions/runs/37906446644. Le runner Windows n'exécute pas le microphone ni les adaptateurs interactifs COM/UIA/SAPI.
 - Aucun microphone, voix SAPI, modèle d'intention réel ou Explorateur Windows exécuté dans cet environnement Linux. Aucun score vocal ni chiffre de performance mesuré.
 
 ## Essai sur le PC Windows

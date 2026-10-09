@@ -26,7 +26,8 @@ Mise à jour : 2026-10-09
 - Syntaxe compilée et entrée CLI vérifiée. Schéma embarqué identique au document versionné. Deux PDF de fixtures relus : une page et texte attendu chacun.
 - Paquets directs disponibles pour Windows x64/Python 3.11 ; dépendances résolues depuis Linux et verrouillées. Wheel Python pur de srt construit ; marqueurs Windows et installation native encore à vérifier sur Windows.
 - Modèle Vosk français réel chargé sur Linux ; mots salut/clara/bonjour/bonne/nuit/stop présents dans le vocabulaire. Aucun score de reconnaissance de la voix de Fréd mesuré.
-- Workflow de tests du noyau prévu pour Linux et Windows ; son état d'exécution distant doit être vérifié séparément après commit.
+- Prototype et guide commités dans `3c15d7c`. Git vérifié : 25 fichiers modifiés correspondent aux octets locaux ; fonctionnelle, technique, revue et schéma documentaire inchangés.
+- Tests CI réussis sur `ubuntu-latest` et `windows-latest`, Python 3.11 : installation du noyau et suite de 40 tests automatisés. Run : https://github.com/fchautems/Clara-Vibe-OS/actions/runs/37906446644 ; cela ne teste ni microphone ni COM/UIA/SAPI interactifs.
 - Documentation V1.1 rendue et inspectée en 26 pages ; schéma JSON et DDL du journal validés auparavant. Sources primaires des interfaces consultées.
 - 2026-10-08 : audit Git historique jusqu'à `bea1074`, aucun écrasement constaté entre conversations. La révision documentaire a ensuite conservé la fonctionnelle et les documents historiques.
 - Aucun essai microphone, voix SAPI, modèle d'intention réel ou Explorateur Windows exécuté ici. Aucun benchmark Clara ni preuve réseau/écho/compatibilité GPU.
