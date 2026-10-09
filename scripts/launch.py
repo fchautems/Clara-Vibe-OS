@@ -12,6 +12,42 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 from clara.diagnostics import user_folder, write_bundle
 
+def run_self_test(python, config_path, folder, environment, force=False):
+    marker = folder / "journey-version.json"
+    output = folder / "journey.json"
+    try:
+        previous = json.loads(marker.read_text())
+        if not force and previous.get("version") == 1:
+            try:
+                status = json.loads(output.read_text())["status"]
+            except (OSError, ValueError, KeyError):
+                status = previous.get("status", "UNKNOWN")
+            return {"ran_now": False, "status": status}
+    except (OSError, ValueError, KeyError):
+        pass
+    output.write_text(json.dumps({"version": 1, "status": "RUNNING", "steps": []}))
+    try:
+        result = subprocess.run([str(python), "-m", "clara.journey", "--config", str(config_path)],
+                                capture_output=True, text=True, encoding="utf-8", errors="replace",
+                                env=environment, timeout=180)
+        (folder / "journey.log").write_text(result.stdout + "\n" + result.stderr, encoding="utf-8")
+        report = json.loads(output.read_text())
+        if result.returncode or report.get("status") != "PASSED":
+            if report.get("status") in {"RUNNING", "PASSED"}:
+                report["status"] = "FAILED"
+            report["returncode"] = result.returncode
+            output.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
+    except Exception:
+        error = traceback.format_exc()
+        try:
+            report = json.loads(output.read_text())
+        except (OSError, ValueError):
+            report = {"version": 1, "steps": []}
+        report.update(status="INCOMPLETE", traceback=error)
+        output.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
+    marker.write_text(json.dumps({"version": 1, "status": report["status"]}))
+    return {"ran_now": True, "status": report["status"]}
+
 def main():
     os.chdir(ROOT)
     folder = user_folder()
@@ -24,6 +60,8 @@ def main():
     halt = threading.Event()
     exporter = None
     config_path = folder / "config.json"
+    force_test = "--self-test" in sys.argv[1:]
+    app_arguments = [arg for arg in sys.argv[1:] if arg != "--self-test"]
     if "--config" in sys.argv[1:]:
         index = sys.argv.index("--config")
         if index + 1 < len(sys.argv):
@@ -97,9 +135,13 @@ def main():
                     if result is not None:
                         probes[name].update(stdout=result.stdout[-262144:], stderr=result.stderr[-262144:])
                 print(f"Diagnostic {name} : {probes[name].get('status', 'ERROR')}", flush=True)
+            stage = "parcours automatique Windows"
+            probes["journey"] = run_self_test(python, config_path, folder, environment, force_test)
+            print("Parcours automatique : " + probes["journey"]["status"], flush=True)
             stage = "application en cours"
             export()
-            run([str(python), "-m", "clara.app", "--fixture", *sys.argv[1:]])
+            fixture_arguments = [] if probes["journey"] == {"ran_now": True, "status": "PASSED"} else ["--fixture"]
+            run([str(python), "-m", "clara.app", *fixture_arguments, *app_arguments])
             stage, code = "fermeture normale", 0
         except (Exception, KeyboardInterrupt):
             stage = "échec : " + stage

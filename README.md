@@ -12,6 +12,14 @@ Le panneau n'accapare pas le focus en mode vocal. Garder la fenêtre Explorateur
 
 ## Rapport automatique pour les bugs
 
+### Parcours automatique Windows
+
+Au premier lancement, Clara tente automatiquement un parcours de **14 étapes**, avant d'activer le microphone de l'application : dossier principal, sous-dossier et dossier imbriqué, recherche et ouverture d'un texte, retour à l'Explorateur, remontée des dossiers, filtre PDF, ouverture contextuelle du plus récent, choix entre deux PDF, puis arrêt d'une séquence avant l'ouverture. Le choix numérique et « stop » sont injectés en texte : la reconnaissance vocale et Ollama ne sont pas testés par ce parcours.
+
+Un dossier neuf est créé sous `%LOCALAPPDATA%\ClaraVibeOS\autotest-fixtures`. Le parcours reste limité à ses fichiers générés et à sa fenêtre Explorateur ; les cibles extérieures et les changements de fenêtre interrompent l'essai. Il peut lancer les applications associées aux PDF et TXT ; ces fenêtres restent ouvertes. Une observation manquante donne un résultat inconnu ou un échec, puis les étapes restantes sont ignorées. « Stop » est testé à un point contrôlé avant engagement, pas par un délai aléatoire.
+
+Le résultat attendu, les événements observés, les erreurs et les dates de chaque étape sont enregistrés dans **`journey.json`**, inclus dans **`diagnostic-clara.zip`**. Le processus est limité à trois minutes ; un dépassement conserve le bilan partiel marqué incomplet. Un essai échoué ne se répète pas automatiquement à chaque démarrage. Pour le relancer plus tard, ouvrir **`test-clara.cmd`** (ou `start-clara.cmd --self-test`). Le parcours est préparé et testé ici avec un adaptateur simulé ; aucun résultat natif Windows n'est annoncé avant l'exécution sur ton PC.
+
 Le même lancement `start-clara.cmd` crée **`diagnostic-clara.zip` à la racine du dépôt**, sans étape supplémentaire. Il est actualisé toutes les 30 secondes pendant l'application, puis à la fermeture ou après un échec d'installation/préparation/lancement. En cas de problème, joindre simplement ce ZIP à la conversation ; le lancement et le journal restent aussi consultables dans `%LOCALAPPDATA%\ClaraVibeOS\launcher.log`.
 
 Le rapport regroupe les versions des dépendances dans l'environnement installé, les empreintes du code, la configuration, la présence des fichiers modèles, les sondes de disponibilité, les dernières mesures/transcriptions et l'historique récent avec les erreurs détaillées. Les sondes natives isolées sont limitées à 20 secondes chacune : imports, ouverture brève du microphone sans enregistrement, présence d'une voix française SAPI et observation des fenêtres/onglets Explorateur sans les activer. Un avertissement Explorateur avant l'ouverture du dossier d'essai peut simplement signifier qu'aucune fenêtre n'était encore ouverte.

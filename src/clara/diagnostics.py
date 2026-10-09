@@ -130,7 +130,7 @@ def collect(folder, stage, probes=None, launcher_log=None, config_path=None):
         report["collection_errors"].append(traceback.format_exc())
         if (config_path or folder / "config.json").is_file():
             contents["config-invalid.txt"] = tail(config_path or folder / "config.json")
-    paths = {name: folder / name for name in ["measurements.jsonl", "ollama.log"]}
+    paths = {name: folder / name for name in ["measurements.jsonl", "ollama.log", "journey.json", "journey.log"]}
     if launcher_log:
         paths["launcher.log"] = launcher_log
     for name, path in paths.items():
