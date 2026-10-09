@@ -10,6 +10,14 @@ Dans le dossier cloné avec Git/Fork, lancer **`start-clara.cmd`**. Le script cr
 
 Le panneau n'accapare pas le focus en mode vocal. Garder la fenêtre Explorateur d'essai active, avec un seul onglet. Les onglets multiples ou une observation indisponible bloquent la résolution ; le prototype ne choisit pas un onglet arbitraire.
 
+## Rapport automatique pour les bugs
+
+Le même lancement `start-clara.cmd` crée **`diagnostic-clara.zip` à la racine du dépôt**, sans étape supplémentaire. Il est actualisé toutes les 30 secondes pendant l'application, puis à la fermeture ou après un échec d'installation/préparation/lancement. En cas de problème, joindre simplement ce ZIP à la conversation ; le lancement et le journal restent aussi consultables dans `%LOCALAPPDATA%\ClaraVibeOS\launcher.log`.
+
+Le rapport regroupe les versions des dépendances dans l'environnement installé, les empreintes du code, la configuration, la présence des fichiers modèles, les sondes de disponibilité, les dernières mesures/transcriptions et l'historique récent avec les erreurs détaillées. Les sondes natives isolées sont limitées à 20 secondes chacune : imports, ouverture brève du microphone sans enregistrement, présence d'une voix française SAPI et observation des fenêtres/onglets Explorateur sans les activer. Un avertissement Explorateur avant l'ouverture du dossier d'essai peut simplement signifier qu'aucune fenêtre n'était encore ouverte.
+
+Le ZIP peut contenir tes transcriptions, noms de fichiers et chemins ; il reste local et n'est jamais envoyé automatiquement. Il n'inclut ni audio, ni contenu des documents, ni variables d'environnement. L'export ne modifie pas l'historique et conserve au plus 100 lignes récentes par table et les derniers 256 Kio de chaque journal. Un diagnostic de disponibilité ne valide pas la qualité vocale, les modèles chargés, ni les performances. Si Python ne peut même pas démarrer ou si le dossier n'est pas accessible en écriture, le rapport ne peut pas être généré.
+
 ## Parcours à prononcer
 
 1. « Salut Clara ».

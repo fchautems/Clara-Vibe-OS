@@ -4,6 +4,7 @@ from __future__ import annotations
 import json
 import queue
 import time
+import traceback
 from collections import deque
 
 from .planner import normal
@@ -128,6 +129,7 @@ def capture_worker(config, active, speaking, shutdown, controls, utterances, dia
                         diagnostics.put(("audio_error", "Transcription occupée ; demande abandonnée."))
     except Exception as exc:
         diagnostics.put(("audio_fatal", str(exc)))
+        diagnostics.put(("audio_traceback", traceback.format_exc()))
 
 
 def stt_worker(config, shutdown, jobs, results, active):
@@ -153,7 +155,7 @@ def stt_worker(config, shutdown, jobs, results, active):
             text = " ".join(s.text.strip() for s in segments).strip()
             results.put({**job, "text": text, "stt_finished_at": time.monotonic()})
         except Exception as exc:
-            results.put({**{k: v for k, v in job.items() if k != "pcm"}, "error": str(exc)})
+            results.put({**{k: v for k, v in job.items() if k != "pcm"}, "error": str(exc), "traceback": traceback.format_exc()})
 
 
 def voice_worker(shutdown, commands, speaking, interrupt, diagnostics, epoch):
@@ -186,5 +188,6 @@ def voice_worker(shutdown, commands, speaking, interrupt, diagnostics, epoch):
         pythoncom.CoUninitialize()
     except Exception as exc:
         diagnostics.put(("voice_error", str(exc)))
+        diagnostics.put(("voice_traceback", traceback.format_exc()))
     finally:
         speaking.clear()

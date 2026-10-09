@@ -77,6 +77,10 @@ def main():
     view.appendPlainText(model_message)
     # Runtime telemetry is separate from action journal, never sent to the model.
     telemetry = (data_dir() / "measurements.jsonl").open("a", encoding="utf-8")
+    telemetry.write(json.dumps({"wall_time": time.time(), "kind": "startup", "python": sys.version,
+                                "ollama_ready": ready, "ollama_message": model_message,
+                                "text_only": args.text_only}, ensure_ascii=False) + "\n")
+    telemetry.flush()
     import psutil
     process = psutil.Process()
     last_resources = 0.
@@ -89,6 +93,10 @@ def main():
                     kind, message = audio.diagnostics.get_nowait()
                 except queue.Empty:
                     break
+                telemetry.write(json.dumps({"wall_time": time.time(), "kind": kind, "message": message}, ensure_ascii=False) + "\n")
+                telemetry.flush()
+                if kind.endswith("_traceback"):
+                    continue
                 state.setText(message)
                 view.appendPlainText(message)
                 if kind == "audio_fatal":
@@ -126,7 +134,7 @@ def main():
                 view.appendPlainText(names)
                 if audio:
                     audio.say(message + " " + names)
-            if event["kind"] in {"transcript", "result", "control_timing", "stop"}:
+            if event["kind"] in {"transcript", "result", "control_timing", "stop", "error", "fatal", "question", "session"}:
                 telemetry.write(json.dumps({"wall_time": time.time(), **event}, ensure_ascii=False) + "\n")
                 telemetry.flush()
         if time.monotonic() - last_resources >= 5:

@@ -3,6 +3,7 @@ from __future__ import annotations
 import queue
 import threading
 import time
+import traceback
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -248,8 +249,9 @@ class Engine:
                                 self._question(ticket.wait, choices.question)
                 except Exception as exc:
                     err = exc if isinstance(exc, ClaraError) else ClaraError("INTERNAL_ERROR", "Erreur du composant ; aucune étape suivante.", "EXECUTION")
-                    journal.event("request_error", {"request_id": ticket.request_id, "code": err.code, "message": str(err)})
-                    self.emit("error", str(err), request_id=ticket.request_id, code=err.code)
+                    details = traceback.format_exc()
+                    journal.event("request_error", {"request_id": ticket.request_id, "code": err.code, "message": str(err), "traceback": details})
+                    self.emit("error", str(err), request_id=ticket.request_id, code=err.code, traceback=details)
                     with self.gate.lock:
                         self.gate.cancel(ticket)
                         if self.current is ticket:
@@ -260,7 +262,7 @@ class Engine:
         except Exception as exc:
             self.failed = True
             self.session = False
-            self.emit("fatal", str(exc))
+            self.emit("fatal", str(exc), traceback=traceback.format_exc())
             self.ready.set()
         finally:
             if journal:
@@ -325,6 +327,7 @@ class Engine:
                     t.attempts[step["step_id"]] = action["attempt_no"] + 1
                 return
             call_at = time.monotonic()
+            exception_trace = None
             try:
                 if native:
                     native()
@@ -332,12 +335,15 @@ class Engine:
                     observation = observer()
                 result = action_result(aid, observation)
             except Exception as exc:
+                exception_trace = traceback.format_exc()
                 error = exc if isinstance(exc, ClaraError) else ClaraError("WINDOWS_FAILED", "L'appel Windows a échoué ; résultat incertain.", "EXECUTION")
                 result = action_result(aid, error=error, status="UNKNOWN" if native else "FAILED")
             finally:
                 with self.gate.lock:
                     t.admitted = False
             journal.finish(result)
+            if exception_trace:
+                journal.event("native_error", {"action_id": aid, "request_id": t.request_id, "traceback": exception_trace})
             journal.event("timing", {"request_id": t.request_id, "step_id": step["step_id"],
                           "acquired_at": t.started_at, "last_speech_at": t.last_speech_at,
                           "action_started_at": call_at, "result_at": time.monotonic()})

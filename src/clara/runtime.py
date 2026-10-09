@@ -113,7 +113,7 @@ class AudioRuntime:
                 self.engine.emit("ignored", "Transcription tardive abandonnée.")
                 continue
             if "error" in result:
-                self.engine.emit("error", "Transcription indisponible : " + result["error"])
+                self.engine.emit("error", "Transcription indisponible : " + result["error"], traceback=result.get("traceback"))
                 continue
             text = result["text"]
             for phrase in self.config["wake_phrases"]:
