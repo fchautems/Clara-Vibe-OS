@@ -242,7 +242,19 @@ class Engine:
             adapter = self.adapter_factory()
             journal = Journal(self.journal_path)
             self.ready.set()
+            last_context = None
+            next_poll = 0.
             while not self.closed.is_set():
+                if time.monotonic() >= next_poll:
+                    try:
+                        snapshot = adapter.context()
+                        directory = snapshot["current_directory"]["path"]
+                    except Exception:
+                        directory = None
+                    if directory != last_context:
+                        self.emit("directory", directory or "Dossier non observable", path=directory)
+                        last_context = directory
+                    next_poll = time.monotonic() + 1
                 try:
                     ticket = self.jobs.get(timeout=.1)
                 except queue.Empty:
@@ -297,8 +309,14 @@ class Engine:
                 self.latest = None
                 self.sets.clear()
             steps, origin = self.planner.interpret(t.text, t.context, self.latest)
-            if context_error and any(s["intent_id"] not in {"window.list", "window.activate"} for s in steps):
-                raise context_error
+            if context_error:
+                first = steps[0]
+                selector = first["arguments"].get("target", {})
+                absolute_navigation = first["intent_id"] == "explorer.navigate" and (
+                    "path" in selector or normal(selector.get("query", "")) in
+                    {normal(k) for k in self.config["folder_aliases"]})
+                if not absolute_navigation and any(s["intent_id"] not in {"window.list", "window.activate"} for s in steps):
+                    raise context_error
             if t.cancelled:
                 journal.event("late_plan", {"request_id": t.request_id})
                 return
@@ -311,7 +329,7 @@ class Engine:
                 return
             step = t.steps[t.index]
             # Revalidation also occurs after a clarification or replacement refusal.
-            if step["intent_id"] not in {"window.list", "window.activate"}:
+            if t.context.get("window") and step["intent_id"] not in {"window.list", "window.activate"}:
                 adapter.ensure_context(t.context)
             observation, refs, native, observer = self._prepare(t, step, adapter, resolver)
             generation = t.generation
@@ -325,7 +343,7 @@ class Engine:
                 raise ClaraError("DUPLICATE", "Étape déjà enregistrée ; aucun nouvel effet.", "STORAGE")
             if native:
                 # Recheck after the last disk wait, before admission and native call.
-                if step["intent_id"] != "window.activate":
+                if t.context.get("window") and step["intent_id"] != "window.activate":
                     adapter.ensure_context(t.context)
                 for ref in refs:
                     if ref["kind"] != "window":
@@ -346,7 +364,7 @@ class Engine:
                 result = action_result(aid, observation)
             except Exception as exc:
                 exception_trace = traceback.format_exc()
-                error = exc if isinstance(exc, ClaraError) else ClaraError("WINDOWS_FAILED", "L'appel Windows a échoué ; résultat incertain.", "EXECUTION")
+                error = exc if isinstance(exc, ClaraError) else ClaraError("WINDOWS_FAILED", f"L’appel Windows a échoué : {exc}. Résultat non confirmé.", "EXECUTION")
                 result = action_result(aid, error=error, status="UNKNOWN" if native else "FAILED")
             finally:
                 with self.gate.lock:
@@ -407,6 +425,7 @@ class Engine:
             def nav_observer():
                 fresh, observation = adapter.observe_navigation(t.context, path)
                 t.context = fresh
+                self.emit("directory", str(path), path=str(path))
                 return observation
             return None, [ref], adapter.prepare_navigation(t.context, path), nav_observer
         if intent == "window.list":

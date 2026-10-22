@@ -7,7 +7,7 @@ import urllib.request
 from pathlib import Path, PureWindowsPath
 
 from .contracts import AVAILABLE, SCHEMA, ClaraError, validate, validate_plan
-from .catalogue import canonicalize
+from .catalogue import canonicalize, similar_command
 from .support import known_unavailable, unavailable_message
 
 
@@ -17,7 +17,7 @@ def normal(text: str) -> str:
 
 
 def has_negation(text: str) -> bool:
-    return bool(re.search(r"\b(pas|jamais|sans|sauf|ne|non)\b|\bn'", normal(text)))
+    return bool(re.search(r"\b(pas|jamais|sans|sauf|ne|non|ni|aucun|aucune)\b|\bn'", normal(text)))
 
 
 def plan(items: list[tuple[str, dict]]) -> dict:
@@ -29,11 +29,11 @@ def plan(items: list[tuple[str, dict]]) -> dict:
     return {"kind": "PLAN", "steps": steps}
 
 
-def deterministic(text: str, latest: str | None = None) -> dict | None:
+def deterministic(text: str, latest: str | None = None, catalogue_path=None) -> dict | None:
     n = normal(text)
     if has_negation(text):
         return {"kind": "UNKNOWN", "reason_code": "OUT_OF_SCOPE"}
-    n = canonicalize(n)
+    n = canonicalize(n, catalogue_path)
     unavailable = known_unavailable(n)
     if unavailable:
         return {"kind": "UNAVAILABLE", "intent_id": unavailable}
@@ -58,6 +58,9 @@ def deterministic(text: str, latest: str | None = None) -> dict | None:
             return {"kind": "UNKNOWN", "reason_code": "INCOMPLETE"}
         return plan([("files.select_recent", {"result_set_id": latest, "date_field": "modified"}),
                      ("files.open", {"source_step": "s1"})])
+    m = re.fullmatch(r"(?:va dans|ouvre le lecteur) ([a-z])(?::[\\/]?)?", n)
+    if m:
+        return plan([("explorer.navigate", {"target": {"path": m[1].upper() + ":\\"}})])
     m = re.fullmatch(r"(?:ouvre|va dans|va au) (?:le dossier|dossier) (.+)", n)
     if m:
         return plan([("explorer.navigate", {"target": selector(m[1])})])
@@ -75,13 +78,24 @@ class Planner:
         self.config, self.ollama_ready = config, ollama_ready
 
     def interpret(self, text: str, context: dict, latest=None) -> tuple[list[dict], str]:
-        proposal = deterministic(text, latest)
+        n = normal(text)
+        if re.search(r"\b(?:ou|plutot)\b", n):
+            raise ClaraError("INCOMPLETE", "Quelle action et quelle destination souhaites-tu ? Reformule avec un seul choix.", "INTENT")
+        proposal = deterministic(text, latest, self.config.get("catalogue_path"))
         origin = "DETERMINISTIC"
+        if proposal is None:
+            command, ambiguous = similar_command(normal(text), self.config)
+            if ambiguous:
+                raise ClaraError("INCOMPLETE", "Plusieurs commandes sont proches. Précise l'action et la destination.", "INTENT")
+            if command:
+                proposal = deterministic(command, latest)
+                origin = "LOCAL_SIMILARITY"
         if proposal is None:
             if not self.ollama_ready:
                 raise ClaraError("CAPABILITY_UNAVAILABLE", "Modèle local indisponible ; reformule avec une commande simple.", "INTENT")
             proposal = self._model(text, context, latest)
             origin = "LOCAL_MODEL"
+        validate("ModelProposal", proposal)
         if proposal.get("kind") == "CLARIFICATION":
             # A model cannot invent an executable continuation or authority.
             raise ClaraError("INCOMPLETE", proposal["question"], "INTENT")
@@ -94,7 +108,10 @@ class Planner:
         # Absolute paths must come from the explicit utterance, not a hallucination.
         def check_paths(value):
             if isinstance(value, dict):
-                if "path" in value and normal(value["path"]) not in normal(text):
+                drive = re.fullmatch(r"([a-zA-Z]):\\", value.get("path", ""))
+                explicit_drive = drive and origin != "LOCAL_MODEL" and re.search(
+                    r"\b" + drive[1].lower() + r"(?::)?(?:[\s,;!?]|$)", normal(text))
+                if "path" in value and normal(value["path"]) not in normal(text) and not explicit_drive:
                     raise ClaraError("PLAN_INVALID", "Chemin absent de la demande explicite.", "INTENT")
                 for child in value.values():
                     check_paths(child)

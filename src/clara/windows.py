@@ -30,6 +30,7 @@ class WindowsAdapter:
         import win32com.client
         import win32gui
         self.com, self.gui = pythoncom, win32gui
+        self.last_hwnd = None
         pythoncom.CoInitializeEx(pythoncom.COINIT_APARTMENTTHREADED)
         self.shell = win32com.client.Dispatch("Shell.Application")
         self.probe = ThreadPoolExecutor(max_workers=1, thread_name_prefix="clara-uia-mta")
@@ -50,10 +51,16 @@ class WindowsAdapter:
 
     def context(self):
         foreground = self.gui.GetForegroundWindow()
-        matches = [w for w in self._windows() if w[0] == foreground]
+        windows = self._windows()
+        matches = [w for w in windows if w[0] == foreground]
+        if not matches and self.gui.GetClassName(foreground) not in {"CabinetWClass", "ExploreWClass"}:
+            matches = [w for w in windows if w[0] == self.last_hwnd]
+            if not matches and len(windows) == 1:
+                matches = windows
         if len(matches) != 1:
             raise ClaraError("CONTEXT_AMBIGUOUS", "Active une fenêtre Explorateur unique avec un seul onglet.")
         hwnd, folder, window = matches[0]
+        self.last_hwnd = hwnd
         try:
             count = self.probe.submit(tab_count, hwnd).result(timeout=2)
         except Exception as exc:
@@ -80,29 +87,49 @@ class WindowsAdapter:
                 or fresh["current_directory"]["path"] != expected["current_directory"]["path"]):
             raise ClaraError("WINDOW_CHANGED", "La fenêtre ou le dossier courant a changé.")
 
+    def _foreground(self, hwnd):
+        self.gui.ShowWindow(hwnd, 9)  # SW_RESTORE, including minimized windows.
+        self.gui.SetForegroundWindow(hwnd)
+        if self.gui.GetForegroundWindow() != hwnd or not self.gui.IsWindowVisible(hwnd):
+            raise ClaraError("OBSERVATION_UNKNOWN", "Windows refuse le premier plan ; action non confirmée.", "EXECUTION")
+
     def prepare_navigation(self, context, path: Path):
+        if not context.get("window"):
+            # Called only after resolution, journal commit and stop admission.
+            return lambda: self.shell.Explore(str(path))
         self.ensure_context(context)
         matches = [x for x in self._windows() if str(x[0]) == context["window"]["window_id"]]
         if len(matches) != 1:
             raise ClaraError("WINDOW_CHANGED", "Fenêtre Explorateur non identifiable.")
         window = matches[0][2]
         # The returned callable is the native call itself; no lookup after admission.
-        return lambda: window.Navigate2(str(path))
+        def navigate():
+            self._foreground(int(window.HWND))
+            window.Navigate2(str(path))
+        return navigate
 
     def observe_navigation(self, context, path: Path):
         end = time.monotonic() + 5
+        expected = context.get("window")
         while time.monotonic() < end:
             self.com.PumpWaitingMessages()
-            fresh = self.context()
-            if fresh["window"]["window_id"] == context["window"]["window_id"] and Path(fresh["current_directory"]["path"]) == path:
-                return fresh, observed([fresh["current_directory"]], f"Dossier courant : {path.name}")
+            matches = [w for w in self._windows() if w[1] == path and
+                       (not expected or str(w[0]) == expected["window_id"])]
+            if len(matches) == 1:
+                self._foreground(matches[0][0])
+                fresh = self.context()
+                if Path(fresh["current_directory"]["path"]) == path:
+                    return fresh, observed([fresh["current_directory"]], f"Dossier courant : {path}")
             time.sleep(.05)
-        raise ClaraError("OBSERVATION_UNKNOWN", "Navigation envoyée ; résultat non confirmé.", "EXECUTION")
+        raise ClaraError("OBSERVATION_UNKNOWN", "Navigation envoyée ; dossier et fenêtre visible non confirmés.", "EXECUTION")
 
     def prepare_open(self, context, path: Path):
         self.ensure_context(context)
         # ShellExecute with the literal path; never cmd.exe, PowerShell or model code.
-        return lambda: os.startfile(str(path), "open")
+        def open_file():
+            self._foreground(int(context["window"]["window_id"]))
+            os.startfile(str(path), "open")
+        return open_file
 
     def observe_open(self, ref: dict):
         name = normal(Path(ref["path"]).stem)
@@ -128,7 +155,7 @@ class WindowsAdapter:
         hwnd = int(ref["window_id"])
         if not self.gui.IsWindow(hwnd):
             raise ClaraError("WINDOW_CHANGED", "Cette fenêtre n'existe plus.")
-        return lambda: self.gui.SetForegroundWindow(hwnd)
+        return lambda: self._foreground(hwnd)
 
     def observe_activate(self, ref):
         if self.gui.GetForegroundWindow() != int(ref["window_id"]):

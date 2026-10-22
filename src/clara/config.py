@@ -18,7 +18,8 @@ def defaults() -> dict:
             "speech_rms_threshold": 350, "vosk_model": str(root / "models/vosk-model-small-fr-0.22"),
             "whisper_model": str(root / "models/whisper-small"),
             "ollama_model": "qwen2.5:3b", "ollama_port": 11435,
-            "ollama_timeout_seconds": 15, "max_results": 128,
+            "ollama_timeout_seconds": 15, "catalogue_path": str(root / "formulations_fr.json"),
+            "similarity_threshold": .86, "similarity_margin": .06, "max_results": 128,
             "folder_aliases": {"documents": str(Path.home() / "Documents"),
                                "téléchargements": str(Path.home() / "Downloads")},
             "open_extensions": ["pdf", "txt", "md", "png", "jpg", "jpeg", "csv",
@@ -43,7 +44,10 @@ def check(value: dict) -> dict:
         for k, v in value["folder_aliases"].items()
     ):
         raise ValueError("Les alias doivent désigner des chemins absolus.")
-    for key in ("vosk_model", "whisper_model", "ollama_model"):
+    for key in ("similarity_threshold", "similarity_margin"):
+        if type(value[key]) not in (int, float) or not 0 < value[key] <= 1:
+            raise ValueError(f"Réglage invalide : {key}")
+    for key in ("catalogue_path", "vosk_model", "whisper_model", "ollama_model"):
         if not isinstance(value[key], str) or not value[key].strip():
             raise ValueError(f"Réglage invalide : {key}")
     if value["microphone"] is not None and type(value["microphone"]) is not int:
@@ -57,7 +61,18 @@ def load(path: Path) -> dict:
     if not path.exists():
         path.parent.mkdir(parents=True, exist_ok=True)
         save(path, defaults())
-    return check(json.loads(path.read_text(encoding="utf-8")))
+    value = json.loads(path.read_text(encoding="utf-8"))
+    # Add only this release's new keys; keep rejecting other incomplete configs.
+    for key in ("catalogue_path", "similarity_threshold", "similarity_margin"):
+        value.setdefault(key, defaults()[key])
+    check(value)
+    from importlib.resources import files
+    catalogue = Path(value["catalogue_path"])
+    if not catalogue.exists():
+        catalogue.parent.mkdir(parents=True, exist_ok=True)
+        catalogue.write_text(files("clara").joinpath("resources/formulations_fr.json").read_text(encoding="utf-8"), encoding="utf-8")
+    save(path, value)
+    return value
 
 
 def save(path: Path, value: dict) -> None:

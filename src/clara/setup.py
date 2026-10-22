@@ -47,7 +47,11 @@ def create_fixture(folder: Path):
 
 
 def main():
-    config = load(data_dir() / "config.json")
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--config", type=Path, default=data_dir() / "config.json")
+    args = parser.parse_args()
+    config = load(args.config)
     vosk_path = Path(config["vosk_model"])
     if not vosk_path.is_dir():
         vosk_path.parent.mkdir(parents=True, exist_ok=True)
@@ -77,14 +81,20 @@ def main():
         snapshot_download(repo, revision=revision, local_dir=str(whisper),
                           allow_patterns=["config.json", "model.bin", "tokenizer.json", "vocabulary.*", "preprocessor_config.json"])
         (whisper / "clara-download.json").write_text(json.dumps({"repo": repo, "revision": revision}), encoding="utf-8")
-    executable = shutil.which("ollama")
-    if executable:
-        print("Vérification/acquisition du modèle local Ollama…", flush=True)
-        subprocess.run([executable, "pull", config["ollama_model"]], check=True)
-    else:
-        print("Ollama absent : le chemin déterministe reste utilisable ; formulations libres indisponibles.")
+    from .local_model import LocalModel
+    local = LocalModel(config, data_dir())
+    try:
+        ready, message = local.start(prepare=True, callback=lambda text: print(text, flush=True))
+    finally:
+        local.close()
     create_fixture(data_dir() / "fixtures")
-    print("Préparation terminée. Les modèles ne seront pas téléchargés pendant les commandes.")
+    print("Préparation complète : Ollama et modèle vérifiés." if ready else
+          "Préparation partielle : commandes locales disponibles, repli Ollama indisponible.", flush=True)
+    marker = data_dir() / "setup-complete.json"
+    if ready:
+        marker.write_text(json.dumps({"version": "0.2.0", "ollama_ready": True}), encoding="utf-8")
+    else:
+        marker.unlink(missing_ok=True)
 
 
 if __name__ == "__main__":

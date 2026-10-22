@@ -1,0 +1,22 @@
+[
+  {"text":"affiche donc le disque f","command":"ouvre le lecteur f"},
+  {"text":"affiche ce disque g","command":"ouvre le lecteur g"},
+  {"text":"ouvree le lecteur h","command":"ouvre le lecteur h"},
+  {"text":"affiche ce dossier projets","command":"ouvre le dossier projets"},
+  {"text":"ouvree le dossier factures 2026","command":"ouvre le dossier factures 2026"},
+  {"text":"entre donc dans le dossier archives","command":"ouvre le dossier archives"},
+  {"text":"affiche ce fichier notes","command":"ouvre le fichier notes"},
+  {"text":"affiche ce document rapport","command":"ouvre le fichier rapport"},
+  {"text":"recherchhe le fichier rapport","command":"cherche le fichier rapport"},
+  {"text":"ferme le dossier projets","command":null},
+  {"text":"supprime le fichier notes","command":null},
+  {"text":"deplace le dossier projets","command":null},
+  {"text":"renomme le fichier notes","command":null},
+  {"text":"n'ouvre pas le lecteur f","command":null},
+  {"text":"affiche ce dossier sauf projets","command":null},
+  {"text":"affiche ce dossier projets ou archives","command":null},
+  {"text":"ouvre puis ferme le dossier projets","command":null},
+  {"text":"quelle heure est-il","command":null},
+  {"text":"emmene-moi un etage plus haut","command":null},
+  {"text":"","command":null}
+]

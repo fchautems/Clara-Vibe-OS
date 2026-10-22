@@ -1,14 +1,16 @@
-# Clara Vibe OS — premier prototype
+# Clara Vibe OS — prototype fiabilisé
+
+Mise à jour du 22 octobre 2026 : [changements, calibration et essais Windows restants](docs/FIABILISATION_02.md). Les corrections sont testées automatiquement ; la validation interactive sur le PC reste à faire.
 
 Assistant vocal Python local pour une session Windows interactive. Le premier parcours couvre activation, commandes enchaînées, contexte Explorateur, navigation, recherche dans le dossier courant, filtrage, sélection du plus récent, ouverture, choix vocal et stop. Le noyau est testé avec un adaptateur simulé ; microphone, COM/UIA, voix et performances réelles restent à valider sur le PC Windows.
 
 ## Démarrage
 
-Pré-requis : Windows 10/11, Python 3.11 recommandé (3.12/3.13 admis), casque et une voix française Windows SAPI. Ollama installé et accessible dans PATH permet les formulations libres ; s'il manque, les commandes déterministes ci-dessous restent disponibles.
+Pré-requis : Windows 10/11, Python 3.11 recommandé (3.12/3.13 admis), casque et une voix française Windows SAPI. Le lancement prépare Ollama s’il manque et télécharge le modèle `qwen2.5:3b`. Un échec conserve les commandes locales et affiche un mode dégradé.
 
 Dans le dossier cloné avec Git/Fork, lancer **`start-clara.cmd`**. Le script crée un environnement isolé, installe les dépendances verrouillées dans `requirements-windows.lock`, prépare les modèles français et ouvre automatiquement le dossier d'essai. Le premier lancement nécessite Internet et de l'espace pour les modèles ; les commandes suivantes utilisent les modèles déjà locaux. L'installation ne configure pas de démarrage automatique de Windows et ne demande pas de droits administrateur.
 
-Le panneau n'accapare pas le focus en mode vocal. Garder la fenêtre Explorateur d'essai active, avec un seul onglet. Les onglets multiples ou une observation indisponible bloquent la résolution ; le prototype ne choisit pas un onglet arbitraire.
+Le panneau n'accapare pas le focus en mode vocal. Une commande comme « va dans F » peut ouvrir un Explorateur. Le chemin réobservé reste affiché dans le panneau. Utiliser un seul onglet par fenêtre. Les onglets multiples ou une observation indisponible bloquent la résolution ; le prototype ne choisit pas un onglet arbitraire.
 
 ## Rapport automatique pour les bugs
 
@@ -48,7 +50,7 @@ Les phrases de réveil/fin, le délai de silence, le microphone, les alias de do
 
 ## Catalogue statique de formulations
 
-Un catalogue préchargé reconnaît 56 gabarits (184 variantes avec les extensions), en plus des règles initiales. Il accepte les accents, « Clara », les demandes comme « peux-tu », « j'aimerais » et « s'il te plaît ». Exemples utilisables sans Ollama :
+Un catalogue préchargé reconnaît 66 gabarits, en plus des règles initiales et de la recherche par similarité. Il accepte les accents, « Clara », les demandes comme « peux-tu », « j'aimerais » et « s'il te plaît ». Exemples utilisables sans Ollama :
 
 | Formulation | Commande comprise |
 |---|---|
@@ -59,7 +61,7 @@ Un catalogue préchargé reconnaît 56 gabarits (184 variantes avec les extensio
 | « Ouvre le dernier fichier » | Ouvrir le plus récemment modifié parmi les résultats précédents |
 | « Liste les PDF et ouvre le dernier » | Filtrer puis ouvrir le plus récemment modifié |
 
-La liste est versionnée dans `src/clara/resources/formulations_fr.json` et chargée une fois par processus. Elle contient des formulations et paramètres, jamais les chemins observés, résultats ou fenêtres d'une ancienne commande. Les cibles sont toujours résolues et vérifiées à nouveau ; les ambiguïtés et négations gardent les contrôles existants. Les demandes non reconnues suivent le chemin Ollama habituel s'il est disponible. Ce catalogue n'apprend pas automatiquement et ne reconnaît pas toutes les paraphrases ; il n'ajoute pas le lancement d'applications comme Firefox. Redémarrer Clara après modification du catalogue.
+La liste initiale est versionnée dans `src/clara/resources/formulations_fr.json`. Elle est copiée dans `%LOCALAPPDATA%\ClaraVibeOS\formulations_fr.json`, modifiable et chargée une fois par processus. Elle contient des formulations et paramètres, jamais les chemins observés, résultats ou fenêtres d'une ancienne commande. Les cibles sont toujours résolues et vérifiées à nouveau ; les ambiguïtés et négations gardent les contrôles existants. Les demandes sans correspondance directe passent à la similarité locale, puis à Ollama si la confiance reste insuffisante. Ce catalogue n'apprend pas automatiquement et ne reconnaît pas toutes les paraphrases ; il n'ajoute pas le lancement d'applications comme Firefox. Redémarrer Clara après modification du catalogue.
 
 ## Limites de ce prototype
 
@@ -74,7 +76,7 @@ La liste est versionnée dans `src/clara/resources/formulations_fr.json` et char
 
 ## Isolation et mesures
 
-Ollama démarre dans une instance dédiée sur `127.0.0.1:11435`, avec `OLLAMA_NO_CLOUD=1` avant lancement et un modèle local présent. Si ce port est occupé, l'instance existante n'est pas réutilisée : seul le chemin déterministe reste actif. Les paramètres du serveur Ollama partagé de l'utilisateur ne sont pas modifiés.
+Ollama démarre dans une instance dédiée sur `127.0.0.1:11435`, avec `OLLAMA_NO_CLOUD=1` avant lancement. La présence du serveur et du modèle puis une génération de contrôle sont vérifiées. Si ce port est occupé, l'instance existante n'est pas réutilisée : seul le chemin déterministe reste actif. Les paramètres du serveur Ollama partagé de l'utilisateur ne sont pas modifiés.
 
 Le dossier utilisateur contient `history.sqlite`, `measurements.jsonl`, configuration et modèles. Transcriptions, plans, cibles et résultats restent locaux. L'audio brut est transitoire, sans fichier d'enregistrement. Les mesures distinguent dernier échantillon de parole, acquisition, fin STT, début d'action et résultat. Stop distingue reconnaissance et acceptation. RAM du processus et de ses enfants, CPU système et état de session sont échantillonnés toutes les cinq secondes. La GPU n'est pas mesurée automatiquement. Les journaux du prototype n'ont pas encore de purge automatique ; ils se suppriment manuellement une fois les essais archivés.
 

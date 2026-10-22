@@ -115,10 +115,8 @@ def main():
                 run([str(python), "-m", "pip", "install", "--no-deps", "-e", "."])
                 marker.write_text("0.1.0")
             stage = "préparation des modèles"
-            ready = folder / "setup-complete.json"
-            if not ready.exists():
-                run([str(python), "-m", "clara.setup"])
-                ready.write_text(json.dumps({"version": "0.1.0"}))
+            # Recheck every launch; an old marker cannot prove server/model readiness.
+            run([str(python), "-m", "clara.setup", "--config", str(config_path)])
             stage = "diagnostic de disponibilité"
             config = json.loads(config_path.read_text(encoding="utf-8"))
             for name in ["imports", "microphone", "sapi", "explorer"]:

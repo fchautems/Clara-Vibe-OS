@@ -14,8 +14,8 @@ class StaticCatalogue(unittest.TestCase):
             for template in entry["phrases"]:
                 extensions = data["extensions"] if "{extension}" in template else ["pdf"]
                 for extension in extensions:
-                    phrase = template.format(query="rapport 2025", extension=extension)
-                    command = entry["command"].format(query="rapport 2025", extension=data["extensions"][extension])
+                    phrase = template.format(query="rapport 2025", drive="f", extension=extension)
+                    command = entry["command"].format(query="rapport 2025", drive="f", extension=data["extensions"][extension])
                     with self.subTest(phrase=phrase):
                         actual = deterministic(phrase, "previous-results")
                         self.assertEqual(actual, deterministic(command, "previous-results"))

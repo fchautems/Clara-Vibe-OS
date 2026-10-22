@@ -1,6 +1,17 @@
 # Clara Vibe OS — état du projet
 
-Mise à jour : 2026-10-09
+Mise à jour : 2026-10-22
+
+## Intervention du 2026-10-22 — fiabilisation livrée
+- Base lue : `cab89914af25e479b0071e78748cc47f5af6f0dc`. Aucun AGENTS.md ni MODEL_GUIDE.md dans l'arbre du dépôt ; aucun outil Brain accessible. Branche de livraison : `codex/fiabilisation-prototype`.
+- **État vérifié** : trois volets implémentés en Python. Navigation absolue sans Explorateur initial, restauration/premier plan et chemin réobservés avant réussite ; chemin persistant dans le panneau. Contexte Explorateur retrouvé après une ouverture de document. Les erreurs et observations incertaines restent distinctes de SUCCEEDED.
+- **Compréhension** : catalogue utilisateur JSON persistant, 66 gabarits, métadonnées intentions/paramètres, correspondance directe → similarité → Ollama. Lettre de lecteur séparée des noms. Négations refusées, alternatives ou scores concurrents demandant une précision. Seuil 0,86 et marge 0,06 configurables, migration conservant les réglages antérieurs.
+- **Ollama** : préparation d'une copie privée officielle Windows x64 s'il manque, acquisition du modèle `qwen2.5:3b`, état programme/serveur/modèle et génération de contrôle. Aucun téléchargement pendant une commande. Préparation partielle et commandes locales maintenues en cas d'échec. Ancien marqueur ne court-circuite plus les contrôles. État et catalogue inclus dans le diagnostic.
+- **Contrôles exécutés** : 110 tests automatisés sur Linux/Python 3.12 réussis ; compilation de src/scripts/tests et `git diff --check` réussis. Le message « installation error: wheel unavailable » dans la suite appartient à un test d'échec simulé attendu. Calibration sur 20 cas : 9 positifs reconnus et 0 acceptation erronée parmi 11 contre-exemples à 0,86. HTTP de repli réellement exercé contre un serveur simulé sur boucle locale, sans inférence réelle.
+- **Blocages / limites** : aucune session Windows ni vrai modèle Ollama accessible ici. Installation/téléchargement natifs, COM/UIA, focus, rendu du panneau, microphone, document visible et compréhension réelle du modèle restent non validés. Modèle 3B choisi pour le PC déclaré, accélération GPU non présumée. Le corpus de calibration est petit et ne mesure pas la reconnaissance vocale réelle.
+- **Prochaine action** : récupérer cette branche sur le PC, lancer `start-clara.cmd`, puis les essais à froid et la navigation enchaînée de `docs/FIABILISATION_02.md`. Exécuter `test-clara.cmd` et conserver `diagnostic-clara.zip`. Aucun changement de latence STT ni de voix dans cette intervention.
+
+Les sections suivantes conservent l'historique du prototype 0.1 ; les modifications ci-dessus et `docs/FIABILISATION_02.md` font référence pour la reprise actuelle.
 
 ## État vérifié
 - Prototype 0.1 implémenté sous `src/clara` : premier parcours vocal local pour l'Explorateur Windows. Code prêt pour essai sur le PC cible ; fonctionnement vocal/COM/UIA et performances réelles encore non validés.

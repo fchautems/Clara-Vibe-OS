@@ -124,13 +124,14 @@ def collect(folder, stage, probes=None, launcher_log=None, config_path=None):
         contents["config.json"] = json.dumps(config, ensure_ascii=False, indent=2)
         for key, required in [("vosk_model", ["am/final.mdl", "conf/model.conf"]), ("whisper_model", ["model.bin", "config.json", "tokenizer.json"])]:
             report["checks"][key] = {file: (Path(config[key]) / file).is_file() for file in required}
-        report["checks"]["ollama_executable"] = "FOUND" if shutil.which("ollama") else "MISSING"
+        from .local_model import LocalModel
+        report["checks"]["ollama_executable"] = "FOUND" if LocalModel(config, folder).executable() else "MISSING"
     except Exception:
         report["checks"]["config"] = "ERROR"
         report["collection_errors"].append(traceback.format_exc())
         if (config_path or folder / "config.json").is_file():
             contents["config-invalid.txt"] = tail(config_path or folder / "config.json")
-    paths = {name: folder / name for name in ["measurements.jsonl", "ollama.log", "journey.json", "journey.log"]}
+    paths = {name: folder / name for name in ["measurements.jsonl", "ollama.log", "ollama-status.json", "formulations_fr.json", "journey.json", "journey.log"]}
     if launcher_log:
         paths["launcher.log"] = launcher_log
     for name, path in paths.items():

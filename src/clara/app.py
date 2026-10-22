@@ -40,7 +40,7 @@ def main():
     except OSError:
         parser.exit(2, "Une instance Clara est déjà active, ou son port est occupé.\n")
     local = LocalModel(config, data_dir())
-    ready, model_message = local.start()
+    ready, model_message = local.start(callback=lambda text: print(text, flush=True))
     app = QApplication(sys.argv[:1])
     engine = Engine(config, Planner(config, ready), WindowsAdapter, data_dir() / "history.sqlite")
     audio = None if args.text_only else AudioRuntime(config, engine)
@@ -53,6 +53,13 @@ def main():
     layout = QVBoxLayout(root)
     state = QLabel("Démarrage — utilise un casque. Les essais haut-parleurs restent à valider.")
     layout.addWidget(state)
+    directory_label = QLabel("Dossier : non observé")
+    directory_label.setWordWrap(True)
+    directory_label.setTextFormat(Qt.TextFormat.PlainText)
+    layout.addWidget(directory_label)
+    model_label = QLabel(model_message)
+    model_label.setWordWrap(True)
+    layout.addWidget(model_label)
     view = QPlainTextEdit()
     view.setReadOnly(True)
     view.document().setMaximumBlockCount(500)
@@ -112,8 +119,13 @@ def main():
                 except queue.Empty:
                     break
             message = event["message"]
+            if event.get("code") == "LLM_FAILED":
+                model_label.setText("Ollama en erreur — commandes locales disponibles.")
+            if event["kind"] == "directory":
+                directory_label.setText("Dossier : " + (event.get("path") or "non observable"))
+                continue
             if message:
-                view.appendPlainText(message)
+                view.appendPlainText(("Demande comprise : " if event["kind"] == "plan" else "") + message)
             if event["kind"] == "session":
                 state.setText(message)
                 if audio and not engine.session:
