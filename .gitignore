@@ -10,3 +10,4 @@ config.local.json
 *.sqlite*
 *.log
 diagnostic-clara.zip*
+resultats-tests/

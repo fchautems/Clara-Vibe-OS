@@ -322,7 +322,7 @@ class Engine:
                 return
             t.steps = steps
             journal.event("interpretation", {"request_id": t.request_id, "text": t.text, "origin": origin, "steps": steps})
-            self.emit("plan", t.text, steps=steps, request_id=t.request_id)
+            self.emit("plan", t.text, steps=steps, origin=origin, request_id=t.request_id)
         resolver = Resolver(self.config)
         while t.index < len(t.steps):
             if t.cancelled or t.paused:

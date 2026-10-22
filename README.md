@@ -12,6 +12,10 @@ Dans le dossier cloné avec Git/Fork, lancer **`start-clara.cmd`**. Le script cr
 
 Le panneau n'accapare pas le focus en mode vocal. Une commande comme « va dans F » peut ouvrir un Explorateur. Le chemin réobservé reste affiché dans le panneau. Utiliser un seul onglet par fenêtre. Les onglets multiples ou une observation indisponible bloquent la résolution ; le prototype ne choisit pas un onglet arbitraire.
 
+## Tests sans voix avec captures
+
+Fermer Clara puis lancer **`test-clara-sans-voix.cmd`**. Ce mode exécute les vraies commandes Windows sur des fichiers d'essai et se ferme seul. Résultats : **`resultats-tests/journey.zip`**, avec rapport JSON, résumé et captures. Ajouter `--with-ollama` pour tester aussi le modèle local déjà préparé. [Détails et limites](docs/TESTS_SANS_VOIX.md).
+
 ## Rapport automatique pour les bugs
 
 ### Parcours automatique Windows

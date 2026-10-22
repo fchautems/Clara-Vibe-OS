@@ -2,6 +2,14 @@
 
 Mise à jour : 2026-10-22
 
+## Ajout du 2026-10-22 — parcours sans voix et preuves visuelles
+- Base relue : fiabilisation publiée `f0dfc46`, copie locale propre avant modification ; pas d'instructions AGENTS/MODEL_GUIDE supplémentaires ni outil Brain accessible.
+- **Changements** : `test-clara-sans-voix.cmd` lance un parcours puis se ferme. Quatre contrôles de compréhension et quatorze étapes Engine/Planner avec intentions, paramètres, origines et résultats observés. Captures des fenêtres autorisées après étapes et échecs, rapport JSON, résumé TXT et ZIP autonome dans `resultats-tests`. Statut des captures distinct de celui des actions ; aucune preuve visuelle inventée en cas d'échec de capture.
+- **Ollama** : `--with-ollama` ajoute une véritable demande de remontée par le modèle déjà local et exige l'origine LOCAL_MODEL. Aucune acquisition pendant le parcours ; exécution standard sans modèle. Port d'instance partagé pour empêcher une exécution concurrente avec Clara.
+- **Contrôles** : 118 tests automatisés Linux/Python 3.12 réussis, dont 8 nouveaux tests : archive/intentions/paramètres, captures simulées, panne de capture sans faux échec d'action, capture après UNKNOWN, origine du repli simulé, mode sans capture, fichier absent et exclusion de fichiers extérieurs/fenêtres étrangères. Compilation et diff vérifiés.
+- **Limites** : aucune exécution native Windows, capture réelle ni vraie inférence Ollama dans cette session. Les captures sont des preuves à examiner, pas une analyse d'image automatique. Le parcours part d'une fenêtre de fixtures ; lecteur à froid, panneau et voix restent des essais séparés. Ancien parcours automatique de lancement conservé ; la nouvelle commande déclenche explicitement chaque essai.
+- **Prochaine action** : sur le PC avec exécution locale accessible, fermer Clara, lancer `test-clara-sans-voix.cmd`, analyser `resultats-tests/journey.zip`, puis éventuellement relancer avec `--with-ollama`. Guide : `docs/TESTS_SANS_VOIX.md`.
+
 ## Intervention du 2026-10-22 — fiabilisation livrée
 - Base lue : `cab89914af25e479b0071e78748cc47f5af6f0dc`. Aucun AGENTS.md ni MODEL_GUIDE.md dans l'arbre du dépôt ; aucun outil Brain accessible. Branche de livraison : `codex/fiabilisation-prototype`.
 - **État vérifié** : trois volets implémentés en Python. Navigation absolue sans Explorateur initial, restauration/premier plan et chemin réobservés avant réussite ; chemin persistant dans le panneau. Contexte Explorateur retrouvé après une ouverture de document. Les erreurs et observations incertaines restent distinctes de SUCCEEDED.
