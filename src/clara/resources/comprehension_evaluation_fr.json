@@ -1,0 +1,1636 @@
+{
+  "version": 1,
+  "split": "evaluation",
+  "cases": [
+    {
+      "text": "ouvre le dossier projets",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.navigate",
+          "arguments": {
+            "target": {
+              "query": "projets"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "emmene-moi consulter le dossier projets",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.navigate",
+          "arguments": {
+            "target": {
+              "query": "projets"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "allons voir le dossier projets",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.navigate",
+          "arguments": {
+            "target": {
+              "query": "projets"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "j’ai besoin d’entrer dans le dossier projets",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.navigate",
+          "arguments": {
+            "target": {
+              "query": "projets"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "pour continuer accede au dossier projets",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.navigate",
+          "arguments": {
+            "target": {
+              "query": "projets"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "passe maintenant dans le dossier projets",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.navigate",
+          "arguments": {
+            "target": {
+              "query": "projets"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "peux-tu aller afficher le dossier projets",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.navigate",
+          "arguments": {
+            "target": {
+              "query": "projets"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "j’aimerais me rendre dans le dossier projets",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.navigate",
+          "arguments": {
+            "target": {
+              "query": "projets"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "affiche ce dossier projets",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.navigate",
+          "arguments": {
+            "target": {
+              "query": "projets"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "ouvree le dossier projets",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.navigate",
+          "arguments": {
+            "target": {
+              "query": "projets"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "va dans F",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.navigate",
+          "arguments": {
+            "target": {
+              "path": "F:\\"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "va dans G",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.navigate",
+          "arguments": {
+            "target": {
+              "path": "G:\\"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "emmene-moi sur H",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.navigate",
+          "arguments": {
+            "target": {
+              "path": "H:\\"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "je voudrais aller dans J",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.navigate",
+          "arguments": {
+            "target": {
+              "path": "J:\\"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "euh ouvre le lecteur K",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.navigate",
+          "arguments": {
+            "target": {
+              "path": "K:\\"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "affiche donc le disque F",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.navigate",
+          "arguments": {
+            "target": {
+              "path": "F:\\"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "je veux acceder au lecteur F",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.navigate",
+          "arguments": {
+            "target": {
+              "path": "F:\\"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "allons voir le disque F",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.navigate",
+          "arguments": {
+            "target": {
+              "path": "F:\\"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "fais apparaitre le lecteur F",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.navigate",
+          "arguments": {
+            "target": {
+              "path": "F:\\"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "on va naviguer sur le lecteur F",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.navigate",
+          "arguments": {
+            "target": {
+              "path": "F:\\"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "remonte au dossier parent",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.parent",
+          "arguments": {},
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "je veux sortir du dossier courant",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.parent",
+          "arguments": {},
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "on peut revenir au niveau du dessus",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.parent",
+          "arguments": {},
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "reviens au repertoire qui contient celui-ci",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.parent",
+          "arguments": {},
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "fais-moi remonter d’un cran",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.parent",
+          "arguments": {},
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "je veux retourner au dossier englobant",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.parent",
+          "arguments": {},
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "pour continuer retourne au niveau precedent",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.parent",
+          "arguments": {},
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "je voudrais passer dans le dossier parent",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.parent",
+          "arguments": {},
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "retournons au repertoire superieur",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.parent",
+          "arguments": {},
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "recule d’un niveau dans les dossiers",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.parent",
+          "arguments": {},
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "retour a l’explorateur",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "window.activate",
+          "arguments": {
+            "target": {
+              "query": "explorateur"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "je veux retrouver la fenetre des dossiers",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "window.activate",
+          "arguments": {
+            "target": {
+              "query": "explorateur"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "peux-tu replacer l’explorateur devant",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "window.activate",
+          "arguments": {
+            "target": {
+              "query": "explorateur"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "il faut repasser sur la fenetre explorateur",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "window.activate",
+          "arguments": {
+            "target": {
+              "query": "explorateur"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "fais revenir l’explorateur au premier plan",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "window.activate",
+          "arguments": {
+            "target": {
+              "query": "explorateur"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "je voudrais retrouver l’explorateur visible",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "window.activate",
+          "arguments": {
+            "target": {
+              "query": "explorateur"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "reprenons dans l’explorateur de fichiers",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "window.activate",
+          "arguments": {
+            "target": {
+              "query": "explorateur"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "j’ai besoin de revoir l’explorateur",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "window.activate",
+          "arguments": {
+            "target": {
+              "query": "explorateur"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "remets devant la fenetre de l’explorateur",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "window.activate",
+          "arguments": {
+            "target": {
+              "query": "explorateur"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "ramene-moi a l’explorateur",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "window.activate",
+          "arguments": {
+            "target": {
+              "query": "explorateur"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "liste les fenetres explorateur",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "window.list",
+          "arguments": {},
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "je veux connaitre les fenetres explorateur ouvertes",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "window.list",
+          "arguments": {},
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "peux-tu me montrer tous les explorateurs",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "window.list",
+          "arguments": {},
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "quels dossiers ont une fenetre ouverte",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "window.list",
+          "arguments": {},
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "donne-moi les fenetres de l’explorateur",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "window.list",
+          "arguments": {},
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "combien de fenetres explorateur sont ouvertes",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "window.list",
+          "arguments": {},
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "enumere tous les explorateurs ouverts",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "window.list",
+          "arguments": {},
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "je voudrais la liste des explorateurs",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "window.list",
+          "arguments": {},
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "presente-moi les fenetres explorateur ouvertes",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "window.list",
+          "arguments": {},
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "fais voir les explorateurs actuellement ouverts",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "window.list",
+          "arguments": {},
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "cherche le fichier rapport",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.search",
+          "arguments": {
+            "query": "rapport",
+            "scope": "current_folder"
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "aide-moi a retrouver le fichier rapport",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.search",
+          "arguments": {
+            "query": "rapport",
+            "scope": "current_folder"
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "je veux localiser le fichier rapport",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.search",
+          "arguments": {
+            "query": "rapport",
+            "scope": "current_folder"
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "il faut rechercher le fichier rapport",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.search",
+          "arguments": {
+            "query": "rapport",
+            "scope": "current_folder"
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "peux-tu me trouver le fichier rapport",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.search",
+          "arguments": {
+            "query": "rapport",
+            "scope": "current_folder"
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "repere ici le document rapport",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.search",
+          "arguments": {
+            "query": "rapport",
+            "scope": "current_folder"
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "fais-moi une recherche du fichier rapport",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.search",
+          "arguments": {
+            "query": "rapport",
+            "scope": "current_folder"
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "je voudrais savoir ou est le fichier rapport",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.search",
+          "arguments": {
+            "query": "rapport",
+            "scope": "current_folder"
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "retrouve donc le fichier rapport",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.search",
+          "arguments": {
+            "query": "rapport",
+            "scope": "current_folder"
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "essaie de localiser le document rapport",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.search",
+          "arguments": {
+            "query": "rapport",
+            "scope": "current_folder"
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "montre les PDF",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.filter",
+          "arguments": {
+            "scope": "current_folder",
+            "extension": "pdf"
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "j’ai besoin de voir les PDF ici",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.filter",
+          "arguments": {
+            "scope": "current_folder",
+            "extension": "pdf"
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "je veux afficher uniquement les PDF",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.filter",
+          "arguments": {
+            "scope": "current_folder",
+            "extension": "pdf"
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "peux-tu ne garder a l’affichage que les PDF",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.filter",
+          "arguments": {
+            "scope": "current_folder",
+            "extension": "pdf"
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "fais-moi la liste des documents PDF",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.filter",
+          "arguments": {
+            "scope": "current_folder",
+            "extension": "pdf"
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "limite l’affichage aux fichiers PDF",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.filter",
+          "arguments": {
+            "scope": "current_folder",
+            "extension": "pdf"
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "isole les fichiers au format PDF",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.filter",
+          "arguments": {
+            "scope": "current_folder",
+            "extension": "pdf"
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "pour continuer montre uniquement les PDF",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.filter",
+          "arguments": {
+            "scope": "current_folder",
+            "extension": "pdf"
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "je voudrais filtrer sur les PDF",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.filter",
+          "arguments": {
+            "scope": "current_folder",
+            "extension": "pdf"
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "affiche ici tous les PDF",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.filter",
+          "arguments": {
+            "scope": "current_folder",
+            "extension": "pdf"
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "ouvre le fichier notes.txt",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.open",
+          "arguments": {
+            "target": {
+              "query": "notes.txt"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "je veux consulter le fichier notes.txt",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.open",
+          "arguments": {
+            "target": {
+              "query": "notes.txt"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "peux-tu me presenter le fichier notes.txt",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.open",
+          "arguments": {
+            "target": {
+              "query": "notes.txt"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "fais-moi afficher le fichier notes.txt",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.open",
+          "arguments": {
+            "target": {
+              "query": "notes.txt"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "je voudrais lire le document notes.txt",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.open",
+          "arguments": {
+            "target": {
+              "query": "notes.txt"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "il faut ouvrir le fichier notes.txt",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.open",
+          "arguments": {
+            "target": {
+              "query": "notes.txt"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "fais donc apparaitre le document notes.txt",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.open",
+          "arguments": {
+            "target": {
+              "query": "notes.txt"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "j’ai besoin d’ouvrir le fichier notes.txt",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.open",
+          "arguments": {
+            "target": {
+              "query": "notes.txt"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "peux-tu me faire voir le document notes.txt",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.open",
+          "arguments": {
+            "target": {
+              "query": "notes.txt"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "montre maintenant le fichier notes.txt",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.open",
+          "arguments": {
+            "target": {
+              "query": "notes.txt"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "ouvre le plus recent",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.select_recent",
+          "arguments": {
+            "result_set_id": "test-results",
+            "date_field": "modified"
+          },
+          "depends_on": []
+        },
+        {
+          "step_id": "s2",
+          "intent_id": "files.open",
+          "arguments": {
+            "source_step": "s1"
+          },
+          "depends_on": [
+            "s1"
+          ]
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "je veux ouvrir celui modifie en dernier",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.select_recent",
+          "arguments": {
+            "result_set_id": "test-results",
+            "date_field": "modified"
+          },
+          "depends_on": []
+        },
+        {
+          "step_id": "s2",
+          "intent_id": "files.open",
+          "arguments": {
+            "source_step": "s1"
+          },
+          "depends_on": [
+            "s1"
+          ]
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "fais-moi consulter le document le plus recent",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.select_recent",
+          "arguments": {
+            "result_set_id": "test-results",
+            "date_field": "modified"
+          },
+          "depends_on": []
+        },
+        {
+          "step_id": "s2",
+          "intent_id": "files.open",
+          "arguments": {
+            "source_step": "s1"
+          },
+          "depends_on": [
+            "s1"
+          ]
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "j’aimerais voir le dernier fichier modifie",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.select_recent",
+          "arguments": {
+            "result_set_id": "test-results",
+            "date_field": "modified"
+          },
+          "depends_on": []
+        },
+        {
+          "step_id": "s2",
+          "intent_id": "files.open",
+          "arguments": {
+            "source_step": "s1"
+          },
+          "depends_on": [
+            "s1"
+          ]
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "prends celui avec la date la plus recente",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.select_recent",
+          "arguments": {
+            "result_set_id": "test-results",
+            "date_field": "modified"
+          },
+          "depends_on": []
+        },
+        {
+          "step_id": "s2",
+          "intent_id": "files.open",
+          "arguments": {
+            "source_step": "s1"
+          },
+          "depends_on": [
+            "s1"
+          ]
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "peux-tu ouvrir le dernier de ces fichiers",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.select_recent",
+          "arguments": {
+            "result_set_id": "test-results",
+            "date_field": "modified"
+          },
+          "depends_on": []
+        },
+        {
+          "step_id": "s2",
+          "intent_id": "files.open",
+          "arguments": {
+            "source_step": "s1"
+          },
+          "depends_on": [
+            "s1"
+          ]
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "fais-moi voir le plus recent des documents",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.select_recent",
+          "arguments": {
+            "result_set_id": "test-results",
+            "date_field": "modified"
+          },
+          "depends_on": []
+        },
+        {
+          "step_id": "s2",
+          "intent_id": "files.open",
+          "arguments": {
+            "source_step": "s1"
+          },
+          "depends_on": [
+            "s1"
+          ]
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "je veux le dernier document en date",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.select_recent",
+          "arguments": {
+            "result_set_id": "test-results",
+            "date_field": "modified"
+          },
+          "depends_on": []
+        },
+        {
+          "step_id": "s2",
+          "intent_id": "files.open",
+          "arguments": {
+            "source_step": "s1"
+          },
+          "depends_on": [
+            "s1"
+          ]
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "ouvre celui ayant ete modifie le plus tard",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.select_recent",
+          "arguments": {
+            "result_set_id": "test-results",
+            "date_field": "modified"
+          },
+          "depends_on": []
+        },
+        {
+          "step_id": "s2",
+          "intent_id": "files.open",
+          "arguments": {
+            "source_step": "s1"
+          },
+          "depends_on": [
+            "s1"
+          ]
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "affiche celui qui est le plus recent",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.select_recent",
+          "arguments": {
+            "result_set_id": "test-results",
+            "date_field": "modified"
+          },
+          "depends_on": []
+        },
+        {
+          "step_id": "s2",
+          "intent_id": "files.open",
+          "arguments": {
+            "source_step": "s1"
+          },
+          "depends_on": [
+            "s1"
+          ]
+        }
+      ],
+      "category": "positive"
+    },
+    {
+      "text": "ne va pas dans F",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "n’ouvre pas le fichier notes.txt",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "ouvre aucun fichier",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "va dans F ou G",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "ouvre le dossier projets ou archives",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "ouvre rapport ou notes",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "ne montre jamais les PDF",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "affiche les PDF sauf rapport",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "ne remonte pas",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "ne reviens pas a l’explorateur",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "ouvre le dossier projets puis ferme le dossier",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "ferme le dossier projets",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "efface le fichier notes.txt",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "formate le lecteur F",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "execute le fichier notes.txt",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "supprime le fichier notes.txt",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "deplace le fichier notes.txt",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "renomme le fichier notes.txt",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "copie le fichier notes.txt",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "annule la derniere action",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "quelle heure est-il",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "raconte une histoire",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "bonjour le nuage violet",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "calcule douze fois trois",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "joue du piano",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "combien font deux plus deux",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "la lune mange des tomates",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "reserve un restaurant",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "traduis ce texte en allemand",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "donne la meteo demain",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "ne cherche pas rapport",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "sans ouvrir notes",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "n’affiche aucun dossier",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "ouvre le dossier projets plutot que archives",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "va dans F puis invente une action",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "ne filtre pas les PDF",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "liste les fenetres sauf celle-ci",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "n’ouvre jamais le plus recent",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "ne selectionne aucun fichier",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "ferme l’explorateur",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    }
+  ]
+}

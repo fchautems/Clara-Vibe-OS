@@ -1,6 +1,6 @@
 # Clara Vibe OS — prototype fiabilisé
 
-Prochaine étape **proposée, non implémentée** : [compréhension sémantique, noms approximatifs et parcours de validation](docs/SPEC_COMPREHENSION_SEMANTIQUE_V0_3.md). Implémentation en attente de validation utilisateur.
+Version 0.3 : **239 formulations**, moteur sémantique CPU local, noms approximatifs et parcours sans voix étendu. [Installation, réglages et bilan précis](docs/COMPREHENSION_03.md). Implémentation testée sur Linux ; essais interactifs Windows et vrai repli Ollama encore à effectuer sur le PC.
 
 Mise à jour du 22 octobre 2026 : [changements, calibration et essais Windows restants](docs/FIABILISATION_02.md). Les corrections sont testées automatiquement ; la validation interactive sur le PC reste à faire.
 
@@ -16,7 +16,7 @@ Le panneau n'accapare pas le focus en mode vocal. Une commande comme « va dans 
 
 ## Tests sans voix avec captures
 
-Fermer Clara puis lancer **`test-clara-sans-voix.cmd`**. Ce mode exécute les vraies commandes Windows sur des fichiers d'essai et se ferme seul. Résultats : **`resultats-tests/journey.zip`**, avec rapport JSON, résumé et captures. Ajouter `--with-ollama` pour tester aussi le modèle local déjà préparé. [Détails et limites](docs/TESTS_SANS_VOIX.md).
+Fermer Clara puis lancer **`test-clara-sans-voix.cmd`**. Ce mode exécute les vraies commandes Windows sur ses propres fichiers d'essai et se ferme seul. Chaque exécution conserve **`resultats-tests/<date-identifiant>/journey.zip`**, avec JSON, résumé et captures. Ajouter `--with-ollama` pour tester aussi le modèle local déjà préparé. [Détails et limites](docs/TESTS_SANS_VOIX.md).
 
 ## Rapport automatique pour les bugs
 

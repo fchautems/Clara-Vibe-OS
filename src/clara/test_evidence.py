@@ -5,6 +5,43 @@ import zipfile
 from pathlib import Path
 
 
+class JourneyPanel:
+    def __init__(self):
+        from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel
+        from PySide6.QtCore import Qt
+        self.app = QApplication.instance() or QApplication([])
+        self.window = QWidget()
+        self.window.setWindowTitle("Clara — parcours sans voix")
+        self.window.setWindowFlag(Qt.WindowType.WindowDoesNotAcceptFocus, True)
+        self.window.setAttribute(Qt.WidgetAttribute.WA_ShowWithoutActivating, True)
+        self.window.resize(640, 100)
+        self.label = QLabel()
+        self.label.setTextFormat(Qt.TextFormat.PlainText)
+        self.label.setWordWrap(True)
+        QVBoxLayout(self.window).addWidget(self.label)
+        self.path = None
+        self.set_directory(None)
+        self.window.show()
+
+    def set_directory(self, path):
+        from .display import set_directory
+        self.path = path
+        set_directory(self.label, path)
+        self.app.processEvents()
+
+    def capture(self, output, run_id, index):
+        folder = output.parent / (output.stem + '-captures') / run_id
+        try:
+            folder.mkdir(parents=True, exist_ok=True)
+            destination = folder / f"{index:02d}-panel.png"
+            self.app.processEvents()
+            if not self.window.grab().save(str(destination), "PNG"):
+                raise RuntimeError("Capture panneau indisponible")
+            return {"status": "SAVED", "path": str(destination.relative_to(output.parent)), "displayed_path": self.path}
+        except Exception as exc:
+            return {"status": "ERROR", "reason": str(exc)}
+
+
 class WindowCapture:
     def __init__(self):
         import win32gui
@@ -59,9 +96,20 @@ def write_artifacts(output, report):
                report.get('limits', ''), '']
     for case in report.get('understanding', []):
         summary.append(f"Compréhension {case['status']} : {case['text']}")
+    if report.get('corpus'):
+        summary.append('Corpus : ' + str(report['corpus'].get('metrics')))
+    if report.get('ollama_natural'):
+        summary.append('Repli Ollama naturel : ' + str(report['ollama_natural']))
+    if report.get('cold_start'):
+        summary.append('Explorateur fermé au départ : ' + str(report['cold_start']))
     for step in report.get('steps', []):
         origins = ', '.join(p.get('origin', '?') for p in step.get('interpretations', []))
         summary.append(f"{step['status']} — {step['name']} | {step['command']} | {origins}")
+        for event in step.get('events', []):
+            if event['kind'] in {'error', 'fatal'}:
+                summary.append('  ' + event.get('code', '') + ' : ' + event.get('message', ''))
+        if step.get('traceback'):
+            summary.append('  ' + step['traceback'].strip().splitlines()[-1])
         evidence = step.get('screenshot', {})
         if evidence:
             summary.append(f"  Capture : {evidence.get('path', evidence.get('reason', evidence.get('status')))}")
@@ -76,14 +124,15 @@ def write_artifacts(output, report):
             archive.write(output, output.name)
             archive.write(text_path, text_path.name)
             for step in report.get('steps', []):
-                ref = step.get('screenshot', {}).get('path')
-                if not ref:
-                    continue
-                path = output.parent / ref
-                allowed = output.parent / (output.stem + '-captures') / report['run_id']
-                if path.is_symlink() or not path.resolve().is_relative_to(allowed.resolve()):
-                    continue
-                archive.write(path, str(path.relative_to(output.parent)))
+                for kind in ('screenshot', 'panel_capture'):
+                    ref = step.get(kind, {}).get('path')
+                    if not ref:
+                        continue
+                    path = output.parent / ref
+                    allowed = output.parent / (output.stem + '-captures') / report['run_id']
+                    if path.is_symlink() or not path.resolve().is_relative_to(allowed.resolve()):
+                        continue
+                    archive.write(path, str(path.relative_to(output.parent)))
         temporary.replace(destination)
     finally:
         temporary.unlink(missing_ok=True)

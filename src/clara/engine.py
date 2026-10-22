@@ -273,7 +273,8 @@ class Engine:
                     details = traceback.format_exc()
                     journal.event("request_error", {"request_id": ticket.request_id, "text": ticket.text,
                                   "intent_id": getattr(err, "intent_id", None), "code": err.code, "message": str(err), "traceback": details})
-                    self.emit("error", str(err), request_id=ticket.request_id, code=err.code, traceback=details)
+                    self.emit("error", str(err), request_id=ticket.request_id, code=err.code, traceback=details,
+                              trace=getattr(self.planner, "last_trace", []))
                     with self.gate.lock:
                         self.gate.cancel(ticket)
                         if self.current is ticket:
@@ -321,8 +322,9 @@ class Engine:
                 journal.event("late_plan", {"request_id": t.request_id})
                 return
             t.steps = steps
-            journal.event("interpretation", {"request_id": t.request_id, "text": t.text, "origin": origin, "steps": steps})
-            self.emit("plan", t.text, steps=steps, origin=origin, request_id=t.request_id)
+            trace = getattr(self.planner, "last_trace", [])
+            journal.event("interpretation", {"request_id": t.request_id, "text": t.text, "origin": origin, "steps": steps, "trace": trace})
+            self.emit("plan", t.text, steps=steps, origin=origin, request_id=t.request_id, trace=trace)
         resolver = Resolver(self.config)
         while t.index < len(t.steps):
             if t.cancelled or t.paused:
@@ -331,7 +333,13 @@ class Engine:
             # Revalidation also occurs after a clarification or replacement refusal.
             if t.context.get("window") and step["intent_id"] not in {"window.list", "window.activate"}:
                 adapter.ensure_context(t.context)
-            observation, refs, native, observer = self._prepare(t, step, adapter, resolver)
+            resolver.last_name_trace = []
+            try:
+                observation, refs, native, observer = self._prepare(t, step, adapter, resolver)
+            finally:
+                if resolver.last_name_trace:
+                    self.emit("resolution", "", candidates=resolver.last_name_trace, request_id=t.request_id)
+                    journal.event("name_resolution", {"request_id": t.request_id, "candidates": resolver.last_name_trace})
             generation = t.generation
             aid = uid()
             action = {"action_id": aid, "request_id": t.request_id, "step_id": step["step_id"],

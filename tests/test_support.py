@@ -102,7 +102,7 @@ class SupportExecution(Fixture):
             return plan([("files.open", {"target": {"query": "notes"}})])
         with patch.object(planner, "_model", side_effect=delayed):
             engine = self.start(planner)
-            engine.submit("formulation nouvelle")
+            engine.submit("formulation nouvelle pour notes")
             self.assertTrue(started.wait(2))
             try:
                 engine.submit("aide")

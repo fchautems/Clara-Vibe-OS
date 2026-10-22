@@ -20,6 +20,11 @@ def defaults() -> dict:
             "ollama_model": "qwen2.5:3b", "ollama_port": 11435,
             "ollama_timeout_seconds": 15, "catalogue_path": str(root / "formulations_fr.json"),
             "similarity_threshold": .86, "similarity_margin": .06, "max_results": 128,
+            "semantic_enabled": True, "semantic_model": str(root / "models/semantic-minilm"),
+            "semantic_threshold": .78, "semantic_margin": .04,
+            "name_threshold": .84, "name_margin": .08,
+            "jev_enabled": False, "jev_model": "jev-1.13.0", "jev_threshold": .9,
+            "jev_margin": .2, "jev_timeout_seconds": 10,
             "folder_aliases": {"documents": str(Path.home() / "Documents"),
                                "téléchargements": str(Path.home() / "Downloads")},
             "open_extensions": ["pdf", "txt", "md", "png", "jpg", "jpeg", "csv",
@@ -36,7 +41,7 @@ def check(value: dict) -> dict:
     for key, low, high in (("session_idle_seconds", 10, 3600), ("end_silence_ms", 300, 5000),
                          ("max_utterance_seconds", 5, 60), ("clarification_timeout_seconds", 5, 120),
                          ("speech_rms_threshold", 1, 32767), ("ollama_port", 1024, 65535),
-                         ("ollama_timeout_seconds", 1, 60), ("max_results", 1, 128)):
+                         ("ollama_timeout_seconds", 1, 60), ("jev_timeout_seconds", 1, 60), ("max_results", 1, 128)):
         if type(value[key]) is not int or not low <= value[key] <= high:
             raise ValueError(f"Réglage invalide : {key}")
     if not isinstance(value["folder_aliases"], dict) or not all(
@@ -44,16 +49,18 @@ def check(value: dict) -> dict:
         for k, v in value["folder_aliases"].items()
     ):
         raise ValueError("Les alias doivent désigner des chemins absolus.")
-    for key in ("similarity_threshold", "similarity_margin"):
+    for key in ("similarity_threshold", "similarity_margin", "semantic_threshold", "semantic_margin",
+                "name_threshold", "name_margin", "jev_threshold", "jev_margin"):
         if type(value[key]) not in (int, float) or not 0 < value[key] <= 1:
             raise ValueError(f"Réglage invalide : {key}")
-    for key in ("catalogue_path", "vosk_model", "whisper_model", "ollama_model"):
+    for key in ("catalogue_path", "vosk_model", "whisper_model", "ollama_model", "semantic_model", "jev_model"):
         if not isinstance(value[key], str) or not value[key].strip():
             raise ValueError(f"Réglage invalide : {key}")
     if value["microphone"] is not None and type(value["microphone"]) is not int:
         raise ValueError("microphone doit être un numéro de périphérique ou null.")
-    if type(value["feedback_ding"]) is not bool:
-        raise ValueError("feedback_ding doit être booléen.")
+    for key in ("feedback_ding", "semantic_enabled", "jev_enabled"):
+        if type(value[key]) is not bool:
+            raise ValueError(key + " doit être booléen.")
     return value
 
 
@@ -63,14 +70,13 @@ def load(path: Path) -> dict:
         save(path, defaults())
     value = json.loads(path.read_text(encoding="utf-8"))
     # Add only this release's new keys; keep rejecting other incomplete configs.
-    for key in ("catalogue_path", "similarity_threshold", "similarity_margin"):
+    for key in ("catalogue_path", "similarity_threshold", "similarity_margin", "semantic_enabled", "semantic_model",
+                "semantic_threshold", "semantic_margin", "name_threshold", "name_margin", "jev_enabled", "jev_model",
+                "jev_threshold", "jev_margin", "jev_timeout_seconds"):
         value.setdefault(key, defaults()[key])
     check(value)
-    from importlib.resources import files
-    catalogue = Path(value["catalogue_path"])
-    if not catalogue.exists():
-        catalogue.parent.mkdir(parents=True, exist_ok=True)
-        catalogue.write_text(files("clara").joinpath("resources/formulations_fr.json").read_text(encoding="utf-8"), encoding="utf-8")
+    from .catalogue import migrate
+    migrate(Path(value["catalogue_path"]))
     save(path, value)
     return value
 

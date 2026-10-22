@@ -4,12 +4,13 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "clara-vibe-os"
-version = "0.1.0"
+version = "0.3.0"
 description = "Prototype vocal local pour l'Explorateur Windows"
 requires-python = ">=3.11,<3.14"
 dependencies = ["jsonschema==4.25.1"]
 
 [project.optional-dependencies]
+semantic = ["onnxruntime==1.31.0", "tokenizers==0.23.2", "numpy==2.2.6", "huggingface_hub==1.33.0"]
 windows = [
   "PySide6==6.9.3", "sounddevice==0.5.3", "numpy==2.2.6",
   "vosk==0.3.45", "faster-whisper==1.2.0", "psutil==7.1.0",

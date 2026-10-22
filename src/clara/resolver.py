@@ -14,8 +14,9 @@ class Choices(Exception):
 class Resolver:
     def __init__(self, config):
         self.config = config
+        self.last_name_trace = []
 
-    def listing(self, folder: Path, extension=None, query=None, directories=False) -> dict:
+    def listing(self, folder: Path, extension=None, query=None, directories=False, approximate=False) -> dict:
         if not folder.is_dir():
             raise ClaraError("TARGET_NOT_FOUND", "Dossier introuvable.")
         refs, skipped = [], []
@@ -27,8 +28,15 @@ class Resolver:
                     continue
                 if extension and p.suffix.lower() != "." + extension.lower():
                     continue
-                if query and normal(query) not in normal(p.name):
-                    continue
+                if query:
+                    literal = normal(query) in normal(p.name)
+                    if approximate:
+                        from .names import rank
+                        nearby, _ = rank(query, [{'path': str(p)}], self.config, directories)
+                        if not nearby and not literal:
+                            continue
+                    elif not literal:
+                        continue
                 try:
                     refs.append(target(p))
                 except OSError:
@@ -71,10 +79,14 @@ class Resolver:
             if directories and normal(query) in aliases:
                 p = Path(aliases[normal(query)])
             else:
-                refs = self.listing(folder, query=query, directories=directories)["targets"]
-                exact = [r for r in refs if normal(Path(r["path"]).name) == normal(query)
-                         or normal(Path(r["path"]).stem) == normal(query)]
-                return self.unique(exact or refs)
+                from .names import rank
+                refs = self.listing(folder, query=query, directories=directories, approximate=True)["targets"]
+                matches, self.last_name_trace = rank(query, refs, self.config, directories)
+                # Préserve la recherche partielle historique lorsque aucun nom
+                # proche n'existe, sans supplanter une ambiguïté de classement.
+                if not matches and not Path(query).suffix:
+                    matches = [r for r in refs if normal(query) in normal(Path(r["path"]).name)]
+                return self.unique(matches)
         if p.is_symlink():
             raise ClaraError("CAPABILITY_UNAVAILABLE", "Les liens ne sont pas pris en charge dans ce prototype.")
         if not p.exists() or p.is_dir() != directories:

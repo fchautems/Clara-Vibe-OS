@@ -9,8 +9,16 @@ from difflib import SequenceMatcher
 from importlib.resources import files
 
 
-@lru_cache(maxsize=8)
 def catalogue(path=None):
+    fingerprint = None
+    if path and Path(path).exists():
+        info = Path(path).stat()
+        fingerprint = (info.st_mtime_ns, info.st_size)
+    return _catalogue(path, fingerprint)
+
+
+@lru_cache(maxsize=8)
+def _catalogue(path, fingerprint):
     source = Path(path) if path else files("clara").joinpath("resources/formulations_fr.json")
     if path and not source.exists():
         from .config import data_dir
@@ -22,6 +30,7 @@ def catalogue(path=None):
     entries = []
     for entry in data["entries"]:
         for template in entry["phrases"]:
+            template = clean(template, data)
             tokens = re.findall(r"\{(\w+)\}", template)
             if len(tokens) != len(set(tokens)) or set(tokens) - {"query", "extension", "drive"}:
                 raise ValueError("Paramètres du catalogue invalides.")
@@ -36,6 +45,47 @@ def catalogue(path=None):
     # Les formulations les plus spécifiques précèdent les cibles libres.
     entries.sort(key=lambda item: len(item[0].pattern.replace("(?P<query>.+)", "")), reverse=True)
     return data, entries
+
+
+catalogue.cache_clear = _catalogue.cache_clear
+
+
+def migrate(path):
+    """Ajoute le catalogue livré sans remplacer les personnalisations existantes."""
+    import copy
+    import os
+    bundled = json.loads(files("clara").joinpath("resources/formulations_fr.json").read_text(encoding="utf-8"))
+    if not path.exists():
+        merged = bundled
+    else:
+        original = path.read_text(encoding="utf-8")
+        merged = json.loads(original)
+        if merged.get("version") != 1:
+            raise ValueError("Version du catalogue utilisateur inconnue")
+        if merged.get("bundle_revision", 0) >= bundled.get("bundle_revision", 0):
+            return
+        backup = path.with_name(path.name + ".before-v3.bak")
+        if not backup.exists():
+            backup.write_text(original, encoding="utf-8")
+        for entry in bundled["entries"]:
+            current = next((e for e in merged["entries"] if e["command"] == entry["command"]), None)
+            if current is None:
+                merged["entries"].append(copy.deepcopy(entry))
+            else:
+                current["phrases"] = list(dict.fromkeys(current["phrases"] + entry["phrases"]))
+                for key in ("intent_id", "parameters"):
+                    current.setdefault(key, entry[key])
+        for key in ('prefixes', 'suffixes'):
+            merged[key] = list(dict.fromkeys(merged[key] + bundled[key]))
+        for key in ('infinitives', 'extensions'):
+            for name, value in bundled[key].items():
+                merged[key].setdefault(name, value)
+        merged["bundle_revision"] = bundled["bundle_revision"]
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_suffix(".tmp")
+    temporary.write_text(json.dumps(merged, ensure_ascii=False, indent=2), encoding="utf-8")
+    os.replace(temporary, path)
+    catalogue.cache_clear()
 
 
 def clean(text, data):
@@ -53,6 +103,7 @@ def clean(text, data):
         if cleaned.endswith(" " + suffix):
             cleaned = cleaned[:-len(suffix) - 1].rstrip(" ,")
             break
+    cleaned = re.sub(r"^(ouvre|affiche|montre|cherche|va) (?:donc|maintenant|ici|pour moi) ", r"\1 ", cleaned)
     return cleaned
 
 

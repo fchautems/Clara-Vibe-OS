@@ -1,0 +1,1478 @@
+{
+  "version": 1,
+  "split": "confirmation",
+  "purpose": "Nouveau corpus fixe apres corrections du premier corpus ; aucune adaptation apres execution.",
+  "cases": [
+    {
+      "text": "emmene-moi visiter le dossier archives",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.navigate",
+          "arguments": {
+            "target": {
+              "query": "archives"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "partons explorer le dossier archives",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.navigate",
+          "arguments": {
+            "target": {
+              "query": "archives"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "je souhaite voir ce dossier archives",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.navigate",
+          "arguments": {
+            "target": {
+              "query": "archives"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "conduis-nous au dossier archives",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.navigate",
+          "arguments": {
+            "target": {
+              "query": "archives"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "peux-tu passer dans le dossier archives",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.navigate",
+          "arguments": {
+            "target": {
+              "query": "archives"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "fais apparaitre pour moi le dossier archives",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.navigate",
+          "arguments": {
+            "target": {
+              "query": "archives"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "dirige la navigation sur le disque G",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.navigate",
+          "arguments": {
+            "target": {
+              "path": "G:\\"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "rejoins donc le disque G",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.navigate",
+          "arguments": {
+            "target": {
+              "path": "G:\\"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "je souhaite explorer le disque G",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.navigate",
+          "arguments": {
+            "target": {
+              "path": "G:\\"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "allons directement sur le lecteur G",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.navigate",
+          "arguments": {
+            "target": {
+              "path": "G:\\"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "montre-moi le lecteur G",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.navigate",
+          "arguments": {
+            "target": {
+              "path": "G:\\"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "passe maintenant sur le disque G",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.navigate",
+          "arguments": {
+            "target": {
+              "path": "G:\\"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "retour au parent du dossier actuel",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.parent",
+          "arguments": {},
+          "depends_on": []
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "reviens dans le repertoire au-dessus",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.parent",
+          "arguments": {},
+          "depends_on": []
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "je souhaite sortir du repertoire actuel",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.parent",
+          "arguments": {},
+          "depends_on": []
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "remonte encore au niveau superieur",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.parent",
+          "arguments": {},
+          "depends_on": []
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "fais-moi revenir dans le dossier parent",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.parent",
+          "arguments": {},
+          "depends_on": []
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "reviens dans le dossier qui contient celui-ci",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.parent",
+          "arguments": {},
+          "depends_on": []
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "je souhaite remettre l’explorateur devant",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "window.activate",
+          "arguments": {
+            "target": {
+              "query": "explorateur"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "reviens maintenant sur l’explorateur",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "window.activate",
+          "arguments": {
+            "target": {
+              "query": "explorateur"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "ramene la fenetre des fichiers au premier plan",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "window.activate",
+          "arguments": {
+            "target": {
+              "query": "explorateur"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "peux-tu refaire apparaitre l’explorateur",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "window.activate",
+          "arguments": {
+            "target": {
+              "query": "explorateur"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "fais-moi retrouver l’explorateur",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "window.activate",
+          "arguments": {
+            "target": {
+              "query": "explorateur"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "je veux basculer sur l’explorateur de fichiers",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "window.activate",
+          "arguments": {
+            "target": {
+              "query": "explorateur"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "montre-moi tous les explorateurs ouverts",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "window.list",
+          "arguments": {},
+          "depends_on": []
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "liste les differentes fenetres explorateur",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "window.list",
+          "arguments": {},
+          "depends_on": []
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "je souhaite consulter la liste des explorateurs",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "window.list",
+          "arguments": {},
+          "depends_on": []
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "enumere les fenetres de navigation disponibles",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "window.list",
+          "arguments": {},
+          "depends_on": []
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "peux-tu afficher chaque fenetre explorateur ouverte",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "window.list",
+          "arguments": {},
+          "depends_on": []
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "donne la liste de tous les explorateurs",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "window.list",
+          "arguments": {},
+          "depends_on": []
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "peux-tu me localiser le fichier budget",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.search",
+          "arguments": {
+            "query": "budget",
+            "scope": "current_folder"
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "je veux rechercher le document budget",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.search",
+          "arguments": {
+            "query": "budget",
+            "scope": "current_folder"
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "retrouve dans ce repertoire le fichier budget",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.search",
+          "arguments": {
+            "query": "budget",
+            "scope": "current_folder"
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "cherche maintenant le fichier budget",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.search",
+          "arguments": {
+            "query": "budget",
+            "scope": "current_folder"
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "repere donc le document budget",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.search",
+          "arguments": {
+            "query": "budget",
+            "scope": "current_folder"
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "je souhaite faire une recherche du fichier budget",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.search",
+          "arguments": {
+            "query": "budget",
+            "scope": "current_folder"
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "je veux ne voir que les CSV",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.filter",
+          "arguments": {
+            "scope": "current_folder",
+            "extension": "csv"
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "fais-moi voir les fichiers CSV",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.filter",
+          "arguments": {
+            "scope": "current_folder",
+            "extension": "csv"
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "affiche seulement les documents CSV",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.filter",
+          "arguments": {
+            "scope": "current_folder",
+            "extension": "csv"
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "je souhaite filtrer les fichiers CSV",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.filter",
+          "arguments": {
+            "scope": "current_folder",
+            "extension": "csv"
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "montre les CSV disponibles ici",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.filter",
+          "arguments": {
+            "scope": "current_folder",
+            "extension": "csv"
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "presente-moi les fichiers au format CSV",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.filter",
+          "arguments": {
+            "scope": "current_folder",
+            "extension": "csv"
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "fais-moi consulter le document budget.txt",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.open",
+          "arguments": {
+            "target": {
+              "query": "budget.txt"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "j’aimerais lire le fichier budget.txt",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.open",
+          "arguments": {
+            "target": {
+              "query": "budget.txt"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "je souhaite afficher le document budget.txt",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.open",
+          "arguments": {
+            "target": {
+              "query": "budget.txt"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "montre-moi le fichier budget.txt",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.open",
+          "arguments": {
+            "target": {
+              "query": "budget.txt"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "fais apparaitre maintenant le document budget.txt",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.open",
+          "arguments": {
+            "target": {
+              "query": "budget.txt"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "ouvre pour moi le document budget.txt",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.open",
+          "arguments": {
+            "target": {
+              "query": "budget.txt"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "je veux consulter celui modifie le plus recemment",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.select_recent",
+          "arguments": {
+            "result_set_id": "test-results",
+            "date_field": "modified"
+          },
+          "depends_on": []
+        },
+        {
+          "step_id": "s2",
+          "intent_id": "files.open",
+          "arguments": {
+            "source_step": "s1"
+          },
+          "depends_on": [
+            "s1"
+          ]
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "ouvre le dernier document de cette liste",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.select_recent",
+          "arguments": {
+            "result_set_id": "test-results",
+            "date_field": "modified"
+          },
+          "depends_on": []
+        },
+        {
+          "step_id": "s2",
+          "intent_id": "files.open",
+          "arguments": {
+            "source_step": "s1"
+          },
+          "depends_on": [
+            "s1"
+          ]
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "fais apparaitre le dernier fichier modifie",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.select_recent",
+          "arguments": {
+            "result_set_id": "test-results",
+            "date_field": "modified"
+          },
+          "depends_on": []
+        },
+        {
+          "step_id": "s2",
+          "intent_id": "files.open",
+          "arguments": {
+            "source_step": "s1"
+          },
+          "depends_on": [
+            "s1"
+          ]
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "je souhaite afficher le plus recent des fichiers",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.select_recent",
+          "arguments": {
+            "result_set_id": "test-results",
+            "date_field": "modified"
+          },
+          "depends_on": []
+        },
+        {
+          "step_id": "s2",
+          "intent_id": "files.open",
+          "arguments": {
+            "source_step": "s1"
+          },
+          "depends_on": [
+            "s1"
+          ]
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "peux-tu me montrer le document le plus recent",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.select_recent",
+          "arguments": {
+            "result_set_id": "test-results",
+            "date_field": "modified"
+          },
+          "depends_on": []
+        },
+        {
+          "step_id": "s2",
+          "intent_id": "files.open",
+          "arguments": {
+            "source_step": "s1"
+          },
+          "depends_on": [
+            "s1"
+          ]
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "je voudrais consulter le dernier document modifie",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.select_recent",
+          "arguments": {
+            "result_set_id": "test-results",
+            "date_field": "modified"
+          },
+          "depends_on": []
+        },
+        {
+          "step_id": "s2",
+          "intent_id": "files.open",
+          "arguments": {
+            "source_step": "s1"
+          },
+          "depends_on": [
+            "s1"
+          ]
+        }
+      ],
+      "category": "positive_novel"
+    },
+    {
+      "text": "remonte d'un dossier",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.parent",
+          "arguments": {},
+          "depends_on": []
+        }
+      ],
+      "category": "positive_exact"
+    },
+    {
+      "text": "remonte d'un niveau",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.parent",
+          "arguments": {},
+          "depends_on": []
+        }
+      ],
+      "category": "positive_exact"
+    },
+    {
+      "text": "remonte au niveau au-dessus",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.parent",
+          "arguments": {},
+          "depends_on": []
+        }
+      ],
+      "category": "positive_exact"
+    },
+    {
+      "text": "retourne dans l'explorateur",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "window.activate",
+          "arguments": {
+            "target": {
+              "query": "explorateur"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_exact"
+    },
+    {
+      "text": "retourne a l'explorateur",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "window.activate",
+          "arguments": {
+            "target": {
+              "query": "explorateur"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_exact"
+    },
+    {
+      "text": "reviens a l'explorateur",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "window.activate",
+          "arguments": {
+            "target": {
+              "query": "explorateur"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_exact"
+    },
+    {
+      "text": "montre-moi les fenetres explorateur",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "window.list",
+          "arguments": {},
+          "depends_on": []
+        }
+      ],
+      "category": "positive_exact"
+    },
+    {
+      "text": "affiche les fenetres de l'explorateur",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "window.list",
+          "arguments": {},
+          "depends_on": []
+        }
+      ],
+      "category": "positive_exact"
+    },
+    {
+      "text": "quelles sont les fenetres explorateur",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "window.list",
+          "arguments": {},
+          "depends_on": []
+        }
+      ],
+      "category": "positive_exact"
+    },
+    {
+      "text": "ouvre le dernier",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.select_recent",
+          "arguments": {
+            "result_set_id": "test-results",
+            "date_field": "modified"
+          },
+          "depends_on": []
+        },
+        {
+          "step_id": "s2",
+          "intent_id": "files.open",
+          "arguments": {
+            "source_step": "s1"
+          },
+          "depends_on": [
+            "s1"
+          ]
+        }
+      ],
+      "category": "positive_exact"
+    },
+    {
+      "text": "ouvre le dernier fichier",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.select_recent",
+          "arguments": {
+            "result_set_id": "test-results",
+            "date_field": "modified"
+          },
+          "depends_on": []
+        },
+        {
+          "step_id": "s2",
+          "intent_id": "files.open",
+          "arguments": {
+            "source_step": "s1"
+          },
+          "depends_on": [
+            "s1"
+          ]
+        }
+      ],
+      "category": "positive_exact"
+    },
+    {
+      "text": "ouvre le fichier le plus recent",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.select_recent",
+          "arguments": {
+            "result_set_id": "test-results",
+            "date_field": "modified"
+          },
+          "depends_on": []
+        },
+        {
+          "step_id": "s2",
+          "intent_id": "files.open",
+          "arguments": {
+            "source_step": "s1"
+          },
+          "depends_on": [
+            "s1"
+          ]
+        }
+      ],
+      "category": "positive_exact"
+    },
+    {
+      "text": "montre-moi les csv",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.filter",
+          "arguments": {
+            "scope": "current_folder",
+            "extension": "csv"
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_exact"
+    },
+    {
+      "text": "montre moi les csv",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.filter",
+          "arguments": {
+            "scope": "current_folder",
+            "extension": "csv"
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_exact"
+    },
+    {
+      "text": "montre les fichiers csv",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.filter",
+          "arguments": {
+            "scope": "current_folder",
+            "extension": "csv"
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_exact"
+    },
+    {
+      "text": "va dans le dossier budget 2027",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.navigate",
+          "arguments": {
+            "target": {
+              "query": "budget 2027"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_exact"
+    },
+    {
+      "text": "va au dossier budget 2027",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.navigate",
+          "arguments": {
+            "target": {
+              "query": "budget 2027"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_exact"
+    },
+    {
+      "text": "rends-toi dans le dossier budget 2027",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.navigate",
+          "arguments": {
+            "target": {
+              "query": "budget 2027"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_exact"
+    },
+    {
+      "text": "cherche le fichier budget 2027 dans ce dossier",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.search",
+          "arguments": {
+            "query": "budget 2027",
+            "scope": "current_folder"
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_exact"
+    },
+    {
+      "text": "trouve le fichier budget 2027 dans ce dossier",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.search",
+          "arguments": {
+            "query": "budget 2027",
+            "scope": "current_folder"
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_exact"
+    },
+    {
+      "text": "recherche le fichier budget 2027",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.search",
+          "arguments": {
+            "query": "budget 2027",
+            "scope": "current_folder"
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_exact"
+    },
+    {
+      "text": "affiche le fichier budget 2027",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.open",
+          "arguments": {
+            "target": {
+              "query": "budget 2027"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_exact"
+    },
+    {
+      "text": "ouvre le document budget 2027",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.open",
+          "arguments": {
+            "target": {
+              "query": "budget 2027"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_exact"
+    },
+    {
+      "text": "affiche le document budget 2027",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "files.open",
+          "arguments": {
+            "target": {
+              "query": "budget 2027"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_exact"
+    },
+    {
+      "text": "va dans j",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.navigate",
+          "arguments": {
+            "target": {
+              "path": "J:\\"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_exact"
+    },
+    {
+      "text": "ouvre le lecteur j",
+      "expected_steps": [
+        {
+          "step_id": "s1",
+          "intent_id": "explorer.navigate",
+          "arguments": {
+            "target": {
+              "path": "J:\\"
+            }
+          },
+          "depends_on": []
+        }
+      ],
+      "category": "positive_exact"
+    },
+    {
+      "text": "ne passe pas sur le disque J",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "n’ouvre pas le document budget.txt",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "ne cherche pas le document budget",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "ne montre pas les CSV",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "ne remonte jamais au parent",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "ne reviens jamais sur l’explorateur",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "ne liste aucune fenetre",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "n’ouvre pas le dernier document",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "ouvre le dossier archives ou sauvegardes",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "va sur J ou K",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "affiche le fichier budget ou notes",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "retourne au parent ou a la racine",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "efface le document budget.txt",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "formate le disque J",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "execute le fichier budget.txt",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "ferme le dossier archives",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "supprime le document budget.txt",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "deplace le document budget.txt",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "renomme le document budget.txt",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "copie le document budget.txt",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "affiche les CSV sauf budget",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "cherche le fichier budget sans l’ouvrir",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "n’ouvre ni budget ni notes",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "ouvre le dossier archives puis invente la suite",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "ouvre le fichier budget puis ferme la fenetre",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "ne filtre jamais les CSV",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "cherche sur internet le prix du gaz",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "recherche en ligne la meteo",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "cherche sur le web un restaurant",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "combien vaut le franc suisse",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "raconte-moi une anecdote historique",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "fais cuire des pates",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "calcule sept fois huit",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "traduis bonjour en japonais",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "le nuage avale les montagnes",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "chante une chanson",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "donne le resultat du match",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "reserve un billet de train",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "dessine un chat",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    },
+    {
+      "text": "a quelle heure part le bus",
+      "expected_steps": null,
+      "category": "negative_or_ambiguous"
+    }
+  ]
+}

@@ -81,6 +81,8 @@ def main():
         snapshot_download(repo, revision=revision, local_dir=str(whisper),
                           allow_patterns=["config.json", "model.bin", "tokenizer.json", "vocabulary.*", "preprocessor_config.json"])
         (whisper / "clara-download.json").write_text(json.dumps({"repo": repo, "revision": revision}), encoding="utf-8")
+    from .semantic import prepare
+    semantic_ready = prepare(config) if config["semantic_enabled"] else False
     from .local_model import LocalModel
     local = LocalModel(config, data_dir())
     try:
@@ -88,11 +90,14 @@ def main():
     finally:
         local.close()
     create_fixture(data_dir() / "fixtures")
-    print("Préparation complète : Ollama et modèle vérifiés." if ready else
-          "Préparation partielle : commandes locales disponibles, repli Ollama indisponible.", flush=True)
+    complete = ready and (semantic_ready or not config["semantic_enabled"])
+    print(("Préparation complète : " if complete else "Préparation partielle : ") +
+          ("Ollama et modèle vérifiés ; " if ready else "Ollama indisponible ; ") +
+          ("moteur sémantique prêt." if semantic_ready else "moteur sémantique désactivé." if not config['semantic_enabled'] else
+           "moteur sémantique indisponible, commandes directes conservées."), flush=True)
     marker = data_dir() / "setup-complete.json"
-    if ready:
-        marker.write_text(json.dumps({"version": "0.2.0", "ollama_ready": True}), encoding="utf-8")
+    if ready and (semantic_ready or not config["semantic_enabled"]):
+        marker.write_text(json.dumps({"version": "0.3.0", "ollama_ready": True, "semantic_ready": semantic_ready}), encoding="utf-8")
     else:
         marker.unlink(missing_ok=True)
 

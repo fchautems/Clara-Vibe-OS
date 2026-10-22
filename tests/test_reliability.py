@@ -47,7 +47,7 @@ class Understanding(unittest.TestCase):
             ]:
                 with self.subTest(phrase=phrase):
                     steps, origin = planner.interpret(phrase, {})
-                    self.assertEqual(origin, 'LOCAL_SIMILARITY')
+                    self.assertIn(origin, {'LOCAL_SIMILARITY', 'DETERMINISTIC'})
                     self.assertEqual(steps[0]['intent_id'], intent)
                     self.assertEqual(steps[0]['arguments']['target'], target)
             model.assert_not_called()

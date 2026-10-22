@@ -4,6 +4,7 @@ import json
 import re
 import unicodedata
 import urllib.request
+import time
 from pathlib import Path, PureWindowsPath
 
 from .contracts import AVAILABLE, SCHEMA, ClaraError, validate, validate_plan
@@ -17,7 +18,22 @@ def normal(text: str) -> str:
 
 
 def has_negation(text: str) -> bool:
-    return bool(re.search(r"\b(pas|jamais|sans|sauf|ne|non|ni|aucun|aucune)\b|\bn'", normal(text)))
+    n = normal(text)
+    return bool(re.search(r"\b(pas|jamais|sans|sauf|ne|non|ni|aucun|aucune)\b|\bn'", n) or
+                re.search(r"\b(?:ouvre|ouvrir|affiche|afficher|cherche|chercher|va|aller|montre|montrer|navigue) plus (?:le|la|les|ce|cet|cette|ces|dans|sur)\b", n))
+
+
+def explicit_spelling(text, value):
+    """Retrouve la casse et les accents d'un chemin cité dans la demande."""
+    folded, positions = [], []
+    for index, char in enumerate(text):
+        fragment = ''.join(c for c in unicodedata.normalize('NFKD', char.lower()) if not unicodedata.combining(c))
+        folded.extend(fragment)
+        positions.extend([index] * len(fragment))
+    at = ''.join(folded).find(normal(value))
+    if at < 0:
+        return value
+    return text[positions[at]:positions[at + len(normal(value)) - 1] + 1]
 
 
 def plan(items: list[tuple[str, dict]]) -> dict:
@@ -39,6 +55,12 @@ def deterministic(text: str, latest: str | None = None, catalogue_path=None) -> 
         return {"kind": "UNAVAILABLE", "intent_id": unavailable}
     def selector(query):
         return {"path" if Path(query).is_absolute() or PureWindowsPath(query).is_absolute() else "query": query}
+    chain = re.fullmatch(r"(?:va dans|ouvre le lecteur|va sur) ([a-z])(?: dans| puis ouvre| et ouvre) le dossier (.+)", n)
+    if chain:
+        if re.search(r'\b(?:puis|ensuite|et)\b', chain[2]):
+            return None
+        return plan([("explorer.navigate", {"target": {"path": chain[1].upper() + ":\\"}}),
+                     ("explorer.navigate", {"target": {"query": chain[2]}})])
     if n in {"remonte", "remonte au dossier parent", "dossier parent", "retour au dossier parent"}:
         return plan([("explorer.parent", {})])
     if n in {"liste les fenetres", "montre les fenetres", "liste les fenetres explorateur"}:
@@ -53,6 +75,8 @@ def deterministic(text: str, latest: str | None = None, catalogue_path=None) -> 
             items += [("files.select_recent", {"source_step": "s1", "date_field": "modified"}),
                       ("files.open", {"source_step": "s2"})]
         return plan(items)
+    if re.search(r"\b(?:puis|ensuite)\b|\bet (?:ouvre|affiche|cherche|va|ferme|supprime)\b", n):
+        return None
     if n in {"ouvre le plus recent", "ouvre le fichier le plus recent"}:
         if not latest:
             return {"kind": "UNKNOWN", "reason_code": "INCOMPLETE"}
@@ -69,32 +93,74 @@ def deterministic(text: str, latest: str | None = None, catalogue_path=None) -> 
         return plan([("files.search", {"query": m[1], "scope": "current_folder"})])
     m = re.fullmatch(r"ouvre (?:le fichier |le document )?(.+)", n)
     if m:
-        return plan([("files.open", {"target": selector(m[1])})])
+        if re.match(r"(?:celui|celle|le dernier|le plus recent)\b", m[1]):
+            return None
+        query = m[1]
+        from .catalogue import catalogue
+        extensions = catalogue(catalogue_path)[0]['extensions']
+        spoken = re.fullmatch(r'(.+) (' + '|'.join(map(re.escape, extensions)) + r')', query)
+        if spoken and not Path(query).suffix:
+            name = spoken[1]
+            if not n.startswith(('ouvre le fichier ', 'ouvre le document ')):
+                name = re.sub(r'^(?:le|la) ', '', name)
+            query = name + '.' + extensions[spoken[2]]
+        return plan([("files.open", {"target": selector(query)})])
     return None
 
 
 class Planner:
-    def __init__(self, config: dict, ollama_ready=False):
+    def __init__(self, config: dict, ollama_ready=False, semantic=None):
         self.config, self.ollama_ready = config, ollama_ready
+        from .semantic import SemanticMatcher
+        self.semantic = semantic or SemanticMatcher(config)
+        self.last_trace = []
 
     def interpret(self, text: str, context: dict, latest=None) -> tuple[list[dict], str]:
         n = normal(text)
-        if re.search(r"\b(?:ou|plutot)\b", n):
+        self.last_trace = []
+        started = time.monotonic()
+        alternative_text = normal(text.casefold().replace('où', '__lieu__'))
+        alternative_text = re.sub(r'\bou (?=(?:est|sont|se trouve)\b)', '__lieu__ ', alternative_text)
+        if re.search(r"\b(?:ou|plutot)\b", alternative_text):
             raise ClaraError("INCOMPLETE", "Quelle action et quelle destination souhaites-tu ? Reformule avec un seul choix.", "INTENT")
+        if re.search(r"\b(?:sur internet|sur le web|en ligne)\b", n):
+            raise ClaraError("CAPABILITY_UNAVAILABLE", "Clara recherche uniquement dans le dossier local courant.", "INTENT")
         proposal = deterministic(text, latest, self.config.get("catalogue_path"))
         origin = "DETERMINISTIC"
+        self.last_trace.append({"engine": origin, "status": "ACCEPTED" if proposal else "NO_MATCH"})
+        if proposal is None and re.search(r"\b(?:puis|ensuite)\b|\bet (?:ouvre|affiche|cherche|va|ferme|supprime|deplace|copie|renomme|efface|formate|execute)\b", n):
+            raise ClaraError("INCOMPLETE", "Précise les étapes de cette demande.", "INTENT")
+        if proposal is None and re.match(r"(?:ferme|efface|detruis|formate|execute|lance un script)\b", n):
+            raise ClaraError("CAPABILITY_UNAVAILABLE", "Cette action n'est pas autorisée dans Clara.", "INTENT")
+        if proposal is None and self.config.get("semantic_enabled", True):
+            try:
+                command, trace = self.semantic.match(n)
+                self.last_trace.append({"engine": "LOCAL_SEMANTIC", **trace})
+                if command:
+                    proposal = deterministic(command, latest)
+                    origin = "LOCAL_SEMANTIC"
+            except Exception as exc:
+                self.last_trace.append({"engine": "LOCAL_SEMANTIC", "status": "UNAVAILABLE", "reason": type(exc).__name__})
         if proposal is None:
             command, ambiguous = similar_command(normal(text), self.config)
+            self.last_trace.append({"engine": "LOCAL_SIMILARITY", "status": "ACCEPTED" if command else "AMBIGUOUS" if ambiguous else "NO_MATCH"})
             if ambiguous:
                 raise ClaraError("INCOMPLETE", "Plusieurs commandes sont proches. Précise l'action et la destination.", "INTENT")
             if command:
                 proposal = deterministic(command, latest)
                 origin = "LOCAL_SIMILARITY"
         if proposal is None:
+            from .jev import classify
+            command, trace = classify(n, self.config)
+            self.last_trace.append({"engine": "JEV", **trace})
+            if command:
+                proposal, origin = deterministic(command, latest), "JEV"
+        if proposal is None:
             if not self.ollama_ready:
                 raise ClaraError("CAPABILITY_UNAVAILABLE", "Modèle local indisponible ; reformule avec une commande simple.", "INTENT")
             proposal = self._model(text, context, latest)
             origin = "LOCAL_MODEL"
+            self.last_trace.append({"engine": origin, "status": "RETURNED"})
         validate("ModelProposal", proposal)
         if proposal.get("kind") == "CLARIFICATION":
             # A model cannot invent an executable continuation or authority.
@@ -113,13 +179,20 @@ class Planner:
                     r"\b" + drive[1].lower() + r"(?::)?(?:[\s,;!?]|$)", normal(text))
                 if "path" in value and normal(value["path"]) not in normal(text) and not explicit_drive:
                     raise ClaraError("PLAN_INVALID", "Chemin absent de la demande explicite.", "INTENT")
+                if "path" in value and not drive:
+                    value["path"] = explicit_spelling(text, value["path"])
                 for child in value.values():
                     check_paths(child)
+                query = value.get("query")
+                spoken_query = normal(str(Path(query).with_suffix('')) + ' ' + Path(query).suffix.lstrip('.')) if query and Path(query).suffix else ''
+                if origin in {"LOCAL_MODEL", "JEV"} and query and normal(query) not in n and normal(query) != "explorateur" and (not spoken_query or spoken_query not in n):
+                    raise ClaraError("PLAN_INVALID", "Nom de cible absent de la demande explicite.", "INTENT")
             elif isinstance(value, list):
                 for child in value:
                     check_paths(child)
         for step in steps:
             check_paths(step["arguments"])
+        self.last_trace.append({"engine": "VALIDATOR", "status": "ACCEPTED", "duration_ms": round((time.monotonic() - started) * 1000, 2)})
         return steps, origin
 
     def _model(self, text: str, context: dict, latest) -> dict:

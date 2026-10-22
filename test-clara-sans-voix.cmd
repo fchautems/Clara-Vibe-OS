@@ -5,5 +5,5 @@ if not exist ".venv\Scripts\python.exe" (
   exit /b 2
 )
 set "PYTHONPATH=%~dp0src"
-".venv\Scripts\python.exe" -m clara.journey --screenshots --output "%~dp0resultats-tests\journey.json" %*
+".venv\Scripts\python.exe" -m clara.journey --extended --unique-output --screenshots --output "%~dp0resultats-tests\journey.json" %*
 exit /b %errorlevel%

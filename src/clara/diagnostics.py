@@ -15,7 +15,7 @@ import zipfile
 from datetime import datetime, timezone
 from pathlib import Path
 
-PACKAGES = ["jsonschema", "PySide6", "sounddevice", "numpy", "vosk", "faster-whisper", "psutil", "pywin32", "pywinauto"]
+PACKAGES = ["jsonschema", "PySide6", "sounddevice", "numpy", "vosk", "faster-whisper", "psutil", "pywin32", "pywinauto", "onnxruntime", "tokenizers", "huggingface_hub"]
 LIMIT = 262144
 
 def user_folder():
@@ -124,6 +124,15 @@ def collect(folder, stage, probes=None, launcher_log=None, config_path=None):
         contents["config.json"] = json.dumps(config, ensure_ascii=False, indent=2)
         for key, required in [("vosk_model", ["am/final.mdl", "conf/model.conf"]), ("whisper_model", ["model.bin", "config.json", "tokenizer.json"])]:
             report["checks"][key] = {file: (Path(config[key]) / file).is_file() for file in required}
+        from .semantic import MODEL_FILE
+        report['checks']['semantic_files'] = {name: (Path(config['semantic_model']) / name).is_file()
+                                               for name in (MODEL_FILE, 'tokenizer.json', 'clara-download.json')}
+        semantic_manifest = Path(config['semantic_model']) / 'clara-download.json'
+        if semantic_manifest.is_file():
+            contents['semantic-model.json'] = tail(semantic_manifest)
+        user_catalogue = Path(config['catalogue_path'])
+        if user_catalogue.is_file():
+            contents['catalogue-user.json'] = tail(user_catalogue)
         from .local_model import LocalModel
         report["checks"]["ollama_executable"] = "FOUND" if LocalModel(config, folder).executable() else "MISSING"
     except Exception:

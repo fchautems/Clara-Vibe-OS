@@ -1,0 +1,175 @@
+{
+  "date": "2026-10-22",
+  "platform": "Linux / Python 3.12, pas le PC cible Windows",
+  "threshold": 0.78,
+  "margin": 0.04,
+  "catalogue_templates": 239,
+  "automated_tests": {
+    "passed": 144,
+    "platform": "Linux Python 3.12",
+    "command": "python -m unittest discover -s tests -q"
+  },
+  "native_windows": "NOT_TESTED",
+  "real_ollama": "NOT_TESTED",
+  "real_jev": "NOT_TESTED",
+  "semantic_encoder": "réel, ONNX CPU int8 AVX2, révision et empreintes dans les métriques",
+  "journey": {
+    "status": "PASSED",
+    "steps": 29,
+    "windows_backend": "SIMULATED",
+    "semantic_encoder": "REAL",
+    "screenshots": "NOT_TESTED"
+  },
+  "independence": "Les premiers passages des deux corpus ont révélé des défauts corrigés. Les passages finaux sont des régressions, pas de nouvelles évaluations indépendantes. Nouveau corpus indépendant et essais Windows restent à faire.",
+  "first_independent_passes": {
+    "evaluation": {
+      "correct_positive": 69,
+      "positive_total": 90,
+      "wrong_positive_actions": 1,
+      "false_acceptances": 0
+    },
+    "confirmation": {
+      "correct_positive": 74,
+      "positive_total": 80,
+      "wrong_positive_actions": 3,
+      "false_acceptances": 0
+    }
+  },
+  "final_runs": {
+    "calibration": {
+      "metrics": {
+        "cases": 65,
+        "positive_total": 45,
+        "positive_correct": 45,
+        "wrong_positive_actions": 0,
+        "novel_positive_total": 36,
+        "novel_positive_correct": 36,
+        "false_acceptances": 0,
+        "routes": {
+          "LOCAL_SEMANTIC": 36,
+          "DETERMINISTIC": 9
+        },
+        "cold_first_ms": 861.67,
+        "p95_ms": 10.53,
+        "semantic_model": {
+          "repo": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+          "revision": "e8f8c211226b894fcb81acc59f3b34ba3efd5f42",
+          "sha256": {
+            "onnx/model_quint8_avx2.onnx": "98a01d88b7de996cdea58c32ca71208c09968d143798814b2ea09d3439dc334f",
+            "tokenizer.json": "2c3387be76557bd40970cec13153b3bbf80407865484b209e655e5e4729076b8"
+          }
+        }
+      },
+      "acceptance": {
+        "zero_wrong_actions": true,
+        "exact_cases_correct": true,
+        "novel_local_recall_at_least_90_percent": true,
+        "semantic_encoder_exercised": true
+      },
+      "all_cases_passed": true,
+      "corpus_sha256": "a68859f97624029d83b9d9ccf44db44da9185e7ae76624fd8331b5ddff0c88b3",
+      "unrecognized_positive": []
+    },
+    "evaluation": {
+      "metrics": {
+        "cases": 130,
+        "positive_total": 90,
+        "positive_correct": 86,
+        "wrong_positive_actions": 0,
+        "novel_positive_total": 66,
+        "novel_positive_correct": 63,
+        "false_acceptances": 0,
+        "routes": {
+          "DETERMINISTIC": 23,
+          "LOCAL_SEMANTIC": 63
+        },
+        "cold_first_ms": 205.23,
+        "p95_ms": 12.83,
+        "semantic_model": {
+          "repo": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+          "revision": "e8f8c211226b894fcb81acc59f3b34ba3efd5f42",
+          "sha256": {
+            "onnx/model_quint8_avx2.onnx": "98a01d88b7de996cdea58c32ca71208c09968d143798814b2ea09d3439dc334f",
+            "tokenizer.json": "2c3387be76557bd40970cec13153b3bbf80407865484b209e655e5e4729076b8"
+          }
+        }
+      },
+      "acceptance": {
+        "zero_wrong_actions": true,
+        "exact_cases_correct": true,
+        "novel_local_recall_at_least_90_percent": true,
+        "semantic_encoder_exercised": true
+      },
+      "all_cases_passed": false,
+      "corpus_sha256": "f18528f021d941c7472133d2c83f07ef5d1f8e2ad1ce130a70dca23070f761e1",
+      "unrecognized_positive": [
+        "recule d’un niveau dans les dossiers",
+        "peux-tu ne garder a l’affichage que les PDF",
+        "limite l’affichage aux fichiers PDF",
+        "prends celui avec la date la plus recente"
+      ]
+    },
+    "confirmation": {
+      "metrics": {
+        "cases": 120,
+        "positive_total": 80,
+        "positive_correct": 78,
+        "wrong_positive_actions": 0,
+        "novel_positive_total": 54,
+        "novel_positive_correct": 52,
+        "false_acceptances": 0,
+        "routes": {
+          "LOCAL_SEMANTIC": 46,
+          "DETERMINISTIC": 32
+        },
+        "cold_first_ms": 1303.07,
+        "p95_ms": 14.55,
+        "semantic_model": {
+          "repo": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+          "revision": "e8f8c211226b894fcb81acc59f3b34ba3efd5f42",
+          "sha256": {
+            "onnx/model_quint8_avx2.onnx": "98a01d88b7de996cdea58c32ca71208c09968d143798814b2ea09d3439dc334f",
+            "tokenizer.json": "2c3387be76557bd40970cec13153b3bbf80407865484b209e655e5e4729076b8"
+          }
+        }
+      },
+      "acceptance": {
+        "zero_wrong_actions": true,
+        "exact_cases_correct": true,
+        "novel_local_recall_at_least_90_percent": true,
+        "semantic_encoder_exercised": true
+      },
+      "all_cases_passed": false,
+      "corpus_sha256": "7e0bd93759802b545605c2e824c5cc8e7d9770463293285f8c7f679188c8d1fd",
+      "unrecognized_positive": [
+        "je veux ne voir que les CSV",
+        "ouvre le dernier document de cette liste"
+      ]
+    }
+  },
+  "source_sha256": {
+    "contracts.py": "ca4dcd722103eac68c96bffbe52e7aab90a62595130b656d67a4663979a46813",
+    "resolver.py": "f51b13122643b4b28c877d7dd41f29cb568243c0cc5e94c70791cc974dc06bb8",
+    "local_model.py": "4070670aaebfd62051cafdd0afae31cd0bacbfc79805097b82b65dfef2db1cf0",
+    "config.py": "40ad7c989a825575deb9282e7285d4f2b5350e7375f1d1c137a2510016494dce",
+    "setup.py": "316024c56cb3ccd98950ef91dca4d804ee4d796be5884ce2150701cc155b5b5a",
+    "diagnostics.py": "fcc68f01abb16a11e47c2a42ead1c569ee5e7ee2bbe5844ccd8a476f99e2c877",
+    "planner.py": "3ecefd50aac337fa70632e3f4c3f8e719226651e09d0a2c8081e89053194609b",
+    "semantic.py": "b25fd626cfcb38158840d50b70d5f3673768ec4991cf2eee1e501c6f0c992d37",
+    "display.py": "a40953ffcc2c655bb294f7b591581d679340916ca99f636b88db360607b0d74c",
+    "comprehension_test.py": "10dcac4b57e2bfc902182cdf803737980113f935609934da74a18f6d876902fe",
+    "app.py": "5df2997b92493d451536a0c310f30ae78e3d2a971b1d67c1920da89a8482a941",
+    "jev.py": "6d8570c2522584b4d04ff5a578c71f7e8e771c392ef6a3d7e5d95c3c6205afac",
+    "test_evidence.py": "9ade4b6926edb706916dfa6f4b1af78998d256e7a61f9026a05483829354a8f5",
+    "audio.py": "4e6eb25d1292c93de0990adc2a549b4ee2e7608c3d43a4bf23281451f09db833",
+    "storage.py": "94df8d9597756ca196db8fe9060d7c8928224df72a50eac2143efa4daa2bab12",
+    "runtime.py": "db5afd6e5cd145ddc0af14b3aa14420c3d6cca6acccecc8aa18069b733daa63d",
+    "journey.py": "9142e0acbcd3c57fde4f2072924096d61d86e78bf5bc600f2f99373e0a737503",
+    "__init__.py": "f1f6058c83549491852432fe3390f6f8c70b8ddf679342956c4956325bea97fa",
+    "names.py": "d31c0dd81e71bcb0625265949f3bcce71fbd9eefae85ef57b820e51abffdf0f6",
+    "engine.py": "f640f7c1e6a2aa5c3b1190c823b583af2be63e6c41f6d8e24b36779293296f7c",
+    "support.py": "36d06fcc192954e1306b1d966d614a943ef57fa9f0f4569ea6764bcca9e1a463",
+    "windows.py": "7199f17bedd17600210f9e4e1f86298e63e4c660aeb6e3f96eb581ec616d0659",
+    "catalogue.py": "beafa5be55e846aa76ad205712668f8a27c9360b8afd8f99e3a341d5495e2f25"
+  }
+}

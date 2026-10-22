@@ -1,6 +1,6 @@
 # Clara — compréhension sémantique et parcours de validation
 
-**Version proposée : 0.3 — 22 octobre 2026.** À valider avant implémentation.
+**Version 0.3 — validée par le « go » utilisateur du 22 octobre 2026.** Implémentation et limites : [COMPREHENSION_03.md](COMPREHENSION_03.md).
 
 ## 1. Objectif et point de départ
 
@@ -137,7 +137,7 @@ Ces objectifs portent sur le corpus versionné ; ils ne promettent pas une compr
 
 Après validation de cette spec : implémenter les trois composants de compréhension/résolution/repli, enrichir et migrer le catalogue, étendre les parcours et rapports, puis mettre à jour les guides et `PROJECT_STATE.md`. Livrer les contrôles automatisés accessibles et la liste précise des essais Windows restants. Les essais vocaux de l’utilisateur viennent après le parcours texte.
 
-**État présent : spécification uniquement. Aucun des ajouts décrits ici n’est annoncé comme implémenté ou validé sous Windows.**
+**Suivi : implémentation livrée dans cette branche ; les critères et essais réellement exécutés sont distingués des validations Windows restantes dans le bilan lié ci-dessus. Les corpus ayant révélé des défauts corrigés sont désormais des régressions ; une nouvelle évaluation indépendante reste à effectuer.**
 
 ## Références
 

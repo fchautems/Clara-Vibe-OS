@@ -42,7 +42,15 @@ def main():
     local = LocalModel(config, data_dir())
     ready, model_message = local.start(callback=lambda text: print(text, flush=True))
     app = QApplication(sys.argv[:1])
-    engine = Engine(config, Planner(config, ready), WindowsAdapter, data_dir() / "history.sqlite")
+    planner = Planner(config, ready)
+    semantic_message = "Moteur sémantique : désactivé."
+    if config["semantic_enabled"]:
+        try:
+            planner.semantic.match("remonte au niveau precedent")
+            semantic_message = "Moteur sémantique : prêt (CPU local)."
+        except Exception as exc:
+            semantic_message = "Moteur sémantique : absent ou en erreur (" + type(exc).__name__ + ") ; compréhension locale réduite."
+    engine = Engine(config, planner, WindowsAdapter, data_dir() / "history.sqlite")
     audio = None if args.text_only else AudioRuntime(config, engine)
     root = QWidget()
     root.setWindowTitle("Clara Vibe OS — prototype 0.1")
@@ -57,7 +65,7 @@ def main():
     directory_label.setWordWrap(True)
     directory_label.setTextFormat(Qt.TextFormat.PlainText)
     layout.addWidget(directory_label)
-    model_label = QLabel(model_message)
+    model_label = QLabel(semantic_message + "\n" + model_message)
     model_label.setWordWrap(True)
     layout.addWidget(model_label)
     view = QPlainTextEdit()
@@ -122,7 +130,8 @@ def main():
             if event.get("code") == "LLM_FAILED":
                 model_label.setText("Ollama en erreur — commandes locales disponibles.")
             if event["kind"] == "directory":
-                directory_label.setText("Dossier : " + (event.get("path") or "non observable"))
+                from .display import set_directory
+                set_directory(directory_label, event.get("path"))
                 continue
             if message:
                 view.appendPlainText(("Demande comprise : " if event["kind"] == "plan" else "") + message)
