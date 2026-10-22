@@ -1,5 +1,7 @@
 # Clara Vibe OS — prototype fiabilisé
 
+Prochaine étape **proposée, non implémentée** : [compréhension sémantique, noms approximatifs et parcours de validation](docs/SPEC_COMPREHENSION_SEMANTIQUE_V0_3.md). Implémentation en attente de validation utilisateur.
+
 Mise à jour du 22 octobre 2026 : [changements, calibration et essais Windows restants](docs/FIABILISATION_02.md). Les corrections sont testées automatiquement ; la validation interactive sur le PC reste à faire.
 
 Assistant vocal Python local pour une session Windows interactive. Le premier parcours couvre activation, commandes enchaînées, contexte Explorateur, navigation, recherche dans le dossier courant, filtrage, sélection du plus récent, ouverture, choix vocal et stop. Le noyau est testé avec un adaptateur simulé ; microphone, COM/UIA, voix et performances réelles restent à valider sur le PC Windows.

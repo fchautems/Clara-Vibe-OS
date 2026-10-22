@@ -2,6 +2,14 @@
 
 Mise à jour : 2026-10-22
 
+## Proposition du 2026-10-22 — spec sémantique et validation
+- **Demande actuelle** : rédiger la spec uniquement ; attendre le « go » utilisateur avant implémentation.
+- **Référence** : `docs/SPEC_COMPREHENSION_SEMANTIQUE_V0_3.md`. Correspondance directe → moteur sémantique local → Jev optionnel désactivé → Ollama en dernier recours ; résolution prudente des vrais noms, catalogue enrichi avec migration, corpus séparés et parcours Windows sur fixtures.
+- **Tests prévus** : phrases exactes/inédites/ambiguës, négations, paramètres, noms approximatifs, repli forcé distinct du repli Ollama naturel réel, actions Windows et chemin du panneau observés, captures et rapports par exécution.
+- **État actuel inchangé** : 66 gabarits et similarité lexicale ; moteur sémantique et extensions décrites dans la spec non implémentés. Les 118 tests réussis ci-dessous concernent la livraison précédente, pas les nouveaux critères.
+- **Validation de cette intervention** : documentation uniquement ; cohérence relue et `git diff --check` réussi. Aucun nouvel essai logiciel, Windows ou Ollama réel effectué.
+- **Prochaine action** : validation de la spec par l’utilisateur, puis implémentation. Jev demeure facultatif et aucun appel payant n’est autorisé par la simple rédaction de cette spec.
+
 ## Ajout du 2026-10-22 — parcours sans voix et preuves visuelles
 - Base relue : fiabilisation publiée `f0dfc46`, copie locale propre avant modification ; pas d'instructions AGENTS/MODEL_GUIDE supplémentaires ni outil Brain accessible.
 - **Changements** : `test-clara-sans-voix.cmd` lance un parcours puis se ferme. Quatre contrôles de compréhension et quatorze étapes Engine/Planner avec intentions, paramètres, origines et résultats observés. Captures des fenêtres autorisées après étapes et échecs, rapport JSON, résumé TXT et ZIP autonome dans `resultats-tests`. Statut des captures distinct de celui des actions ; aucune preuve visuelle inventée en cas d'échec de capture.
